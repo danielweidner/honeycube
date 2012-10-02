@@ -1,1 +1,40 @@
-# Honey Cube Game Engine
+﻿# ![Honey Cube Game Engine](http://danielweidner.de/honeycube/images/logo.png)
+
+Every once in a while a developer is under a charm of creating his own sublime game engine. Simply, because he can! Or just because he prefers his own mental models over the ones of others... While most attempts result in a collection of code performing poor, creating a custom engine helps to learn more about the technology all of our well beloved games are based on.
+
+## The Honey Cube Game Engine
+
+The Honey Cube Engine is exactly such a kind of project. It is an attempt to develop a complete set of tools to create every kind of (real time strategy) game. While performance is a fundamental aspect in game development, it has not been of highest priority during the development process. Ease of use and a comprehensible code base have been given precedence.
+
+## Features (so far)
+
+* Scene Editor
+* Entity/Component System
+* Animation System with Support for Bone Deformation
+* Collision Detection
+* Input Management for Keyboard and Mouse
+* Camera Management
+* Space Partioning Structures
+* A lot of useful Utilities (e.g. Entity-Factories, Object-Pools, Rendering-Batches ...)
+
+## Requirements
+
+The Honey Cube Engine uses the [XNA Game Studio 4.0](http://www.microsoft.com/en-us/download/details.aspx?id=23714) and the [.NET Framework 4.0](http://www.microsoft.com/en-us/download/details.aspx?id=17718) developed by Microsoft. The provided Editor is a Windows Form application and uses [MSBuild](http://en.wikipedia.org/wiki/MSBuild) to generate the project source. Therefore you need to install the full [redistributable package](http://www.microsoft.com/en-us/download/details.aspx?id=17718) in order to use the editor for creating your scenes. 
+
+In order to play your created games it is enough to install the [XNA Framework Redistributable](http://www.microsoft.com/en-us/download/details.aspx?id=20914) instead of the full framework which will only include the run-time libraries.
+
+<!---
+## Documentation
+
+...
+-->
+
+## History/Background
+
+Initially the HoneyCube engine started as technical base for the serious game **Hyprions** developed during the course of the Master Project 2010 of the [Digital Media program](http://hs-bremerhaven.de/en/Bachelor_Degree_Course_Digital_Media.html) at the [University of Applied Science Bremerhaven](http://www.hs-bremerhaven.de/en/) (in which [I](http://danielweidner.de) was taking part as well). The Hyprions game is a voxel based strategy game particularly dealing with the topic of energy production and its impact on society and the overall environment. Parts of the Hyprions project have been transfered to the current release of the HoneyCube engine, though most of it had to be rewritten to fit the more generic needs of this engine. 
+
+## Credits
+Although mostly developed and maintained by one developer, the HoneyCube engine could not have been possible without the help of other people. Thank you to...
+
+* [Steffen Saß](http://rebelarts.de/) for all those days and nights of problem solving.
+* [Alexander Firsanov](http://twitter.com/sashafirs) for the project logo.
