@@ -7,24 +7,23 @@ using HoneyCube.Editor.Presenter;
 namespace HoneyCube.Editor.Views
 {
     /// <summary>
-    /// The view is a passive interface that displays all information of the 
-    /// model and routes user commands to the presenter which in turn acts 
-    /// upon the model.
+    /// TODO
     /// </summary>
-    public interface IView { }
+    public interface IView 
+    {
+        // Empty
+    }
 
     /// <summary>
-    /// The view is a passive interface that displays all information of the 
-    /// model and routes user commands to the presenter which in turn acts 
-    /// upon the model.
+    /// TODO
     /// </summary>
+    /// <typeparam name="TPresenter"></typeparam>
     public interface IView<TPresenter> : IView
         where TPresenter : class, IPresenter
     {
-        TPresenter Presenter
-        {
-            get;
-            set;
-        }
+        /// <summary>
+        /// TODO
+        /// </summary>
+        TPresenter Presenter { set; }
     }
 }

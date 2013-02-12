@@ -16,7 +16,7 @@ namespace HoneyCube.Editor
         /// Executes the given command.
         /// </summary>
         /// <param name="command">The command to execute.</param>
-        void Execute(ICommand command);
+        void Execute(UndoableCommand command);
 
         /// <summary>
         /// Reverts the latest command executed.

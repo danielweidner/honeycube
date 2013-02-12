@@ -7,9 +7,9 @@ using HoneyCube.Editor.Presenter;
 namespace HoneyCube.Editor.Views
 {
     /// <summary>
-    /// Provides an interface of the main window of the application.
+    /// TODO
     /// </summary>
-    internal interface IMainView : IView<MainPresenter>
+    public interface IApplicationMenu : IView<IApplicationMenuPresenter>
     {
         // Empty
     }

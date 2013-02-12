@@ -48,8 +48,11 @@
   <ItemGroup>
     <Compile Include="ApplicationController.cs" />
     <Compile Include="Commands\ActionCommand.cs" />
+    <Compile Include="Commands\UndoableCommand.cs" />
     <Compile Include="Commands\CommandHistory.cs" />
+    <Compile Include="Commands\CommandState.cs" />
     <Compile Include="Commands\ICommandHistory.cs" />
+    <Compile Include="Commands\IUndoableCommand.cs" />
     <Compile Include="Commands\MacroCommand.cs" />
     <Compile Include="Events\ApplicationClosingEvent.cs" />
     <Compile Include="Events\EventPublisher.cs" />
@@ -57,21 +60,28 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Events\IEventHandler.cs" />
     <Compile Include="Events\IEventPublisher.cs" />
+    <Compile Include="Presenter\ApplicationWindowPresenter.cs" />
+    <Compile Include="Presenter\IApplicationPresenter.cs" />
+    <Compile Include="Presenter\IApplicationMenuPresenter.cs" />
     <Compile Include="Presenter\IPresenter.cs" />
-    <Compile Include="Presenter\MainPresenter.cs" />
-    <Compile Include="Views\IMainView.cs" />
-    <Compile Include="Views\IView.cs" />
-    <Compile Include="Views\MainView.cs">
+    <Compile Include="Presenter\ApplicationMenuPresenter.cs" />
+    <Compile Include="Views\IApplication.cs" />
+    <Compile Include="Views\ApplicationWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\MainView.Designer.cs">
-      <DependentUpon>MainView.cs</DependentUpon>
+    <Compile Include="Views\ApplicationWindow.Designer.cs">
+      <DependentUpon>ApplicationWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Views\MainView.resx">
-      <DependentUpon>MainView.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="Views\IApplicationMenu.cs" />
+    <Compile Include="Views\IView.cs" />
+    <Compile Include="Views\ApplicationMenu.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\ApplicationMenu.Designer.cs">
+      <DependentUpon>ApplicationMenu.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -82,6 +92,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Views\ApplicationWindow.resx">
+      <DependentUpon>ApplicationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ApplicationMenu.resx">
+      <DependentUpon>ApplicationMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -93,9 +109,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\HoneyCube.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +117,7 @@
       <Name>HoneyCubeEngine</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

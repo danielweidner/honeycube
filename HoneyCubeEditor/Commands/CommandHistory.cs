@@ -1,6 +1,7 @@
 ﻿#region Using Statements
 
 using System.Collections.Generic;
+using System;
 
 #endregion
 
@@ -10,12 +11,12 @@ namespace HoneyCube.Editor.Commands
     /// A simple implementation of a CommandHistory. Allows to log a sequence 
     /// of commands and to perform basic undo/redo functionality.
     /// </summary>
-    public class CommandHistory : ICommandHistory
+    public class CommandHistory : ICommandHistory<UndoableCommand>
     {
         #region Fields
 
-        private LinkedList<ICommand> _undos = new LinkedList<ICommand>();
-        private LinkedList<ICommand> _redos = new LinkedList<ICommand>();
+        private LinkedList<UndoableCommand> _undos = new LinkedList<UndoableCommand>();
+        private LinkedList<UndoableCommand> _redos = new LinkedList<UndoableCommand>();
         
         private int _limit;
 
@@ -24,11 +25,19 @@ namespace HoneyCube.Editor.Commands
         #region Properties
 
         /// <summary>
-        /// The number of commands registered in the command history.
+        /// TODO
         /// </summary>
-        public int Count 
-        { 
-            get { return _undos.Count; } 
+        public bool HasUndoableCommands
+        {
+            get { return _undos.Count > 0; }
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public bool HasRedoableCommands
+        {
+            get { return _redos.Count > 0; }
         }
 
         /// <summary>
@@ -48,6 +57,11 @@ namespace HoneyCube.Editor.Commands
                 }
             }
         }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public event EventHandler StateChanged;
 
         #endregion
 
@@ -74,27 +88,45 @@ namespace HoneyCube.Editor.Commands
 
         #endregion
 
+        #region ICommandHistory Members
+
         /// <summary>
-        /// Saves the command in a sorted list (by time) and executes it.
-        /// Only command saved in the history can be undone later safely.
+        /// Saves the command in a sorted list (by execution time) and executes it.
         /// </summary>
         /// <param name="command">The command to save in history.</param>
-        public void SaveAndExecute(ICommand command)
+        public void SaveAndExecute(UndoableCommand command)
         {
-            if (command != null)
+            if (command != null && !command.IsClone)
             {
                 // Ensure that the history does not contain more elements than
                 // specified as limit.
                 TrimHistoryLength();
 
-                // Insert the command into the undo history
-                _undos.AddFirst(command);
+                // Remember the current history state
+                bool hadUndoableCommandsBefore = HasUndoableCommands;
+                bool hadRedoableCommandsBefore = HasRedoableCommands;
 
-                // Reset the redo history as it now invalid
-                _redos.Clear();
-
-                // Finally execute the command.
+                // Execute the command.
                 command.Execute();
+
+                // Include the command only in the history if it was executed 
+                // successfully
+                if (command.IsExecuted)
+                {
+                    // Flush the redo history
+                    _redos.Clear();
+
+                    // Copy the state of the current command and push it to the 
+                    // history
+                    _undos.AddLast((UndoableCommand)command.Clone());
+
+                    // Check for state changed of the history
+                    if (hadUndoableCommandsBefore != HasUndoableCommands
+                            && hadRedoableCommandsBefore != HasRedoableCommands)
+                    {
+                        OnStateChanged(EventArgs.Empty);
+                    }
+                }
             }
         }
 
@@ -109,21 +141,37 @@ namespace HoneyCube.Editor.Commands
         /// <summary>
         /// Reverts the latest commands executed.
         /// </summary>
-        /// <param name="numberOfCommands">The number of commands to revert.</param>
-        public void Undo(int numberOfCommands)
+        /// <param name="numCommandsToUndo">The number of commands to revert.</param>
+        public void Undo(int numCommandsToUndo)
         {
-            for (int i = 0; _undos.Count > 0 && i < numberOfCommands; i++)
+            int numCommandsUndone = 0;
+            LinkedListNode<UndoableCommand> node = _undos.Last;
+
+            while (node != null && numCommandsUndone < numCommandsToUndo)
             {
-                // The latest command in the history is always at the first
-                // position of the list
-                ICommand command = _undos.First.Value;
-                _undos.RemoveFirst();
+                bool hadRedoableCommandsBefore = HasRedoableCommands;
 
-                // Undo the current command
-                command.Undo();
+                // Perform the undo operations. As only already executed commands
+                // should be present on the list, we do not need to check if the
+                // command is undoable.
+                node.Value.Undo();
 
-                // Allow to redo the current command.
-                _redos.AddFirst(command);
+                // Count the number of commands we have undone so far
+                numCommandsUndone++;
+
+                // Continue with the previous node in the chain
+                node = node.Previous;
+                
+                // Remove the current node from the list (a pitty the function 
+                // does not return the node removed)
+                _undos.RemoveLast();
+
+                // Register the command for a redo operation
+                _redos.AddLast(node.Value);
+
+                // Check for state changes
+                if (!HasUndoableCommands || hadRedoableCommandsBefore != HasRedoableCommands)
+                    OnStateChanged(EventArgs.Empty);
             }
         }
 
@@ -138,21 +186,34 @@ namespace HoneyCube.Editor.Commands
         /// <summary>
         /// Executes undone commands again. 
         /// </summary>
-        /// <param name="numberOfCommands">The number of commands to redo.</param>
-        public void Redo(int numberOfCommands)
+        /// <param name="numCommandsToRedo">The number of commands to redo.</param>
+        public void Redo(int numCommandsToRedo)
         {
-            for (int i = 0; _redos.Count > 0 && i < numberOfCommands; i++)
+            int numCommandsRedone = 0;
+            LinkedListNode<UndoableCommand> node = _redos.Last;
+
+            while (node != null && numCommandsRedone < numCommandsToRedo)
             {
-                // The command we have undone the latest is always at the
-                // first position of the list
-                ICommand command = _redos.First.Value;
-                _redos.RemoveFirst();
+                bool hadUndoableCommandsBefore = HasUndoableCommands;
 
-                // Execute the command again
-                command.Redo();
+                // Perform the redo operation. We do not check whether the command
+                // is undoable, as it wouldn't be on the list then.
+                node.Value.Redo();
 
-                // Allow to undo the command again.
-                _undos.AddFirst(command);
+                // Count the number of redo operations we have performed
+                numCommandsToRedo++;
+
+                // Continue with the previous element undone
+                node = node.Previous;
+
+                // Remove the current processed node from the chain
+                _redos.RemoveLast();
+
+                // Allow to undo the command again
+                _undos.AddLast(node.Value);
+
+                if (!HasRedoableCommands || hadUndoableCommandsBefore != HasUndoableCommands)
+                    OnStateChanged(EventArgs.Empty);
             }
         }
 
@@ -163,11 +224,31 @@ namespace HoneyCube.Editor.Commands
         {
             _undos.Clear();
             _redos.Clear();
+
+            OnStateChanged(EventArgs.Empty);
         }
 
+        #endregion
+
+        #region Event Handler
+
         /// <summary>
-        /// A small helper function to ensure that the number of commands 
-        /// tracked within the history does not exceed the given limit.
+        /// TODO
+        /// </summary>
+        /// <param name="e"></param>
+        private void OnStateChanged(EventArgs e)
+        {
+            if (StateChanged != null)
+                StateChanged(this, e);
+        }
+
+        #endregion
+
+        #region Helper
+
+        /// <summary>
+        /// A small helper function to ensure that the number of commands tracked within 
+        /// the history does not exceed the given limit.
         /// </summary>
         private void TrimHistoryLength()
         {
@@ -175,5 +256,7 @@ namespace HoneyCube.Editor.Commands
             while (length >= _limit)
                 _undos.RemoveLast();
         }
+
+        #endregion
     }
 }

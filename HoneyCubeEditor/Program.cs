@@ -34,7 +34,7 @@ namespace HoneyCube.Editor
         /// Main Entry Point of the Application
         /// 
         /// NOTE: The application setup might be rewritten later on using a 
-        /// dependency injection tool like StructureMap.
+        /// dependency injection container like StructureMap.
         /// </summary>
         [STAThread]
         static void Main()
@@ -45,16 +45,18 @@ namespace HoneyCube.Editor
 
             // Setup the application controller, the central communication
             // point of the application.
-            IEventPublisher eventPublisher = new EventPublisher();
-            ICommandHistory commandHistory = new CommandHistory();
-            IApplicationController appController = new ApplicationController(eventPublisher, commandHistory);
+            EventPublisher eventPublisher = new EventPublisher();
+            CommandHistory commandHistory = new CommandHistory();
+            ApplicationController appController = new ApplicationController(eventPublisher, commandHistory);
 
             // Setup all application models, views and presenters
-            MainView view = new MainView();
-            MainPresenter presenter = new MainPresenter(appController, view, new object());
+            ApplicationMenu applicationMenu = new ApplicationMenu();
+            ApplicationWindow applicationWindow = new ApplicationWindow(applicationMenu);
+            ApplicationMenuPresenter mainMenuPresenter = new ApplicationMenuPresenter(applicationMenu);
+            ApplicationWindowPresenter editorPresenter = new ApplicationWindowPresenter(appController, applicationWindow);
 
             // Run the application
-            Application.Run(view);
+            Application.Run(applicationWindow);
         }
     }
 }

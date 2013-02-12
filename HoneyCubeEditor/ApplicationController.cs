@@ -21,7 +21,7 @@ namespace HoneyCube.Editor
         #region Fields
 
         private IEventPublisher _eventPublisher;
-        private ICommandHistory _commandHistory;
+        private ICommandHistory<UndoableCommand> _commandHistory;
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace HoneyCube.Editor
         /// Maintains command execution and allows for simple undo/redo
         /// operations.
         /// </summary>
-        public ICommandHistory CommandHistory
+        public ICommandHistory<UndoableCommand> CommandHistory
         {
             get { return _commandHistory; }
         }
@@ -54,10 +54,12 @@ namespace HoneyCube.Editor
         /// </summary>
         /// <param name="eventPublisher">An EventPublisher which maintains event subscription.</param>
         /// <param name="history">Keeps track of a command sequence. Allows to undo/redo certain commands.</param>
-        public ApplicationController(IEventPublisher eventPublisher, ICommandHistory history)
+        public ApplicationController(IEventPublisher eventPublisher, ICommandHistory<UndoableCommand> history)
         {
             _eventPublisher = eventPublisher;
             _commandHistory = history;
+
+            _commandHistory.StateChanged += new EventHandler(OnHistoryStateChanged);
         }
 
         #endregion
@@ -69,7 +71,7 @@ namespace HoneyCube.Editor
         /// and executes it.
         /// </summary>
         /// <param name="command">The command to execute.</param>
-        public void Execute(ICommand command)
+        public void Execute(UndoableCommand command)
         {
             _commandHistory.SaveAndExecute(command);
         }
@@ -108,6 +110,20 @@ namespace HoneyCube.Editor
         public void Raise<T>(T eventData)
         {
             _eventPublisher.Publish<T>(eventData);
+        }
+
+        #endregion
+
+        #region Event Handler
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnHistoryStateChanged(object sender, EventArgs e)
+        {
+            // TODO: Raise an application event
         }
 
         #endregion

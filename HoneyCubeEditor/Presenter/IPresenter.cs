@@ -7,37 +7,38 @@ using HoneyCube.Editor.Views;
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// A Presenter acts upon the model and the view. Its main responsibility 
-    /// is to retrieve data from the business model and pass it to the view 
-    /// or to react on changes in the view and to update the model.
+    /// TODO
     /// </summary>
-    public interface IPresenter { }
+    public interface IPresenter 
+    { 
+        // Empty 
+    }
 
     /// <summary>
-    /// A Presenter acts upon the model and the view. Its main responsibility 
-    /// is to retrieve data from the business model and pass it to the view 
-    /// or to react on changes in the view and to update the model.
+    /// TODO
     /// </summary>
-    /// <typeparam name="TView">The type of view the presenter is acting on.</typeparam>
-    /// <typeparam name="TModel">The type of model the presenter is acting on.</typeparam>
-    public interface IPresenter<TView, TModel> : IPresenter
+    /// <typeparam name="TView"></typeparam>
+    public interface IPresenter<TView> : IPresenter
+        where TView : class, IView
+    {
+        /// <summary>
+        /// TODO
+        /// </summary>
+        TView View { get; set; }
+    }
+
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <typeparam name="TView"></typeparam>
+    /// <typeparam name="TModel"></typeparam>
+    public interface IPresenter<TView, TModel> : IPresenter<TView>
         where TView : class, IView
         where TModel : class
     {
         /// <summary>
-        /// The view which routes events and commands to the presenter. 
+        /// TODO
         /// </summary>
-        TView View
-        {
-            get;
-        }
-
-        /// <summary>
-        /// The model represents the actual data beeing displayed.
-        /// </summary>
-        TModel Model
-        {
-            get;
-        }
+        TModel Model { get; set; }
     }
 }

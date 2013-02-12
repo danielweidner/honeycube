@@ -1,15 +1,21 @@
-﻿namespace HoneyCube.Editor.Commands
+﻿#region Using Statements
+
+using System;
+
+#endregion
+
+namespace HoneyCube.Editor.Commands
 {
     /// <summary>
     /// Represents a simple stack of commands ordered by their execution time.
     /// </summary>
-    public interface ICommandHistory
+    public interface ICommandHistory<T> where T : ICommand
     {
         /// <summary>
         /// Saves and executes the given command.
         /// </summary>
         /// <param name="command">The command to save and execute.</param>
-        void SaveAndExecute(ICommand command);
+        void SaveAndExecute(T command);
 
         /// <summary>
         /// Reverts the actions performed by the latest command.
@@ -25,5 +31,10 @@
         /// Flushes the entire history.
         /// </summary>
         void Clear();
+
+        /// <summary>
+        /// Is raised every time the history becomes empty or new undoable commands.
+        /// </summary>
+        event EventHandler StateChanged;
     }
 }
