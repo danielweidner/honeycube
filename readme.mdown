@@ -1,4 +1,4 @@
-﻿# ![Honey Cube Game Engine](http://danielweidner.de/honeycube/images/logo.png)
+﻿# ![Honey Cube Game Engine](http://danielweidner.de/shared/honeycube/logo.png)
 
 Every once in a while a developer is under a charm of creating his own sublime game engine. Simply, because he can! Or just because he prefers his own mental models over the ones of others... While most attempts result in a collection of code performing poor, creating a custom engine helps to learn more about the technology all of our well beloved games are based on.
 
