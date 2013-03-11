@@ -13,6 +13,12 @@ namespace HoneyCube.Editor
     public interface IApplicationController
     {
         /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="command"></param>
+        void Execute(string command);
+
+        /// <summary>
         /// Executes the given command.
         /// </summary>
         /// <param name="command">The command to execute.</param>

@@ -13,7 +13,7 @@ namespace HoneyCube.Editor.Commands
     {
         #region Fields
 
-        protected LinkedList<UndoableCommand> _commands;
+        protected LinkedList<IUndoableCommand> _commands;
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace HoneyCube.Editor.Commands
         /// </summary>
         public MacroCommand()
         {
-            _commands = new LinkedList<UndoableCommand>();
+            _commands = new LinkedList<IUndoableCommand>();
         }
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace HoneyCube.Editor.Commands
         /// commands into one managable chunk.
         /// </summary>
         /// <param name="commands">A list of commands representing the current macro.</param>
-        public MacroCommand(IEnumerable<UndoableCommand> commands)
+        public MacroCommand(IEnumerable<IUndoableCommand> commands)
         {
-            _commands = new LinkedList<UndoableCommand>(commands);
+            _commands = new LinkedList<IUndoableCommand>(commands);
         }
 
         #endregion
@@ -44,7 +44,7 @@ namespace HoneyCube.Editor.Commands
         /// Pushes a new command to the stack.
         /// </summary>
         /// <param name="command">The command to execute within this macro.</param>
-        public void Push(UndoableCommand command)
+        public void Push(IUndoableCommand command)
         {
             _commands.AddLast(command);
         }
@@ -66,11 +66,11 @@ namespace HoneyCube.Editor.Commands
         protected override bool OnExecute()
         {
             bool allExecuted = false;
-            LinkedListNode<UndoableCommand> node = _commands.First;
+            LinkedListNode<IUndoableCommand> node = _commands.First;
 
             while (node != null)
             {
-                UndoableCommand command = node.Value;
+                IUndoableCommand command = node.Value;
                 command.Execute();
                 allExecuted |= command.IsExecuted;
             }
@@ -83,7 +83,7 @@ namespace HoneyCube.Editor.Commands
         /// </summary>
         protected override void OnUndo()
         {
-            LinkedListNode<UndoableCommand> node = _commands.Last;
+            LinkedListNode<IUndoableCommand> node = _commands.Last;
             while (node != null)
             {
                 node.Value.Undo();
@@ -96,7 +96,7 @@ namespace HoneyCube.Editor.Commands
         /// </summary>
         protected override void OnRedo()
         {
-            LinkedListNode<UndoableCommand> node = _commands.First;
+            LinkedListNode<IUndoableCommand> node = _commands.First;
             while (node != null)
             {
                 node.Value.Redo();
@@ -124,13 +124,13 @@ namespace HoneyCube.Editor.Commands
 
             // Replace the list with reference to the original commands, as we are 
             // going to clone each command individually (deep copy)
-            macro._commands = new LinkedList<UndoableCommand>();
+            macro._commands = new LinkedList<IUndoableCommand>();
 
             // Clone all commands in the list
-            foreach (UndoableCommand command in _commands)
+            foreach (IUndoableCommand command in _commands)
             {
                 if (command.IsExecuted)
-                    macro.Push((UndoableCommand)command.Clone());
+                    macro.Push((IUndoableCommand)command.Clone());
             }
 
             return macro;

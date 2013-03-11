@@ -16,46 +16,8 @@ namespace HoneyCube.Editor.Views
         /// <summary>
         /// TODO
         /// </summary>
-        bool IsSidebarVisible { get; }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        bool IsProjectTreeVisible { get; }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        bool IsInspectorVisible { get; }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        void ShowSidebar();
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        void HideSidebar();
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        void ShowProjectTree();
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        void HideProjectTree();
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        void ShowInspector();
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        void HideInspector();
+        /// <param name="name"></param>
+        /// <returns></returns>
+        bool IsControlVisible(string name);
     }
 }

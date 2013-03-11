@@ -90,14 +90,15 @@
             this.SidebarSplitContainer.SplitterWidth = 6;
             this.SidebarSplitContainer.TabIndex = 0;
             // 
-            // EditorView
+            // ApplicationWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 762);
             this.Controls.Add(this.ToolbarContainer);
-            this.Name = "EditorView";
+            this.Name = "ApplicationWindow";
             this.Text = "Honey Cube Editor";
+            this.Icon = HoneyCube.Editor.Properties.Resources.HoneyCube;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.ToolbarContainer.ContentPanel.ResumeLayout(false);
             this.ToolbarContainer.ResumeLayout(false);

@@ -12,6 +12,14 @@ namespace HoneyCube.Editor.Commands
     public interface ICommand : ICloneable
     {
         /// <summary>
+        /// Indicates whether the current command is already executed.
+        /// </summary>
+        bool IsExecuted
+        {
+            get;
+        }
+
+        /// <summary>
         /// TODO
         /// </summary>
         string Text { get; }

@@ -11,12 +11,12 @@ namespace HoneyCube.Editor.Commands
     /// A simple implementation of a CommandHistory. Allows to log a sequence 
     /// of commands and to perform basic undo/redo functionality.
     /// </summary>
-    public class CommandHistory : ICommandHistory<UndoableCommand>
+    public class CommandHistory : ICommandHistory<IUndoableCommand>
     {
         #region Fields
 
-        private LinkedList<UndoableCommand> _undos = new LinkedList<UndoableCommand>();
-        private LinkedList<UndoableCommand> _redos = new LinkedList<UndoableCommand>();
+        private LinkedList<IUndoableCommand> _undos = new LinkedList<IUndoableCommand>();
+        private LinkedList<IUndoableCommand> _redos = new LinkedList<IUndoableCommand>();
         
         private int _limit;
 
@@ -94,7 +94,7 @@ namespace HoneyCube.Editor.Commands
         /// Saves the command in a sorted list (by execution time) and executes it.
         /// </summary>
         /// <param name="command">The command to save in history.</param>
-        public void SaveAndExecute(UndoableCommand command)
+        public void SaveAndExecute(IUndoableCommand command)
         {
             if (command != null && !command.IsClone)
             {
@@ -145,7 +145,7 @@ namespace HoneyCube.Editor.Commands
         public void Undo(int numCommandsToUndo)
         {
             int numCommandsUndone = 0;
-            LinkedListNode<UndoableCommand> node = _undos.Last;
+            LinkedListNode<IUndoableCommand> node = _undos.Last;
 
             while (node != null && numCommandsUndone < numCommandsToUndo)
             {
@@ -190,7 +190,7 @@ namespace HoneyCube.Editor.Commands
         public void Redo(int numCommandsToRedo)
         {
             int numCommandsRedone = 0;
-            LinkedListNode<UndoableCommand> node = _redos.Last;
+            LinkedListNode<IUndoableCommand> node = _redos.Last;
 
             while (node != null && numCommandsRedone < numCommandsToRedo)
             {

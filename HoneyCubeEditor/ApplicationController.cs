@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using HoneyCube.Editor.Commands;
 using HoneyCube.Editor.Events;
+using HoneyCube.Editor.Services;
 
 #endregion
 
@@ -21,7 +22,9 @@ namespace HoneyCube.Editor
         #region Fields
 
         private IEventPublisher _eventPublisher;
-        private ICommandHistory<UndoableCommand> _commandHistory;
+
+        private ICommandService _commands;
+        private ICommandHistory<IUndoableCommand> _commandHistory;
 
         #endregion
 
@@ -40,7 +43,7 @@ namespace HoneyCube.Editor
         /// Maintains command execution and allows for simple undo/redo
         /// operations.
         /// </summary>
-        public ICommandHistory<UndoableCommand> CommandHistory
+        public ICommandHistory<IUndoableCommand> History
         {
             get { return _commandHistory; }
         }
@@ -54,9 +57,10 @@ namespace HoneyCube.Editor
         /// </summary>
         /// <param name="eventPublisher">An EventPublisher which maintains event subscription.</param>
         /// <param name="history">Keeps track of a command sequence. Allows to undo/redo certain commands.</param>
-        public ApplicationController(IEventPublisher eventPublisher, ICommandHistory<UndoableCommand> history)
+        public ApplicationController(IEventPublisher eventPublisher, ICommandService commands, ICommandHistory<IUndoableCommand> history)
         {
             _eventPublisher = eventPublisher;
+            _commands = commands;
             _commandHistory = history;
 
             _commandHistory.StateChanged += new EventHandler(OnHistoryStateChanged);
@@ -65,6 +69,18 @@ namespace HoneyCube.Editor
         #endregion
 
         #region IApplicationController Members
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="command"></param>
+        public void Execute(string command)
+        {
+            if (!_commands.ExecuteCommand(command))
+            {
+                // TODO: Log -> No command associated with the given id.
+            }
+        }
 
         /// <summary>
         /// Registers the given command in the applications command history

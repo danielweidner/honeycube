@@ -2,6 +2,7 @@
 
 using HoneyCube.Editor.Views;
 using System.Windows.Forms;
+using HoneyCube.Editor.Services;
 
 #endregion
 
@@ -15,6 +16,7 @@ namespace HoneyCube.Editor.Presenter
         #region Fields
 
         private IApplicationMenu _view;
+        private IApplicationController _app;
 
         #endregion
 
@@ -40,11 +42,13 @@ namespace HoneyCube.Editor.Presenter
         /// <summary>
         /// TODO
         /// </summary>
+        /// <param name="app"></param>
         /// <param name="view"></param>
-        public ApplicationMenuPresenter(IApplicationMenu view)
+        public ApplicationMenuPresenter(IApplicationController app, IApplicationMenu view)
         {
             _view = view;
             _view.Presenter = this;
+            _app = app;
         }
 
         #endregion
@@ -57,8 +61,10 @@ namespace HoneyCube.Editor.Presenter
         /// <param name="item"></param>
         public void MenuItemClicked(ToolStripMenuItem item)
         {
-            // TODO: Implement action
-            System.Diagnostics.Debug.WriteLine(item.Text);
+            // Expect every MenuItem to define the command to execute on the
+            // tag property.
+            if (item.Tag != null && item.Tag is string)
+                _app.Execute(item.Tag as string);
         }
 
         #endregion

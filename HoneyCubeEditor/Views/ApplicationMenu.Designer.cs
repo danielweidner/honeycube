@@ -58,10 +58,10 @@
             System.Windows.Forms.ToolStripMenuItem Preferences;
             System.Windows.Forms.ToolStripMenuItem View;
             System.Windows.Forms.ToolStripMenuItem Sidebar;
-            System.Windows.Forms.ToolStripMenuItem ViewProjectTree;
-            System.Windows.Forms.ToolStripMenuItem ViewInspector;
+            System.Windows.Forms.ToolStripMenuItem ToggleProjectTree;
+            System.Windows.Forms.ToolStripMenuItem ToggleInspector;
             System.Windows.Forms.ToolStripSeparator Seperator08;
-            System.Windows.Forms.ToolStripMenuItem ViewSidebar;
+            System.Windows.Forms.ToolStripMenuItem ToggleSidebar;
             System.Windows.Forms.ToolStripMenuItem Help;
             System.Windows.Forms.ToolStripMenuItem Documentation;
             System.Windows.Forms.ToolStripMenuItem Github;
@@ -97,10 +97,10 @@
             Preferences = new System.Windows.Forms.ToolStripMenuItem();
             View = new System.Windows.Forms.ToolStripMenuItem();
             Sidebar = new System.Windows.Forms.ToolStripMenuItem();
-            ViewProjectTree = new System.Windows.Forms.ToolStripMenuItem();
-            ViewInspector = new System.Windows.Forms.ToolStripMenuItem();
+            ToggleProjectTree = new System.Windows.Forms.ToolStripMenuItem();
+            ToggleInspector = new System.Windows.Forms.ToolStripMenuItem();
             Seperator08 = new System.Windows.Forms.ToolStripSeparator();
-            ViewSidebar = new System.Windows.Forms.ToolStripMenuItem();
+            ToggleSidebar = new System.Windows.Forms.ToolStripMenuItem();
             Help = new System.Windows.Forms.ToolStripMenuItem();
             Documentation = new System.Windows.Forms.ToolStripMenuItem();
             Github = new System.Windows.Forms.ToolStripMenuItem();
@@ -333,43 +333,48 @@
             // Sidebar
             // 
             Sidebar.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            ViewProjectTree,
-            ViewInspector,
+            ToggleProjectTree,
+            ToggleInspector,
             Seperator08,
-            ViewSidebar});
+            ToggleSidebar});
             Sidebar.Name = "Sidebar";
             Sidebar.Size = new System.Drawing.Size(113, 22);
             Sidebar.Text = "Sidebar";
             // 
-            // ViewProjectTree
+            // ToggleProjectTree
             // 
-            ViewProjectTree.Checked = true;
-            ViewProjectTree.CheckState = System.Windows.Forms.CheckState.Checked;
-            ViewProjectTree.Name = "ViewProjectTree";
-            ViewProjectTree.Size = new System.Drawing.Size(141, 22);
-            ViewProjectTree.Text = "Project";
-            ViewProjectTree.Click += new System.EventHandler(this.MenuItem_Click);
+            ToggleProjectTree.Checked = true;
+            ToggleProjectTree.CheckOnClick = true;
+            ToggleProjectTree.CheckState = System.Windows.Forms.CheckState.Checked;
+            ToggleProjectTree.Name = "ToggleProjectTree";
+            ToggleProjectTree.Size = new System.Drawing.Size(141, 22);
+            ToggleProjectTree.Tag = "ToggleProjectTree";
+            ToggleProjectTree.Text = "Project";
+            ToggleProjectTree.Click += new System.EventHandler(this.MenuItem_Click);
             // 
-            // ViewInspector
+            // ToggleInspector
             // 
-            ViewInspector.Checked = true;
-            ViewInspector.CheckState = System.Windows.Forms.CheckState.Checked;
-            ViewInspector.Name = "ViewInspector";
-            ViewInspector.Size = new System.Drawing.Size(141, 22);
-            ViewInspector.Text = "Inspector";
-            ViewInspector.Click += new System.EventHandler(this.MenuItem_Click);
+            ToggleInspector.Checked = true;
+            ToggleInspector.CheckOnClick = true;
+            ToggleInspector.CheckState = System.Windows.Forms.CheckState.Checked;
+            ToggleInspector.Name = "ToggleInspector";
+            ToggleInspector.Size = new System.Drawing.Size(141, 22);
+            ToggleInspector.Tag = "ToggleInspector";
+            ToggleInspector.Text = "Inspector";
+            ToggleInspector.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // Seperator08
             // 
             Seperator08.Name = "Seperator08";
             Seperator08.Size = new System.Drawing.Size(138, 6);
             // 
-            // ViewSidebar
+            // ToggleSidebar
             // 
-            ViewSidebar.Name = "ViewSidebar";
-            ViewSidebar.Size = new System.Drawing.Size(141, 22);
-            ViewSidebar.Text = "Hide Sidebar";
-            ViewSidebar.Click += new System.EventHandler(this.MenuItem_Click);
+            ToggleSidebar.Name = "ToggleSidebar";
+            ToggleSidebar.Size = new System.Drawing.Size(141, 22);
+            ToggleSidebar.Tag = "ToggleSidebar";
+            ToggleSidebar.Text = "Hide Sidebar";
+            ToggleSidebar.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // Help
             // 
@@ -408,7 +413,7 @@
             About.Text = "About Honey Cube";
             About.Click += new System.EventHandler(this.MenuItem_Click);
             // 
-            // MenuView
+            // ApplicationMenu
             // 
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             File,

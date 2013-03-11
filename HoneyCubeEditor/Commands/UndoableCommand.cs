@@ -16,7 +16,7 @@ namespace HoneyCube.Editor.Commands
     {
         #region Fields
 
-        private CommandState _flags = CommandState.None;
+        private CommandState _flags = CommandState.Waiting;
         private string _text;
 
         #endregion
@@ -97,8 +97,8 @@ namespace HoneyCube.Editor.Commands
         /// <param name="text"></param>
         public UndoableCommand(string text)
         {
-            _flags = CommandState.None;
             _text = text;
+            _flags = CommandState.Waiting;
         }
 
         #endregion

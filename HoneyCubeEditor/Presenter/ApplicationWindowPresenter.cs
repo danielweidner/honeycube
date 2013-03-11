@@ -15,7 +15,7 @@ namespace HoneyCube.Editor.Presenter
     {
         #region Fields
 
-        private IApplicationController _appController;
+        private IApplicationController _app;
         private IApplication _view;
 
         #endregion
@@ -42,90 +42,16 @@ namespace HoneyCube.Editor.Presenter
         /// <summary>
         /// Public constructor. Creates a presenter for the editor view.
         /// </summary>
-        public ApplicationWindowPresenter(IApplicationController appController, IApplication view)
+        public ApplicationWindowPresenter(IApplicationController app, IApplication view)
         {
-            _appController = appController;
+            _app = app;
             _view = view;
             _view.Presenter = this;
         }
 
         #endregion
 
-        #region IEditorPresenter Members
-
-        /// <summary>
-        /// Is called everytime the corresponding UI element to show/hide the
-        /// sidebar is clicked.
-        /// </summary>
-        public void ShowHideSidebarClicked()
-        {
-            // Hide the sidebar if it is currently visible
-            if (View.IsSidebarVisible)
-            {
-                View.HideSidebar();
-            }
-            // Show the sidebar if at least one of its subpanels are visible
-            else if (View.IsProjectTreeVisible || View.IsInspectorVisible)
-            {
-                View.ShowSidebar();
-            }
-            // Enable all subpanels first if the user wants to show the 
-            // sidebar but actually has disabled all subpanels
-            else
-            {
-                View.ShowProjectTree();
-                View.ShowInspector();
-                View.ShowSidebar();
-            }
-        }
-
-        /// <summary>
-        /// Is called everytime the corresponding UI element to show/hide the
-        /// project tree view is clicked.
-        /// </summary>
-        public void ShowHideProjectClicked()
-        {
-            // Toggle the project tree panel visibility
-            if (View.IsProjectTreeVisible)
-            {
-                View.HideProjectTree();
-            }
-            else
-            {
-                View.ShowProjectTree();
-            }
-
-            // Hide the entire sidebar if both panels (inspector & project tree)
-            // are currently disabled
-            if (!View.IsProjectTreeVisible && !View.IsInspectorVisible)
-            {
-                View.HideSidebar();
-            }
-        }
-
-        /// <summary>
-        /// Is called everytime the corresponding UI element to show/hide the 
-        /// inspector is clicked.
-        /// </summary>
-        public void ShowHideInspectorClicked()
-        {
-            // Toogle the inspector panel visibility
-            if (View.IsInspectorVisible)
-            {
-                View.HideInspector();
-            }
-            else
-            {
-                View.ShowInspector();
-            }
-
-            // Hide the entire sidebar if both panels (inspector & project tree)
-            // are currently disabled
-            if (!View.IsProjectTreeVisible && !View.IsInspectorVisible)
-            {
-                View.HideSidebar();
-            }
-        }
+        #region IApplicationPresenter Members
 
         /// <summary>
         /// Is called every time the user prompts to close the application 
@@ -133,7 +59,7 @@ namespace HoneyCube.Editor.Presenter
         /// </summary>
         public void CloseRequested()
         {
-            _appController.Raise(new ApplicationClosingEvent());
+            _app.Raise(new ApplicationClosingEvent());
         }
 
         #endregion

@@ -48,6 +48,12 @@
   <ItemGroup>
     <Compile Include="ApplicationController.cs" />
     <Compile Include="Commands\ActionCommand.cs" />
+    <Compile Include="Commands\HideControlCommand.cs" />
+    <Compile Include="Commands\ShowControlCommand.cs" />
+    <Compile Include="Commands\ToggleVisibilityCommand.cs" />
+    <Compile Include="Commands\ChangePropertyCommand.cs" />
+    <Compile Include="Commands\UICommand.cs" />
+    <Compile Include="Commands\CommandMap.cs" />
     <Compile Include="Commands\UndoableCommand.cs" />
     <Compile Include="Commands\CommandHistory.cs" />
     <Compile Include="Commands\CommandState.cs" />
@@ -65,6 +71,8 @@
     <Compile Include="Presenter\IApplicationMenuPresenter.cs" />
     <Compile Include="Presenter\IPresenter.cs" />
     <Compile Include="Presenter\ApplicationMenuPresenter.cs" />
+    <Compile Include="Services\ICommandService.cs" />
+    <Compile Include="Services\IControlService.cs" />
     <Compile Include="Views\IApplication.cs" />
     <Compile Include="Views\ApplicationWindow.cs">
       <SubType>Form</SubType>

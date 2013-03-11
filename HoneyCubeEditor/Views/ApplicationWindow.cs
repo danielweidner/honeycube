@@ -3,6 +3,9 @@
 using System;
 using System.Windows.Forms;
 using HoneyCube.Editor.Presenter;
+using HoneyCube.Editor.Services;
+using System.ComponentModel;
+using System.Reflection;
 
 #endregion
 
@@ -12,7 +15,7 @@ namespace HoneyCube.Editor.Views
     /// Represents the main view within the application. Holds most of the
     /// control elements.
     /// </summary>
-    public partial class ApplicationWindow : Form, IApplication
+    public partial class ApplicationWindow : Form, IApplication, IControlService
     {
         #region Properties
 
@@ -23,30 +26,6 @@ namespace HoneyCube.Editor.Views
         { 
             get;
             set; 
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool IsSidebarVisible
-        {
-            get { return !WorkspaceSplitContainer.Panel2Collapsed; }
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool IsProjectTreeVisible
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool IsInspectorVisible
-        {
-            get { return false; }
         }
 
         #endregion
@@ -67,109 +46,96 @@ namespace HoneyCube.Editor.Views
 
         #endregion
 
-        #region IEditorView Members
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool IsControlVisible(string name)
+        {
+            Component control = GetControl<Component>(name);
+            PropertyInfo property = control.GetType().GetProperty("Visible");
+            if (property != null)
+            {
+                object propertyValue = property.GetValue(control, null);
+                return propertyValue is bool ? (bool)propertyValue : false;
+            }
+
+            return false;
+        }
+
+        #region IControlService Members
 
         /// <summary>
         /// TODO
         /// </summary>
-        public void ShowSidebar()
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public T GetControl<T>(string name) where T : Component
         {
-            WorkspaceSplitContainer.Panel2Collapsed = false;
-            //GetMenuItem("ShowHideSidebarMenuItem").Text = "Hide Sidebar";
+            Component control = SearchAliases(name);
+            
+            // In case the given component name was not defined amoung the 
+            // aliases we start searching in the collection of control 
+            // elements attached to the current view
+            if (control == null)
+                control = SearchControls(name);
+
+            // If the component was still not found, we check whether the
+            // searched element is a menu item.
+            if (control == null)
+                control = SearchMenuItems(name);
+            
+            return control as T;
         }
 
         /// <summary>
         /// TODO
         /// </summary>
-        public void HideSidebar()
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private Component SearchAliases(string name)
         {
-            WorkspaceSplitContainer.Panel2Collapsed = true;
-            //GetMenuItem("ShowHideSidebarMenuItem").Text = "Show Sidebar";
+            switch (name)
+            {
+                case "Sidebar":
+                    return WorkspaceSplitContainer.Panel2;
+                case "ProjectTree":
+                    return SidebarSplitContainer.Panel1;
+                case "Inspector":
+                    return SidebarSplitContainer.Panel2;
+                default:
+                    return null;
+            }
         }
 
         /// <summary>
         /// TODO
         /// </summary>
-        public void ShowProjectTree()
+        /// <param name="name"></param>
+        /// <param name="includeAliases"></param>
+        /// <returns></returns>
+        private Component SearchControls(string name)
         {
-            SidebarSplitContainer.Panel1Collapsed = false;
-            //GetMenuItem("ShowHideProjectMenuItem").Checked = true;
+            Component[] controls = Controls.Find(name, true);
+            return controls.Length > 0 ? controls[0] : null;
         }
 
         /// <summary>
         /// TODO
         /// </summary>
-        public void HideProjectTree()
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private Component SearchMenuItems(string name)
         {
-            SidebarSplitContainer.Panel1Collapsed = true;
-            //GetMenuItem("ShowHideProjectMenuItem").Checked = false;
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public void ShowInspector()
-        {
-            SidebarSplitContainer.Panel2Collapsed = false;
-            //GetMenuItem("ShowHideInspectorMenuItem").Checked = true;
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public void HideInspector()
-        {
-            SidebarSplitContainer.Panel2Collapsed = true;
-            //GetMenuItem("ShowHideInspectorMenuItem").Checked = false;
+            ToolStripItem[] items = MainMenuStrip.Items.Find(name, true);
+            return items.Length > 0 ? items[0] : null;
         }
 
         #endregion
 
         #region EventHandler
-
-        #region Menu Item Clicked
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ShowHideSidebarMenuItem_Click(object sender, EventArgs e)
-        {
-            Presenter.ShowHideSidebarClicked();
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ShowHideProjectMenuItem_Click(object sender, EventArgs e)
-        {
-            Presenter.ShowHideProjectClicked();
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ShowHideInspectorMenuItem_Click(object sender, EventArgs e)
-        {
-            Presenter.ShowHideInspectorClicked();
-        }
-
-        /// <summary>
-        /// Is raised when the exit menu item is clicked by the user.
-        /// </summary>
-        /// <param name="sender">The exit menu item.</param>
-        /// <param name="e">Empty event argument.</param>
-        private void ExitMenuItem_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        #endregion
 
         /// <summary>
         /// Is raised every time a close of the form is requested.

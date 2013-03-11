@@ -7,6 +7,15 @@
     public interface IUndoableCommand : ICommand
     {
         /// <summary>
+        /// Indicates whether the current command is a clone of a previously executed
+        /// command.
+        /// </summary>
+        bool IsClone
+        {
+            get;
+        }
+
+        /// <summary>
         /// Reverts the action performed by the current command.
         /// </summary>
         void Undo();
