@@ -33,7 +33,8 @@ namespace HoneyCube.Editor.Commands
         void Clear();
 
         /// <summary>
-        /// Is raised every time the history becomes empty or new undoable commands.
+        /// Is raised every time the history runs out of elements or retrieves 
+        /// new elements to undo/redo.
         /// </summary>
         event EventHandler StateChanged;
     }

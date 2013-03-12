@@ -7,16 +7,17 @@ using HoneyCube.Editor.Commands;
 namespace HoneyCube.Editor
 {
     /// <summary>
-    /// The IApplicationController Interface creates a contract for a controller 
+    /// The IAppHub Interface creates a contract for a controller 
     /// which allows to manage the general flow of an application.
     /// </summary>
-    public interface IApplicationController
+    public interface IAppHub
     {
         /// <summary>
-        /// TODO
+        /// Tries to execute the associated command. Will do nothing when no
+        /// command is available for the given identifier.
         /// </summary>
-        /// <param name="command"></param>
-        void Execute(string command);
+        /// <param name="identifier">The id of the command to execute.</param>
+        void Execute(string identifier);
 
         /// <summary>
         /// Executes the given command.

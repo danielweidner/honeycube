@@ -7,10 +7,10 @@ using HoneyCube.Editor.Views;
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// The IEditorPresenter interface describes a presenter which controls 
-    /// most of the UI elements and their corresponding actions/commands.
+    /// The IAppWindowPresenter interface describes a presenter which controls
+    /// the behavior of the main application window.
     /// </summary>
-    public interface IApplicationPresenter : IPresenter<IApplication>
+    public interface IAppWindowPresenter : IPresenter<IAppWindow>
     {
         /// <summary>
         /// Tells the Presenter that a close command for the current view has

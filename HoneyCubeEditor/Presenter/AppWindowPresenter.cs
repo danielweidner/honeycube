@@ -8,15 +8,16 @@ using HoneyCube.Editor.Views;
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// The EditorPresenter is controlling the main window of the application.
-    /// Most of the time it will delegate the commands to its subviews.
+    /// The AppWindowPresenter is controlling the main window of the application.
+    /// Most of the time it will simply delegate the commands to interested 
+    /// submodules.
     /// </summary>
-    public class ApplicationWindowPresenter : IApplicationPresenter
+    public class AppWindowPresenter : IAppWindowPresenter
     {
         #region Fields
 
-        private IApplicationController _app;
-        private IApplication _view;
+        private IAppHub _hub;
+        private IAppWindow _view;
 
         #endregion
 
@@ -25,14 +26,17 @@ namespace HoneyCube.Editor.Presenter
         /// <summary>
         /// The view holding most of the editors controls.
         /// </summary>
-        public IApplication View
+        public IAppWindow View
         {
             get { return _view; }
-            set 
-            { 
-                _view = value;
-                _view.Presenter = this;
-            }
+        }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public IAppHub Hub
+        {
+            get { return _hub; }
         }
 
         #endregion
@@ -40,18 +44,20 @@ namespace HoneyCube.Editor.Presenter
         #region Constructor
 
         /// <summary>
-        /// Public constructor. Creates a presenter for the editor view.
+        /// TODO
         /// </summary>
-        public ApplicationWindowPresenter(IApplicationController app, IApplication view)
+        /// <param name="hub"></param>
+        /// <param name="view"></param>
+        public AppWindowPresenter(IAppHub hub, IAppWindow view)
         {
-            _app = app;
+            _hub = hub;
             _view = view;
             _view.Presenter = this;
         }
 
         #endregion
 
-        #region IApplicationPresenter Members
+        #region IAppWindowPresenter Members
 
         /// <summary>
         /// Is called every time the user prompts to close the application 
@@ -59,7 +65,7 @@ namespace HoneyCube.Editor.Presenter
         /// </summary>
         public void CloseRequested()
         {
-            _app.Raise(new ApplicationClosingEvent());
+            _hub.Raise(new AppClosingEvent());
         }
 
         #endregion

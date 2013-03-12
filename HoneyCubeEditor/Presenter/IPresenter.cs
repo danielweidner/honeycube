@@ -24,7 +24,12 @@ namespace HoneyCube.Editor.Presenter
         /// <summary>
         /// TODO
         /// </summary>
-        TView View { get; set; }
+        TView View { get; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        IAppHub Hub { get; }
     }
 
     /// <summary>
@@ -39,6 +44,6 @@ namespace HoneyCube.Editor.Presenter
         /// <summary>
         /// TODO
         /// </summary>
-        TModel Model { get; set; }
+        TModel Model { get; }
     }
 }

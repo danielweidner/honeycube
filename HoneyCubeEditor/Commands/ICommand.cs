@@ -20,6 +20,15 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
+        /// Indicates whether the current command is a clone of a previously executed
+        /// command.
+        /// </summary>
+        bool IsClone
+        {
+            get;
+        }
+
+        /// <summary>
         /// TODO
         /// </summary>
         string Text { get; }

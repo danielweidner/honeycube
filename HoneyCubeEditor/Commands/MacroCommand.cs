@@ -57,7 +57,7 @@ namespace HoneyCube.Editor.Commands
             _commands.Clear();
         }
 
-        #region Command Members
+        #region UndoableCommand Members
 
         /// <summary>
         /// TODO

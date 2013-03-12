@@ -2,6 +2,7 @@
 
 using System;
 using System.Windows.Forms;
+using System.Reflection;
 using System.ComponentModel;
 
 #endregion
@@ -11,7 +12,7 @@ namespace HoneyCube.Editor.Commands
     /// <summary>
     /// TODO
     /// </summary>
-    public class HideControlCommand : ChangePropertyCommand<Boolean>
+    public class ShowCommand : ChangePropertyCommand<Boolean>
     {
         #region Constructor
 
@@ -19,7 +20,7 @@ namespace HoneyCube.Editor.Commands
         /// TODO
         /// </summary>
         /// <param name="component"></param>
-        public HideControlCommand(Component component)
+        public ShowCommand(Component component)
             : base("Visible", component)
         {
             // Empty

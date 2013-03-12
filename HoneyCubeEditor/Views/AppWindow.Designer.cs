@@ -1,6 +1,6 @@
 ﻿namespace HoneyCube.Editor.Views
 {
-    partial class ApplicationWindow
+    partial class AppWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -46,7 +46,7 @@
             // ToolbarContainer.ContentPanel
             // 
             this.ToolbarContainer.ContentPanel.Controls.Add(this.WorkspaceSplitContainer);
-            this.ToolbarContainer.ContentPanel.Size = new System.Drawing.Size(1264, 712);
+            this.ToolbarContainer.ContentPanel.Size = new System.Drawing.Size(1264, 737);
             this.ToolbarContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ToolbarContainer.LeftToolStripPanelVisible = false;
             this.ToolbarContainer.Location = new System.Drawing.Point(0, 0);
@@ -65,7 +65,7 @@
             // WorkspaceSplitContainer.Panel2
             // 
             this.WorkspaceSplitContainer.Panel2.Controls.Add(this.SidebarSplitContainer);
-            this.WorkspaceSplitContainer.Size = new System.Drawing.Size(1264, 712);
+            this.WorkspaceSplitContainer.Size = new System.Drawing.Size(1264, 737);
             this.WorkspaceSplitContainer.SplitterDistance = 700;
             this.WorkspaceSplitContainer.SplitterIncrement = 10;
             this.WorkspaceSplitContainer.SplitterWidth = 6;
@@ -84,21 +84,21 @@
             // SidebarSplitContainer.Panel2
             // 
             this.SidebarSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.SidebarSplitContainer.Size = new System.Drawing.Size(558, 712);
+            this.SidebarSplitContainer.Size = new System.Drawing.Size(558, 737);
             this.SidebarSplitContainer.SplitterDistance = 279;
             this.SidebarSplitContainer.SplitterIncrement = 10;
             this.SidebarSplitContainer.SplitterWidth = 6;
             this.SidebarSplitContainer.TabIndex = 0;
             // 
-            // ApplicationWindow
+            // AppWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 762);
             this.Controls.Add(this.ToolbarContainer);
-            this.Name = "ApplicationWindow";
+            this.Icon = global::HoneyCube.Editor.Properties.Resources.HoneyCube;
+            this.Name = "AppWindow";
             this.Text = "Honey Cube Editor";
-            this.Icon = HoneyCube.Editor.Properties.Resources.HoneyCube;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.ToolbarContainer.ContentPanel.ResumeLayout(false);
             this.ToolbarContainer.ResumeLayout(false);

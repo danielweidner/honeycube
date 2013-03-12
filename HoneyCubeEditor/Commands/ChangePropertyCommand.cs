@@ -46,7 +46,7 @@ namespace HoneyCube.Editor.Commands
         #region Constructor
 
         /// <summary>
-        /// TODO
+        /// TODO: Allow to change more than one property per inheriting class
         /// </summary>
         /// <param name="property"></param>
         /// <param name="component"></param>

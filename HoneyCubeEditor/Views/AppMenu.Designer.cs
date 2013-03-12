@@ -1,6 +1,6 @@
 ﻿namespace HoneyCube.Editor.Views
 {
-    partial class ApplicationMenu
+    partial class AppMenu
     {
         /// <summary>
         /// Required designer variable.

@@ -7,16 +7,18 @@ using System.ComponentModel;
 namespace HoneyCube.Editor.Services
 {
     /// <summary>
-    /// TODO
+    /// Describes a service which allows to retrieve a generic control 
+    /// element by its name.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public interface IControlService
     {
         /// <summary>
-        /// TODO
+        /// Searches all attached control elements and returns the first element
+        /// with the given name.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">The type of the control element to find.</typeparam>
+        /// <param name="name">The name of the element to find.</param>
+        /// <returns>A reference to the found element. Null if not found or of wrong type.</returns>
         T GetControl<T>(string name) where T : Component;
     }
 }

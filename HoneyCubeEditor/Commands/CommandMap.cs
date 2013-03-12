@@ -1,18 +1,15 @@
 ﻿#region Using Statements
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using HoneyCube.Editor.Services;
-using System.Windows.Forms;
+
 
 #endregion
 
 namespace HoneyCube.Editor.Commands
 {
     /// <summary>
-    /// TODO
+    /// A CommandMap assigns an executable command to a unique string identifier.
     /// </summary>
     public class CommandMap : ICommandService
     {
@@ -25,7 +22,7 @@ namespace HoneyCube.Editor.Commands
         #region Constructors
 
         /// <summary>
-        /// TODO
+        /// Public constructor. Creates a new CommandMap.
         /// </summary>
         public CommandMap()
         {
@@ -33,10 +30,10 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// TODO
+        /// Public constructor. Creates a new CommandMap.
         /// </summary>
-        /// <param name="file"></param>
-        /// <param name="service"></param>
+        /// <param name="file">The xml file to retrieve the key-value pairs from.</param>
+        /// <param name="service">A service provider which allows to retrieve control references by their names.</param>
         public CommandMap(string file, IControlService service)
         {
             ReadFromXML(file, service);
@@ -45,18 +42,21 @@ namespace HoneyCube.Editor.Commands
         #endregion
 
         /// <summary>
-        /// TODO
+        /// Reads a collection of commands and their associated identifiers from 
+        /// a xml formated file.
         /// </summary>
+        /// <param name="file">The xml file to retrieve the key-value pairs from.</param>
+        /// <param name="service">A service provider which allows to retrieve control references by their names.</param>
         public void ReadFromXML(string path, IControlService service)
         {
-            // TODO
+            // TODO: Allow to read map of commands from an xml file
         }
 
         /// <summary>
-        /// TODO
+        /// Add a new association between the given identifier and a command instance.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="command"></param>
+        /// <param name="id">The identifier assigned to the command.</param>
+        /// <param name="command">The command to execute when the identifier is given.</param>
         public void Add(string id, ICommand command)
         {
             if (_map.ContainsKey(id))
@@ -70,9 +70,9 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// TODO
+        /// Removes the command saved for the given identifier.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">The command to remove.</param>
         public void Remove(string id)
         {
             _map.Remove(id);
@@ -81,11 +81,11 @@ namespace HoneyCube.Editor.Commands
         #region ICommandService Members
 
         /// <summary>
-        /// TODO
+        /// Returns a command with the given name.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">The type of the command to retrieve.</typeparam>
+        /// <param name="id">The name or id of the command to retrieve.</param>
+        /// <returns>A reference to the command. Null if not found or of wrong type.</returns>
         public T GetCommand<T>(string id) where T : ICommand
         {
             ICommand command = null;
@@ -94,10 +94,11 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// TODO
+        /// Tries to executed the specified command. Will do nothing if no 
+        /// command with the given id is available.
         /// </summary>
-        /// <param name="id"></param>
-        public bool ExecuteCommand(string id)
+        /// <param name="id">The name or id of the command to execute.</param>
+        public bool TryToExecuteCommand(string id)
         {
             ICommand command = GetCommand<ICommand>(id);
             if (command != null)

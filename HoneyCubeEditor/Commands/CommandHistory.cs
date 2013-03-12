@@ -25,7 +25,7 @@ namespace HoneyCube.Editor.Commands
         #region Properties
 
         /// <summary>
-        /// TODO
+        /// Indicates whether the current command history holds undoable commands.
         /// </summary>
         public bool HasUndoableCommands
         {
@@ -33,7 +33,7 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// TODO
+        /// Indicates whether the current command history holds redoable commands.
         /// </summary>
         public bool HasRedoableCommands
         {
@@ -59,7 +59,8 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// TODO
+        /// Is raised every time the history runs out of elements or retrieves 
+        /// new elements to undo/redo.
         /// </summary>
         public event EventHandler StateChanged;
 
@@ -233,9 +234,10 @@ namespace HoneyCube.Editor.Commands
         #region Event Handler
 
         /// <summary>
-        /// TODO
+        /// Is called every time the history runs out of elements or retrieves 
+        /// new elements to undo/redo.
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="e">Some event arguments.</param>
         private void OnStateChanged(EventArgs e)
         {
             if (StateChanged != null)
@@ -244,7 +246,7 @@ namespace HoneyCube.Editor.Commands
 
         #endregion
 
-        #region Helper
+        #region Helpers
 
         /// <summary>
         /// A small helper function to ensure that the number of commands tracked within 

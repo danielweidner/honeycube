@@ -1,7 +1,6 @@
 ﻿#region Using Statements
 
 using System;
-using System.Collections.Generic;
 using HoneyCube.Editor.Commands;
 using HoneyCube.Editor.Events;
 using HoneyCube.Editor.Services;
@@ -11,13 +10,11 @@ using HoneyCube.Editor.Services;
 namespace HoneyCube.Editor
 {
     /// <summary>
-    /// The ApplicationController represents a central point to synchronize
-    /// different user controls or to control the overal flow of the 
-    /// application. Therefore the ApplicationController provides access to
-    /// a custom event system (observer pattern) and allows to invoke generic
-    /// commands (command pattern).
+    /// The ApplicationHub is an abstraction layer for core functionalites of 
+    /// the application and allows for better decoupling of modules and root
+    /// elements.
     /// </summary>
-    public class ApplicationController: IApplicationController
+    public class AppHub: IAppHub
     {
         #region Fields
 
@@ -53,30 +50,33 @@ namespace HoneyCube.Editor
         #region Constructor
 
         /// <summary>
-        /// Public constructor. Creates a new application controller.
+        /// Public constructor. Creates a new application hub as seperation 
+        /// layer between core concepts and modules.
         /// </summary>
-        /// <param name="eventPublisher">An EventPublisher which maintains event subscription.</param>
-        /// <param name="history">Keeps track of a command sequence. Allows to undo/redo certain commands.</param>
-        public ApplicationController(IEventPublisher eventPublisher, ICommandService commands, ICommandHistory<IUndoableCommand> history)
+        /// <param name="eventPublisher">Allows to maintain event subscriptions.</param>
+        /// <param name="commands">The command service returns simple commands associated with a unique identifier.</param>
+        /// <param name="history">The command history should track the execution of UndoableCommands.</param>
+        public AppHub(IEventPublisher eventPublisher, ICommandService commands, ICommandHistory<IUndoableCommand> history)
         {
             _eventPublisher = eventPublisher;
             _commands = commands;
-            _commandHistory = history;
 
+            _commandHistory = history;
             _commandHistory.StateChanged += new EventHandler(OnHistoryStateChanged);
         }
 
         #endregion
 
-        #region IApplicationController Members
+        #region IAppHub Members
 
         /// <summary>
-        /// TODO
+        /// Tries to execute the associated command. Will do nothing when no
+        /// command is available for the given identifier.
         /// </summary>
-        /// <param name="command"></param>
-        public void Execute(string command)
+        /// <param name="identifier">The id of the command to execute.</param>
+        public void Execute(string identifier)
         {
-            if (!_commands.ExecuteCommand(command))
+            if (!_commands.TryToExecuteCommand(identifier))
             {
                 // TODO: Log -> No command associated with the given id.
             }
@@ -133,11 +133,12 @@ namespace HoneyCube.Editor
         #region Event Handler
 
         /// <summary>
-        /// TODO
+        /// Is called everytime the state of the command history changes from which
+        /// should be the case if new commands are available for undo/redo.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnHistoryStateChanged(object sender, EventArgs e)
+        /// <param name="sender">A reference to the command history.</param>
+        /// <param name="e">Some event arguments.</param>
+        protected virtual void OnHistoryStateChanged(object sender, EventArgs e)
         {
             // TODO: Raise an application event
         }

@@ -7,7 +7,7 @@ using HoneyCube.Editor.Presenter;
 namespace HoneyCube.Editor.Views
 {
     /// <summary>
-    /// TODO
+    /// Helps to identify View implementation.
     /// </summary>
     public interface IView 
     {
@@ -15,15 +15,17 @@ namespace HoneyCube.Editor.Views
     }
 
     /// <summary>
-    /// TODO
+    /// A View in our variation of the Model-View-Presenter pattern represents
+    /// an UI element that delegates all interaction to their associated Presenter.
     /// </summary>
-    /// <typeparam name="TPresenter"></typeparam>
+    /// <typeparam name="TPresenter">The type of the Presenter.</typeparam>
     public interface IView<TPresenter> : IView
         where TPresenter : class, IPresenter
     {
         /// <summary>
-        /// TODO
+        /// The Presenter observes the Model for changes and informs the View 
+        /// about possible modifications.
         /// </summary>
-        TPresenter Presenter { set; }
+        TPresenter Presenter { get; set; }
     }
 }

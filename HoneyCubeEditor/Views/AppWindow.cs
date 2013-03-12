@@ -1,11 +1,9 @@
 ﻿#region Using Statements
 
-using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Services;
-using System.ComponentModel;
-using System.Reflection;
 
 #endregion
 
@@ -15,17 +13,42 @@ namespace HoneyCube.Editor.Views
     /// Represents the main view within the application. Holds most of the
     /// control elements.
     /// </summary>
-    public partial class ApplicationWindow : Form, IApplication, IControlService
+    public partial class AppWindow : Form, IAppWindow, IControlService
     {
         #region Properties
 
         /// <summary>
-        /// The presenter controlling the behavior of the editor.
+        /// The presenter controlling the behavior of the application window.
         /// </summary>
-        public IApplicationPresenter Presenter 
-        { 
+        public IAppWindowPresenter Presenter
+        {
             get;
-            set; 
+            set;
+        }
+
+        /// <summary>
+        /// Get/set the primary menu container of the application window.
+        /// </summary>
+        public new MenuStrip MainMenuStrip
+        {
+            get { return base.MainMenuStrip; }
+            set
+            {
+                if (MainMenuStrip != value)
+                {
+                    // Cache the collection
+                    Control.ControlCollection elements = ToolbarContainer.TopToolStripPanel.Controls;
+
+                    // Remove the previous main menu
+                    elements.Remove(MainMenuStrip);
+
+                    // Change the main menu to the new one specified
+                    base.MainMenuStrip = value;
+
+                    // Add the new main menu back to the top panel
+                    ToolbarContainer.TopToolStripPanel.Controls.Add(value);
+                }
+            }
         }
 
         #endregion
@@ -33,45 +56,24 @@ namespace HoneyCube.Editor.Views
         #region Constructor
 
         /// <summary>
-        /// Public constructor. Creates a new form element holding the general 
-        /// controls of the application.
+        /// Public constructor. Creates a new application window.
         /// </summary>
-        public ApplicationWindow(MenuStrip menu)
+        public AppWindow()
         {
             InitializeComponent();
-
-            MainMenuStrip = menu;
-            ToolbarContainer.TopToolStripPanel.Controls.Add(menu);
         }
 
         #endregion
 
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public bool IsControlVisible(string name)
-        {
-            Component control = GetControl<Component>(name);
-            PropertyInfo property = control.GetType().GetProperty("Visible");
-            if (property != null)
-            {
-                object propertyValue = property.GetValue(control, null);
-                return propertyValue is bool ? (bool)propertyValue : false;
-            }
-
-            return false;
-        }
-
         #region IControlService Members
 
         /// <summary>
-        /// TODO
+        /// Searches all attached control elements and returns the first element
+        /// with the given name.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">The type of the control element to find.</typeparam>
+        /// <param name="name">The name of the element to find.</param>
+        /// <returns>The first attached element with the given name. Null if not found or wrong type.</returns>
         public T GetControl<T>(string name) where T : Component
         {
             Component control = SearchAliases(name);
@@ -91,10 +93,10 @@ namespace HoneyCube.Editor.Views
         }
 
         /// <summary>
-        /// TODO
+        /// Translates name aliases to actiual control instances.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The name of control to retrieve.</param>
+        /// <returns>The corresponding control element.</returns>
         private Component SearchAliases(string name)
         {
             switch (name)
@@ -111,11 +113,11 @@ namespace HoneyCube.Editor.Views
         }
 
         /// <summary>
-        /// TODO
+        /// Searches for the given control element in the Control collection of 
+        /// the current application window.
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="includeAliases"></param>
-        /// <returns></returns>
+        /// <param name="name">The name of the element to find.</param>
+        /// <returns>A reference to the element. Null if not found.</returns>
         private Component SearchControls(string name)
         {
             Component[] controls = Controls.Find(name, true);
@@ -123,10 +125,10 @@ namespace HoneyCube.Editor.Views
         }
 
         /// <summary>
-        /// TODO
+        /// Searches for the given element in the collection of menu items.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The name of the element to find.</param>
+        /// <returns>A reference to the element. Null if not found.</returns>
         private Component SearchMenuItems(string name)
         {
             ToolStripItem[] items = MainMenuStrip.Items.Find(name, true);
@@ -144,7 +146,8 @@ namespace HoneyCube.Editor.Views
         /// <param name="e">Some event arguments (e.g. the closing reason).</param>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Presenter.CloseRequested();
+            if (Presenter != null)
+                Presenter.CloseRequested();
         }
 
         #endregion
