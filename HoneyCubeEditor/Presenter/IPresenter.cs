@@ -7,7 +7,7 @@ using HoneyCube.Editor.Views;
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// TODO
+    /// Helps to identify Presenter implementations.
     /// </summary>
     public interface IPresenter 
     { 
@@ -15,34 +15,38 @@ namespace HoneyCube.Editor.Presenter
     }
 
     /// <summary>
-    /// TODO
+    /// A Presenter in our variation of the Model-View-Presenter pattern represents
+    /// a class that handles the interaction of the associated View. Furthermore it
+    /// observeres the model for changes and initiates a refresh on the View.
     /// </summary>
-    /// <typeparam name="TView"></typeparam>
+    /// <typeparam name="TView">The type of the associated view.</typeparam>
     public interface IPresenter<TView> : IPresenter
         where TView : class, IView
     {
         /// <summary>
-        /// TODO
+        /// Returns the associated view.
         /// </summary>
         TView View { get; }
 
         /// <summary>
-        /// TODO
+        /// The application hub bundles core functionality for better decoupling.
         /// </summary>
         IAppHub Hub { get; }
     }
 
     /// <summary>
-    /// TODO
+    /// A Presenter in our variation of the Model-View-Presenter pattern represents
+    /// a class that handles the interaction of the associated View. Furthermore it
+    /// observeres the model for changes and initiates a refresh on the View.
     /// </summary>
-    /// <typeparam name="TView"></typeparam>
-    /// <typeparam name="TModel"></typeparam>
+    /// <typeparam name="TView">The type of the associated view.</typeparam>
+    /// <typeparam name="TModel">The type of the associated model.</typeparam>
     public interface IPresenter<TView, TModel> : IPresenter<TView>
         where TView : class, IView
         where TModel : class
     {
         /// <summary>
-        /// TODO
+        /// Returns the associated model.
         /// </summary>
         TModel Model { get; }
     }

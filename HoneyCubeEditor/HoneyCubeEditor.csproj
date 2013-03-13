@@ -35,8 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="StructureMap">
-      <HintPath>Libraries\StructureMap.dll</HintPath>
+    <Reference Include="StructureMap, Version=2.6.1.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\StructureMap\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,18 +56,17 @@
     <Compile Include="AppHub.cs" />
     <Compile Include="BootStrapper.cs" />
     <Compile Include="Commands\ActionCommand.cs" />
-    <Compile Include="Commands\HideCommand.cs" />
-    <Compile Include="Commands\ShowCommand.cs" />
-    <Compile Include="Commands\ToggleVisibilityCommand.cs" />
-    <Compile Include="Commands\ChangePropertyCommand.cs" />
-    <Compile Include="Commands\UICommand.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandBinding.cs" />
     <Compile Include="Commands\CommandMap.cs" />
+    <Compile Include="Commands\ICommandMap.cs" />
     <Compile Include="Commands\UndoableCommand.cs" />
     <Compile Include="Commands\CommandHistory.cs" />
     <Compile Include="Commands\CommandState.cs" />
     <Compile Include="Commands\ICommandHistory.cs" />
     <Compile Include="Commands\IUndoableCommand.cs" />
     <Compile Include="Commands\MacroCommand.cs" />
+    <Compile Include="DefaultCommandMap.cs" />
     <Compile Include="DefaultRegistry.cs" />
     <Compile Include="Events\AppClosingEvent.cs" />
     <Compile Include="Events\EventPublisher.cs" />
@@ -79,7 +79,6 @@
     <Compile Include="Presenter\IAppMenuPresenter.cs" />
     <Compile Include="Presenter\IPresenter.cs" />
     <Compile Include="Presenter\MenuCommandExecuter.cs" />
-    <Compile Include="Services\ICommandService.cs" />
     <Compile Include="Services\IControlService.cs" />
     <Compile Include="Views\IAppWindow.cs" />
     <Compile Include="Views\AppWindow.cs">

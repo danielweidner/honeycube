@@ -14,22 +14,17 @@ namespace HoneyCube.Editor.Commands
         /// <summary>
         /// Indicates whether the current command is already executed.
         /// </summary>
-        bool IsExecuted
-        {
-            get;
-        }
+        bool IsExecuted { get; }
 
         /// <summary>
-        /// Indicates whether the current command is a clone of a previously executed
-        /// command.
+        /// Indicates whether the current command is a clone of a previously 
+        /// executed command.
         /// </summary>
-        bool IsClone
-        {
-            get;
-        }
+        bool IsClone { get; }
 
         /// <summary>
-        /// TODO
+        /// A text describing the current command. Could be displayed in 
+        /// associated UI Elements.
         /// </summary>
         string Text { get; }
 

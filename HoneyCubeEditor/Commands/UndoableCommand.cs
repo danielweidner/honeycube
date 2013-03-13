@@ -1,54 +1,22 @@
 ﻿#region Using Statements
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 #endregion
 
 namespace HoneyCube.Editor.Commands
 {
     /// <summary>
-    /// TODO
+    /// An UndoableCommand allows to revert the action previously performed.
     /// </summary>
-    public abstract class UndoableCommand : IUndoableCommand
+    public abstract class UndoableCommand : Command, IUndoableCommand
     {
-        #region Fields
-
-        private CommandState _flags = CommandState.Waiting;
-        private string _text;
-
-        #endregion
-
         #region Properties
 
         /// <summary>
-        /// TODO
-        /// </summary>
-        public bool IsClone
-        {
-            get { return (_flags & CommandState.Cloned) == CommandState.Cloned; }
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool IsExecuted
-        {
-            get { return (_flags & CommandState.Executed) == CommandState.Executed; }
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public bool IsUndone
-        {
-            get { return (_flags & CommandState.Undone) == CommandState.Undone; }
-        }
-
-        /// <summary>
-        /// TODO
+        /// Indicates whether the current command can be undone. Undo 
+        /// operations are only possible if the command has been executed
+        /// before and has not been undone yet.
         /// </summary>
         public bool IsUndoable
         {
@@ -56,7 +24,9 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// TODO
+        /// Indicates whether the current command can be redone. A redo
+        /// operation is only possible if the command has been undone
+        /// previously.
         /// </summary>
         public bool IsRedoable
         {
@@ -64,26 +34,21 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// A text value that can be displayed within the User Interface. Should
-        /// describe the command adequatly in short.
+        /// Indicates whether the current command has been successfully
+        /// undone.
         /// </summary>
-        public string Text
+        public bool IsUndone
         {
-            get { return _text; }
-            set { _text = value; }
+            get { return (State & CommandState.Undone) == CommandState.Undone; }
         }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        public event EventHandler StateChanged;
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// TODO
+        /// Public constructor. Creates a new command that allows to
+        /// undo the performed operation.
         /// </summary>
         public UndoableCommand()
             : this(string.Empty)
@@ -92,68 +57,54 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// TODO
+        /// Public constructor. Creates a new command that allows to
+        /// undo the performed operation.
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="text">A description for the current command.</param>
         public UndoableCommand(string text)
+            : base(text)
         {
-            _text = text;
-            _flags = CommandState.Waiting;
+            // Empty
         }
 
         #endregion
 
-        #region ICommand
+        #region Command Members
 
         /// <summary>
-        /// TODO
+        /// Executes the command and performs the associated action.
         /// </summary>
-        public void Execute()
+        public override void Execute()
         {
             // Skip execution for clones. As they should be only undo/redoable
             if (IsClone) return;
-
-            // Remember the current state to check what has changed afterwards
-            bool wasUndoable = IsUndoable;
-            bool wasRedoable = IsRedoable;
 
             // Try to execute the actual command
             try
             {
                 if (OnExecute())
                 {
-                    _flags |= CommandState.Executed;
+                    State |= CommandState.Executed;
                 }
             }
             catch (Exception)
             {
                 // Executed = false
-                _flags &= ~CommandState.Executed;
+                State &= ~CommandState.Executed;
 
-                // TODO: Report error to the console
+                // TODO: Report error to the application console/log
             }
 
             // Undone = false
-            _flags &= ~CommandState.Undone;
-
-            // Check whether the current command state has changed
-            if (wasUndoable != IsUndoable || wasRedoable != IsUndoable)
-            {
-                OnStateChanged(EventArgs.Empty);
-            }
+            State &= ~CommandState.Undone;
         }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        protected abstract bool OnExecute();
 
         #endregion
 
-        #region IUndoableCommand
+        #region IUndoableCommand Members
 
         /// <summary>
-        /// TODO
+        /// Reverts the action performed by the current command.
         /// </summary>
         public void Undo()
         {
@@ -167,23 +118,22 @@ namespace HoneyCube.Editor.Commands
             }
             catch (Exception)
             {
-                // TODO: Notify the application log
+                // TODO: Report error to the application console/log
             }
 
             // Undone = true
-            _flags |= CommandState.Undone;
-
-            // Notify subscribers
-            OnStateChanged(EventArgs.Empty);
+            State |= CommandState.Undone;
         }
 
         /// <summary>
-        /// TODO
+        /// Is called every time an undo operation is requested. Allows 
+        /// to run custom logic on inheriting classes without corrupting 
+        /// the internal state of the command.
         /// </summary>
         protected abstract void OnUndo();
 
         /// <summary>
-        /// TODO
+        /// Executes the command again after the command has been undone.
         /// </summary>
         public void Redo()
         {
@@ -197,18 +147,17 @@ namespace HoneyCube.Editor.Commands
             }
             catch (Exception)
             {
-                // TODO: Notify the application log
+                // TODO: Report error to the application console/log
             }
 
             // Undone = false
-            _flags &= ~CommandState.Undone;
-
-            // Notify subscribers
-            OnStateChanged(EventArgs.Empty);
+            State &= ~CommandState.Undone;
         }
 
         /// <summary>
-        /// TODO
+        /// Is called every time a redo operation is requested. Allows 
+        /// to run custom logic on inheriting classes without corrupting 
+        /// the internal state of the command.
         /// </summary>
         protected abstract void OnRedo();
 
@@ -219,8 +168,8 @@ namespace HoneyCube.Editor.Commands
         /// <summary>
         /// Creates a shallow copy of the current command.
         /// </summary>
-        /// <returns>A shallow copy or null.</returns>
-        public virtual object Clone()
+        /// <returns>A shallow copy or null if the command is not cloneable.</returns>
+        public override object Clone()
         {
             // Only allow to clone already executed commands
             if (!IsExecuted)
@@ -230,23 +179,9 @@ namespace HoneyCube.Editor.Commands
             UndoableCommand clone = (UndoableCommand)MemberwiseClone();
 
             // Enable the flag: Cloned = true
-            clone._flags |= CommandState.Cloned;
+            clone.State |= CommandState.Cloned;
 
             return clone;
-        }
-
-        #endregion
-
-        #region Event Handler
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        /// <param name="e"></param>
-        protected virtual void OnStateChanged(EventArgs e)
-        {
-            if (StateChanged != null)
-                StateChanged(this, e);
         }
 
         #endregion

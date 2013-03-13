@@ -3,7 +3,7 @@
 using System;
 using HoneyCube.Editor.Commands;
 using HoneyCube.Editor.Events;
-using HoneyCube.Editor.Services;
+
 
 #endregion
 
@@ -20,7 +20,7 @@ namespace HoneyCube.Editor
 
         private IEventPublisher _eventPublisher;
 
-        private ICommandService _commands;
+        private ICommandMap _commandMap;
         private ICommandHistory<IUndoableCommand> _commandHistory;
 
         #endregion
@@ -45,6 +45,15 @@ namespace HoneyCube.Editor
             get { return _commandHistory; }
         }
 
+        /// <summary>
+        /// Holds associations of simple string identifiers or key 
+        /// combinations to executable commands.
+        /// </summary>
+        public ICommandMap CommandMap
+        {
+            get { return _commandMap; }
+        }
+
         #endregion
 
         #region Constructor
@@ -53,13 +62,13 @@ namespace HoneyCube.Editor
         /// Public constructor. Creates a new application hub as seperation 
         /// layer between core concepts and modules.
         /// </summary>
-        /// <param name="eventPublisher">Allows to maintain event subscriptions.</param>
-        /// <param name="commands">The command service returns simple commands associated with a unique identifier.</param>
+        /// <param name="publisher">Allows to maintain event subscriptions.</param>
         /// <param name="history">The command history should track the execution of UndoableCommands.</param>
-        public AppHub(IEventPublisher eventPublisher, ICommandService commands, ICommandHistory<IUndoableCommand> history)
+        /// <param name="map">A command map that associates, string identifiers or key shortcuts to specific commands.</param>
+        public AppHub(IEventPublisher publisher, ICommandHistory<IUndoableCommand> history, ICommandMap map)
         {
-            _eventPublisher = eventPublisher;
-            _commands = commands;
+            _commandMap = map;
+            _eventPublisher = publisher;
 
             _commandHistory = history;
             _commandHistory.StateChanged += new EventHandler(OnHistoryStateChanged);
@@ -70,26 +79,21 @@ namespace HoneyCube.Editor
         #region IAppHub Members
 
         /// <summary>
-        /// Tries to execute the associated command. Will do nothing when no
-        /// command is available for the given identifier.
-        /// </summary>
-        /// <param name="identifier">The id of the command to execute.</param>
-        public void Execute(string identifier)
-        {
-            if (!_commands.TryToExecuteCommand(identifier))
-            {
-                // TODO: Log -> No command associated with the given id.
-            }
-        }
-
-        /// <summary>
-        /// Registers the given command in the applications command history
-        /// and executes it.
+        /// Executes the given command. If the command provides any undo
+        /// functionality the command will be registered within the 
+        /// command history.
         /// </summary>
         /// <param name="command">The command to execute.</param>
-        public void Execute(UndoableCommand command)
+        public void Execute(ICommand command)
         {
-            _commandHistory.SaveAndExecute(command);
+            if (command is IUndoableCommand)
+            {
+                _commandHistory.SaveAndExecute(command as IUndoableCommand);
+            }
+            else
+            {
+                command.Execute();
+            }
         }
 
         /// <summary>

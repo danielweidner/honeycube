@@ -1,7 +1,7 @@
 ﻿namespace HoneyCube.Editor.Commands
 {
     /// <summary>
-    /// A command performs a certain operation on a receiver. An UndoableCommand
+    /// A command performs a certain operation on a subject. An UndoableCommand
     /// allows to revert the action previously performed by a command.
     /// </summary>
     public interface IUndoableCommand : ICommand

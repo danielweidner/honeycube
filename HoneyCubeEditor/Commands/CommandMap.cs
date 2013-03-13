@@ -1,7 +1,8 @@
 ﻿#region Using Statements
 
 using System.Collections.Generic;
-using HoneyCube.Editor.Services;
+using System.Windows.Forms;
+using StructureMap;
 
 
 #endregion
@@ -9,20 +10,24 @@ using HoneyCube.Editor.Services;
 namespace HoneyCube.Editor.Commands
 {
     /// <summary>
-    /// A CommandMap assigns an executable command to a unique string identifier.
+    /// A CommandMap assigns an executable command to a unique string identifier 
+    /// or key combination.
     /// </summary>
-    public class CommandMap : ICommandService
+    public class CommandMap : ICommandMap
     {
         #region Fields
 
-        private Dictionary<string, ICommand> _map = new Dictionary<string, ICommand>();
+        private readonly Dictionary<string, CommandBinding> _idBindings = new Dictionary<string, CommandBinding>();
+        private readonly Dictionary<Keys, CommandBinding> _keyBindings = new Dictionary<Keys, CommandBinding>();
+        private readonly IContainer _container;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Public constructor. Creates a new CommandMap.
+        /// Public constructor. Creates a new CommandMap associating commands to
+        /// a unique identifier or key combination.
         /// </summary>
         public CommandMap()
         {
@@ -30,86 +35,121 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// Public constructor. Creates a new CommandMap.
+        /// Public constructor. Creates a new CommandMap associating commands to
+        /// a unique identifier or key combination.
         /// </summary>
-        /// <param name="file">The xml file to retrieve the key-value pairs from.</param>
-        /// <param name="service">A service provider which allows to retrieve control references by their names.</param>
-        public CommandMap(string file, IControlService service)
+        /// <param name="container">An IoC container used for object instantiation.</param>
+        public CommandMap(IContainer container)
         {
-            ReadFromXML(file, service);
+            _container = container;
         }
 
         #endregion
 
         /// <summary>
-        /// Reads a collection of commands and their associated identifiers from 
-        /// a xml formated file.
+        /// Get the CommandBinding for the given identifier.
         /// </summary>
-        /// <param name="file">The xml file to retrieve the key-value pairs from.</param>
-        /// <param name="service">A service provider which allows to retrieve control references by their names.</param>
-        public void ReadFromXML(string path, IControlService service)
+        /// <param name="id">The identifier.</param>
+        /// <returns>A reference to the instance bound to the identifier. Null if not found.</returns>
+        protected CommandBinding Get(string id)
         {
-            // TODO: Allow to read map of commands from an xml file
+            CommandBinding binding = null;
+            _idBindings.TryGetValue(id, out binding);
+            return binding;
         }
 
         /// <summary>
-        /// Add a new association between the given identifier and a command instance.
+        /// Get the CommandBinding for the given key combination.
         /// </summary>
-        /// <param name="id">The identifier assigned to the command.</param>
-        /// <param name="command">The command to execute when the identifier is given.</param>
-        public void Add(string id, ICommand command)
+        /// <param name="keys">The key combination.</param>
+        /// <returns>A reference to the instance bound to the key combi. Null if not found.</returns>
+        protected CommandBinding Get(Keys keys)
         {
-            if (_map.ContainsKey(id))
+            CommandBinding binding = null;
+            _keyBindings.TryGetValue(keys, out binding);
+            return binding;
+        }
+
+        /// <summary>
+        /// Creates a new binding object or returns an existing one for the given
+        /// string identifier.
+        /// </summary>
+        /// <example>
+        /// Usage example to bind an identifier to a certain command:
+        /// When("HideSidebar").Execute(new MyCommand());
+        /// </example>
+        /// <param name="id">The identifier to bind the command to.</param>
+        /// <returns>A reference to the binding object.</returns>
+        public CommandBinding When(string id)
+        {
+            CommandBinding binding = Get(id);
+
+            if (binding == null)
             {
-                _map[id] = command;
+                binding = new CommandBinding(_container);
+                _idBindings.Add(id, binding);
             }
-            else
+
+            return binding;
+        }
+
+        /// <summary>
+        /// Creates a new binding object or returns an existing one for the given
+        /// key combination.
+        /// </summary>
+        /// <example>
+        /// Usage example to bind a key combination to a certain command:
+        /// When(Keys.Control | Keys.D).Execute(new MyCommand());
+        /// </example>
+        /// <param name="keys">The key combination to bind the command to.</param>
+        /// <returns>A reference to the binding object.</returns>
+        public CommandBinding When(Keys keys)
+        {
+            CommandBinding binding = Get(keys);
+
+            if (binding == null)
             {
-                _map.Add(id, command);
+                binding = new CommandBinding(_container);
+                _keyBindings.Add(keys, binding);
             }
+
+            return binding;
         }
 
         /// <summary>
-        /// Removes the command saved for the given identifier.
+        /// Tries to execute all commands bound to the given identifier.
         /// </summary>
-        /// <param name="id">The command to remove.</param>
-        public void Remove(string id)
+        /// <param name="id">The identifier the commands are bound to.</param>
+        /// <returns>True if any commands have been bound to the identifier.</returns>
+        public bool TryToExecute(string id)
         {
-            _map.Remove(id);
-        }
+            CommandBinding binding = Get(id);
 
-        #region ICommandService Members
-
-        /// <summary>
-        /// Returns a command with the given name.
-        /// </summary>
-        /// <typeparam name="T">The type of the command to retrieve.</typeparam>
-        /// <param name="id">The name or id of the command to retrieve.</param>
-        /// <returns>A reference to the command. Null if not found or of wrong type.</returns>
-        public T GetCommand<T>(string id) where T : ICommand
-        {
-            ICommand command = null;
-            _map.TryGetValue(id, out command);
-            return (T)command;
-        }
-
-        /// <summary>
-        /// Tries to executed the specified command. Will do nothing if no 
-        /// command with the given id is available.
-        /// </summary>
-        /// <param name="id">The name or id of the command to execute.</param>
-        public bool TryToExecuteCommand(string id)
-        {
-            ICommand command = GetCommand<ICommand>(id);
-            if (command != null)
+            if (binding != null)
             {
-                command.Execute();
-                return command.IsExecuted;
+                binding.Trigger();
+                return true;
             }
 
             return false;
         }
 
-        #endregion
+        /// <summary>
+        /// Tries to execute all commands bound to the given key combination.
+        /// </summary>
+        /// <param name="key">The key combination the commands are bound to.</param>
+        /// <returns>True if any commands have been bound to the key combination.</returns>
+        public bool TryToExecute(Keys key)
+        {
+            CommandBinding binding = Get(key);
+
+            if (binding != null)
+            {
+                binding.Trigger();
+                return true;
+            }
+
+            return false;
+        }
     }
 }

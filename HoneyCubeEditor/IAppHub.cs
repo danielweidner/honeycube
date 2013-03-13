@@ -13,17 +13,10 @@ namespace HoneyCube.Editor
     public interface IAppHub
     {
         /// <summary>
-        /// Tries to execute the associated command. Will do nothing when no
-        /// command is available for the given identifier.
-        /// </summary>
-        /// <param name="identifier">The id of the command to execute.</param>
-        void Execute(string identifier);
-
-        /// <summary>
         /// Executes the given command.
         /// </summary>
         /// <param name="command">The command to execute.</param>
-        void Execute(UndoableCommand command);
+        void Execute(ICommand command);
 
         /// <summary>
         /// Reverts the latest command executed.

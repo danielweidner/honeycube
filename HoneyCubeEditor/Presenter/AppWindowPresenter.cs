@@ -32,7 +32,7 @@ namespace HoneyCube.Editor.Presenter
         }
 
         /// <summary>
-        /// TODO
+        /// The application hub bundles core functionality for better decoupling.
         /// </summary>
         public IAppHub Hub
         {
@@ -44,10 +44,11 @@ namespace HoneyCube.Editor.Presenter
         #region Constructor
 
         /// <summary>
-        /// TODO
+        /// Public constructor. Creates a new ApplicationWindowPresenter which
+        /// controls the overall behavior of the associated ApplicationWindowView.
         /// </summary>
-        /// <param name="hub"></param>
-        /// <param name="view"></param>
+        /// <param name="hub">A reference to the application hub.</param>
+        /// <param name="view">The view to maintain.</param>
         public AppWindowPresenter(IAppHub hub, IAppWindow view)
         {
             _hub = hub;

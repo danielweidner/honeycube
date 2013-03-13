@@ -60,8 +60,8 @@ namespace HoneyCube.Editor
             For<IEventPublisher>()
                 .Use<EventPublisher>();            
 
-            For<ICommandService>()
-                .Use(() => new CommandMap());
+            For<ICommandMap>()
+                .Use<DefaultCommandMap>();
 
             For<ICommandHistory<IUndoableCommand>>()
                 .Use(() => new CommandHistory());

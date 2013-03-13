@@ -10,7 +10,7 @@ namespace HoneyCube.Editor.Commands
     /// The ActionCommand class offers a possibility to create a unique command
     /// without the need to implement the overal logic within a seperate class.
     /// Therefore the class offers a parameterless delegate to hook up the 
-    /// relevant functions.
+    /// relevant actions to perform on execute/undo/redo.
     /// </summary>
     public class ActionCommand : UndoableCommand
     {

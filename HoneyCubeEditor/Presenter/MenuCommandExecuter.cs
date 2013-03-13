@@ -24,7 +24,7 @@ namespace HoneyCube.Editor.Presenter
         #region Properties
 
         /// <summary>
-        /// Holds the associated menu view.
+        /// Returns the associated menu view.
         /// </summary>
         public IAppMenu View
         {
@@ -69,9 +69,11 @@ namespace HoneyCube.Editor.Presenter
         {
             // Expects every MenuItem to define which kind of command to 
             // execute via the tag property.
-            string command = item.Tag as string;
-            if (command != null)
-                _hub.Execute(command);
+            
+            // TODO: Use a command map to execute the command
+            //string command = item.Tag as string;
+            //if (command != null)
+            //    _hub.Execute(command);
         }
 
         #endregion

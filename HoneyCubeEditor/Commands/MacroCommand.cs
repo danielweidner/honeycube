@@ -57,12 +57,12 @@ namespace HoneyCube.Editor.Commands
             _commands.Clear();
         }
 
-        #region UndoableCommand Members
+        #region Command Members
 
         /// <summary>
-        /// TODO
+        /// Is called every time the command is executed.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Should return true if executed successfully. Otherwise false.</returns>
         protected override bool OnExecute()
         {
             bool allExecuted = false;
@@ -78,8 +78,12 @@ namespace HoneyCube.Editor.Commands
             return allExecuted;
         }
 
+        #endregion
+
+        #region UndoableCommand Members
+
         /// <summary>
-        /// TODO
+        /// Is called every time an undo operation is requested.
         /// </summary>
         protected override void OnUndo()
         {
@@ -92,7 +96,7 @@ namespace HoneyCube.Editor.Commands
         }
 
         /// <summary>
-        /// TODO
+        /// Is called every time a redo operation is requested.
         /// </summary>
         protected override void OnRedo()
         {
@@ -109,8 +113,8 @@ namespace HoneyCube.Editor.Commands
         #region ICloneable Members
 
         /// <summary>
-        /// Creates a deep copy of the current macro. All commands added are cloned 
-        /// as well.
+        /// Creates a deep copy of the current macro. All commands added are
+        /// cloned as well.
         /// </summary>
         /// <returns>A copy of the current macro. Null if not cloneable.</returns>
         public override object Clone()
