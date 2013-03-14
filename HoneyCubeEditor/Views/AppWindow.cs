@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Services;
+using HoneyCube.Editor.Input;
 
 #endregion
 
@@ -58,9 +59,30 @@ namespace HoneyCube.Editor.Views
         /// <summary>
         /// Public constructor. Creates a new application window.
         /// </summary>
-        public AppWindow()
+        /// <param name="publisher">
+        ///     A helper class that allows to query for mouse events independent on 
+        ///     the currently active control.
+        /// </param>
+        public AppWindow(IMouseEventPublisher publisher)
         {
             InitializeComponent();
+            RegisterMouseEvents(publisher);
+        }
+
+        /// <summary>
+        /// Registeres the current application window for mouse events.
+        /// </summary>
+        /// <param name="publisher">The helper class publishing mouse events.</param>
+        private void RegisterMouseEvents(IMouseEventPublisher publisher)
+        {
+            publisher.MouseDown += new MouseEventHandler(AppWindow_MouseDown);
+            publisher.MouseUp += new MouseEventHandler(AppWindow_MouseUp);
+
+            // If the event publisher comes as message filter, register it 
+            // for the currently running application
+            IMessageFilter mouseMessageFilter = publisher as IMessageFilter;
+            if (mouseMessageFilter != null)
+                Application.AddMessageFilter(mouseMessageFilter);
         }
 
         #endregion
@@ -140,16 +162,72 @@ namespace HoneyCube.Editor.Views
         #region EventHandler
 
         /// <summary>
+        /// Is raised every time a key is released.
+        /// </summary>
+        /// <param name="sender">The form that has registered the keypress event.</param>
+        /// <param name="e">Some event arguments holding informations about the keys pressed.</param>
+        private void AppWindow_KeyUp(object sender, KeyEventArgs e)
+        {
+            // Filter the keyup event of the Alt, Control and Shift keys, as 
+            // we are only interested in combinations with those keys
+            if (Presenter != null
+                    && e.KeyData != Keys.Menu
+                    && e.KeyData != Keys.ControlKey
+                    && e.KeyData != Keys.ShiftKey)
+            {
+                Presenter.HandleKeyboardInput(e.KeyCode, e.Modifiers);
+            }
+        }
+
+        /// <summary>
+        /// Is raised every time the left mouse button is down/pressed within 
+        /// the application window.
+        /// </summary>
+        /// <param name="sender">The object that has detected the mouse event.</param>
+        /// <param name="e">Some additional event arguments (holding mouse position etc.)</param>
+        private void AppWindow_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (Presenter != null)
+            {
+                Presenter.HandleMouseInput(
+                    MouseButtons.Left,
+                    MouseButtonState.Pressed,
+                    e.Clicks,
+                    e.X, e.Y,
+                    ModifierKeys);
+            }
+        }
+
+        /// <summary>
+        /// Is raised every time the left mouse button is released within 
+        /// the application window.
+        /// </summary>
+        /// <param name="sender">The object that has detected the mouse event.</param>
+        /// <param name="e">Some additional event arguments (holding mouse position etc.)</param>
+        private void AppWindow_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (Presenter != null)
+            {
+                Presenter.HandleMouseInput(
+                    MouseButtons.Left, 
+                    MouseButtonState.Released,
+                    e.Clicks,
+                    e.X, e.Y,
+                    ModifierKeys);
+            }
+        }
+
+        /// <summary>
         /// Is raised every time a close of the form is requested.
         /// </summary>
         /// <param name="sender">The form that is going to be closed.</param>
         /// <param name="e">Some event arguments (e.g. the closing reason).</param>
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void AppWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Presenter != null)
                 Presenter.CloseRequested();
         }
 
-        #endregion
+        #endregion        
     }
 }

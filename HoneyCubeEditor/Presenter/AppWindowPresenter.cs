@@ -1,7 +1,9 @@
 ﻿#region Using Statements
 
+using System.Windows.Forms;
 using HoneyCube.Editor.Events;
 using HoneyCube.Editor.Views;
+using HoneyCube.Editor.Input;
 
 #endregion
 
@@ -59,6 +61,30 @@ namespace HoneyCube.Editor.Presenter
         #endregion
 
         #region IAppWindowPresenter Members
+
+        /// <summary>
+        /// Handles mouse interaction detected by the application window.
+        /// </summary>
+        /// <param name="button">The button pressed by the user.</param>
+        /// <param name="state">Indicates whether the button is pressed or released by the user.</param>
+        /// <param name="timesClicked">Number of times clicked.</param>
+        /// <param name="x">The x position of the mouse cursor.</param>
+        /// <param name="y">The y position of the mouse cursor.</param>
+        /// <param name="modifiers">The modifiers pressed (alt, control, shift).</param>
+        public void HandleMouseInput(MouseButtons button, MouseButtonState state, int timesClicked, int x, int y, Keys modifiers)
+        {
+            // TODO: Handle Mouse Input
+        }
+
+        /// <summary>
+        /// Handles keyboard input detected by the application window.
+        /// </summary>
+        /// <param name="keys">The key pressed by the user.</param>
+        /// <param name="modifiers">The modifiers pressed (alt, control, shift).</param>
+        public void HandleKeyboardInput(Keys key, Keys modifiers)
+        {
+            // TODO: Handle Keyboard Input
+        }
 
         /// <summary>
         /// Is called every time the user prompts to close the application 

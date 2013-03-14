@@ -97,9 +97,11 @@
             this.ClientSize = new System.Drawing.Size(1264, 762);
             this.Controls.Add(this.ToolbarContainer);
             this.Icon = global::HoneyCube.Editor.Properties.Resources.HoneyCube;
+            this.KeyPreview = true;
             this.Name = "AppWindow";
             this.Text = "Honey Cube Editor";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AppWindow_FormClosing);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.AppWindow_KeyUp);
             this.ToolbarContainer.ContentPanel.ResumeLayout(false);
             this.ToolbarContainer.ResumeLayout(false);
             this.ToolbarContainer.PerformLayout();

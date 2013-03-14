@@ -8,6 +8,7 @@ using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Services;
 using HoneyCube.Editor.Views;
 using StructureMap.Configuration.DSL;
+using HoneyCube.Editor.Input;
 
 #endregion
 
@@ -52,6 +53,10 @@ namespace HoneyCube.Editor
             For<ApplicationContext>()
                 .Singleton()
                 .Use<AppContext>();
+
+            For<IMouseEventPublisher>()
+                .Singleton()
+                .Use<MouseMessageFilter>();
 
             For<IAppHub>()
                 .Singleton()

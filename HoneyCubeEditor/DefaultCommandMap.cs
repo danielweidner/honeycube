@@ -1,5 +1,6 @@
 ﻿#region Using Statements
 
+using System.Windows.Forms;
 using HoneyCube.Editor.Commands;
 
 #endregion
@@ -21,6 +22,12 @@ namespace HoneyCube.Editor
             #region Application Menu Commands
 
             // TODO: Specify command mappings
+
+            When(Keys.Control | Keys.D)
+                .Execute(new ActionCommand(() => {
+                    System.Diagnostics.Debug.WriteLine("Executed");
+                    return true;
+                 }));
 
             #endregion
         }

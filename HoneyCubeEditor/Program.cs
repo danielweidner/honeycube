@@ -2,6 +2,7 @@
 
 using System;
 using System.Windows.Forms;
+using HoneyCube.Editor.Input;
 using StructureMap;
 
 #endregion
@@ -12,14 +13,14 @@ namespace HoneyCube.Editor
     /// PROJECT NOTES: ----------------------------------------------------
     /// 
     /// Last steps:
+    /// - Implemented input handling on application window level.
     /// - Improved the CommandMap and introduced a new interface similar to 
     ///   StructureMaps registry (to avoid hacky XML Configuration)
     /// - Added documentation for all command classes
-    /// - Introduced StructureMap as Dependency Injection framework
     /// 
     /// Next steps:
+    /// - Delegate user input to the CommandMap
     /// - Implement DefaultCommandMap
-    /// - Handle Key Combinations and delegate them to the CommandMap
     /// - Add functionality to the hub to run commands via identifier
     ///   
     /// -------------------------------------------------------------------
@@ -40,7 +41,7 @@ namespace HoneyCube.Editor
             Container ioc = new Container();
             BootStrapper bootStrapper = new BootStrapper(ioc);
             ApplicationContext context = bootStrapper.GetAppContext();
-            
+
             // Run the application
             Application.Run(context);
         }

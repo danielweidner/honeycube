@@ -74,6 +74,9 @@
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Events\IEventHandler.cs" />
     <Compile Include="Events\IEventPublisher.cs" />
+    <Compile Include="Input\MouseButtonState.cs" />
+    <Compile Include="Input\IMouseEventPublisher.cs" />
+    <Compile Include="Input\MouseMessageFilter.cs" />
     <Compile Include="Presenter\AppWindowPresenter.cs" />
     <Compile Include="Presenter\IAppWindowPresenter.cs" />
     <Compile Include="Presenter\IAppMenuPresenter.cs" />

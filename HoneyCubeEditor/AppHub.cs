@@ -69,7 +69,7 @@ namespace HoneyCube.Editor
         {
             _commandMap = map;
             _eventPublisher = publisher;
-
+            
             _commandHistory = history;
             _commandHistory.StateChanged += new EventHandler(OnHistoryStateChanged);
         }
