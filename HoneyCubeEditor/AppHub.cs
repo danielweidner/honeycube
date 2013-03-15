@@ -19,8 +19,6 @@ namespace HoneyCube.Editor
         #region Fields
 
         private IEventPublisher _eventPublisher;
-
-        private ICommandMap _commandMap;
         private ICommandHistory<IUndoableCommand> _commandHistory;
 
         #endregion
@@ -45,15 +43,6 @@ namespace HoneyCube.Editor
             get { return _commandHistory; }
         }
 
-        /// <summary>
-        /// Holds associations of simple string identifiers or key 
-        /// combinations to executable commands.
-        /// </summary>
-        public ICommandMap CommandMap
-        {
-            get { return _commandMap; }
-        }
-
         #endregion
 
         #region Constructor
@@ -64,10 +53,8 @@ namespace HoneyCube.Editor
         /// </summary>
         /// <param name="publisher">Allows to maintain event subscriptions.</param>
         /// <param name="history">The command history should track the execution of UndoableCommands.</param>
-        /// <param name="map">A command map that associates, string identifiers or key shortcuts to specific commands.</param>
-        public AppHub(IEventPublisher publisher, ICommandHistory<IUndoableCommand> history, ICommandMap map)
+        public AppHub(IEventPublisher publisher, ICommandHistory<IUndoableCommand> history)
         {
-            _commandMap = map;
             _eventPublisher = publisher;
             
             _commandHistory = history;

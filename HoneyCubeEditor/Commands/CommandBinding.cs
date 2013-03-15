@@ -53,7 +53,7 @@ namespace HoneyCube.Editor.Commands
         /// </summary>
         /// <param name="command">The command to execute.</param>
         /// <returns>A reference to the current binding to allow for method chaining.</returns>
-        public CommandBinding Execute(ICommand command)
+        public CommandBinding ThenExecute(ICommand command)
         {
             _commands.Add(command);
             
@@ -69,7 +69,7 @@ namespace HoneyCube.Editor.Commands
         /// </summary>
         /// <typeparam name="T">The type of command to execute on trigger.</typeparam>
         /// <returns>A reference to the current binding to allow for method chaining.</returns>
-        public CommandBinding Execute<T>() where T : ICommand
+        public CommandBinding ThenExecute<T>() where T : ICommand
         {
             // Try to get an instance from the IoC Container/Object factory
             ICommand command = _container != null ? 

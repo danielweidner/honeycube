@@ -62,11 +62,12 @@ namespace HoneyCube.Editor
                 .Singleton()
                 .Use<AppHub>();
 
-            For<IEventPublisher>()
-                .Use<EventPublisher>();            
-
             For<ICommandMap>()
+                .Singleton()
                 .Use<DefaultCommandMap>();
+
+            For<IEventPublisher>()
+                .Use<EventPublisher>();
 
             For<ICommandHistory<IUndoableCommand>>()
                 .Use(() => new CommandHistory());
@@ -80,6 +81,9 @@ namespace HoneyCube.Editor
 
             For<IAppMenuPresenter>()
                 .Use<MenuCommandExecuter>();
+
+            For<IAppLogPresenter>()
+                .Use<AppLogPresenter>();
             
             #endregion
 
@@ -99,6 +103,12 @@ namespace HoneyCube.Editor
 
             For<IAppMenu>()
                 .Use<AppMenu>();
+
+            For<IAppLogWindow>()
+                .Use<AppLogWindow>();
+
+            For<SaveFileDialog>()
+                .Singleton();
 
             #endregion
         }

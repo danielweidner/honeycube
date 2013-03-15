@@ -2,6 +2,7 @@
 
 using System.Windows.Forms;
 using HoneyCube.Editor.Views;
+using HoneyCube.Editor.Commands;
 
 #endregion
 
@@ -16,7 +17,7 @@ namespace HoneyCube.Editor.Presenter
     {
         #region Fields
 
-        private IAppHub _hub;
+        private ICommandMap _map;
         private IAppMenu _view;
 
         #endregion
@@ -31,14 +32,6 @@ namespace HoneyCube.Editor.Presenter
             get { return _view; }
         }
 
-        /// <summary>
-        /// The application hub bundles core functionality for better decoupling.
-        /// </summary>
-        public IAppHub Hub
-        {
-            get { return _hub; }
-        }
-
         #endregion
 
         #region Constructor
@@ -47,11 +40,11 @@ namespace HoneyCube.Editor.Presenter
         /// Public constructor. A MenuCommandExecuter reacts to click events of 
         /// a menu view and runs associated commands.
         /// </summary>
-        /// <param name="hub">The application hub bundling core functionality.</param>
+        /// <param name="map">A command map that associates string identifiers or key shortcuts to specific commands.</param>
         /// <param name="view">The menu controlled by the current presenter.</param>
-        public MenuCommandExecuter(IAppHub hub, IAppMenu view)
+        public MenuCommandExecuter(ICommandMap map, IAppMenu view)
         {
-            _hub = hub;
+            _map = map;
             _view = view;
             _view.Presenter = this;
         }
@@ -67,13 +60,10 @@ namespace HoneyCube.Editor.Presenter
         /// <param name="item">The menu item clicked.</param>
         public void HandleMenuItemClicked(ToolStripMenuItem item)
         {
-            // Expects every MenuItem to define which kind of command to 
-            // execute via the tag property.
-            
-            // TODO: Use a command map to execute the command
-            //string command = item.Tag as string;
-            //if (command != null)
-            //    _hub.Execute(command);
+            if (item.ShortcutKeys != Keys.None)
+                _map.TryToExecute(item.ShortcutKeys);
+            else
+                _map.TryToExecute(item.Name);
         }
 
         #endregion

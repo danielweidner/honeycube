@@ -13,15 +13,13 @@ namespace HoneyCube.Editor
     /// PROJECT NOTES: ----------------------------------------------------
     /// 
     /// Last steps:
-    /// - Implemented input handling on application window level.
-    /// - Improved the CommandMap and introduced a new interface similar to 
-    ///   StructureMaps registry (to avoid hacky XML Configuration)
-    /// - Added documentation for all command classes
+    /// - Implemented an Application Log
+    /// - The CommandMap now can handle the Shortcut enumeration as argument
+    /// - Delegated keyboard input to the CommandMap
     /// 
     /// Next steps:
-    /// - Delegate user input to the CommandMap
-    /// - Implement DefaultCommandMap
-    /// - Add functionality to the hub to run commands via identifier
+    /// - Write Documentation for AppLog and its Presenter
+    /// - Refactor the AppLogPresenter
     ///   
     /// -------------------------------------------------------------------
     /// </summary>

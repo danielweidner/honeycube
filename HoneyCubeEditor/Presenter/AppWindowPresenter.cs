@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using HoneyCube.Editor.Events;
 using HoneyCube.Editor.Views;
 using HoneyCube.Editor.Input;
+using HoneyCube.Editor.Commands;
 
 #endregion
 
@@ -20,6 +21,7 @@ namespace HoneyCube.Editor.Presenter
 
         private IAppHub _hub;
         private IAppWindow _view;
+        private ICommandMap _commands;
 
         #endregion
 
@@ -50,10 +52,13 @@ namespace HoneyCube.Editor.Presenter
         /// controls the overall behavior of the associated ApplicationWindowView.
         /// </summary>
         /// <param name="hub">A reference to the application hub.</param>
+        /// <param name="commands">A command map that associates string identifiers or key shortcuts to specific commands.</param>
         /// <param name="view">The view to maintain.</param>
-        public AppWindowPresenter(IAppHub hub, IAppWindow view)
+        public AppWindowPresenter(IAppHub hub, ICommandMap commands, IAppWindow view)
         {
             _hub = hub;
+            _commands = commands;
+
             _view = view;
             _view.Presenter = this;
         }
@@ -83,7 +88,7 @@ namespace HoneyCube.Editor.Presenter
         /// <param name="modifiers">The modifiers pressed (alt, control, shift).</param>
         public void HandleKeyboardInput(Keys key, Keys modifiers)
         {
-            // TODO: Handle Keyboard Input
+            _commands.TryToExecute(modifiers | key);
         }
 
         /// <summary>

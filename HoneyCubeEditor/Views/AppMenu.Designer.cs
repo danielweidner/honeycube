@@ -62,6 +62,8 @@
             System.Windows.Forms.ToolStripMenuItem ToggleInspector;
             System.Windows.Forms.ToolStripSeparator Seperator08;
             System.Windows.Forms.ToolStripMenuItem ToggleSidebar;
+            System.Windows.Forms.ToolStripSeparator Seperator10;
+            System.Windows.Forms.ToolStripMenuItem ShowLog;
             System.Windows.Forms.ToolStripMenuItem Help;
             System.Windows.Forms.ToolStripMenuItem Documentation;
             System.Windows.Forms.ToolStripMenuItem Github;
@@ -101,6 +103,8 @@
             ToggleInspector = new System.Windows.Forms.ToolStripMenuItem();
             Seperator08 = new System.Windows.Forms.ToolStripSeparator();
             ToggleSidebar = new System.Windows.Forms.ToolStripMenuItem();
+            Seperator10 = new System.Windows.Forms.ToolStripSeparator();
+            ShowLog = new System.Windows.Forms.ToolStripMenuItem();
             Help = new System.Windows.Forms.ToolStripMenuItem();
             Documentation = new System.Windows.Forms.ToolStripMenuItem();
             Github = new System.Windows.Forms.ToolStripMenuItem();
@@ -325,7 +329,9 @@
             // View
             // 
             View.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            Sidebar});
+            Sidebar,
+            Seperator10,
+            ShowLog});
             View.Name = "View";
             View.Size = new System.Drawing.Size(44, 20);
             View.Text = "View";
@@ -338,7 +344,7 @@
             Seperator08,
             ToggleSidebar});
             Sidebar.Name = "Sidebar";
-            Sidebar.Size = new System.Drawing.Size(113, 22);
+            Sidebar.Size = new System.Drawing.Size(126, 22);
             Sidebar.Text = "Sidebar";
             // 
             // ToggleProjectTree
@@ -348,7 +354,7 @@
             ToggleProjectTree.CheckState = System.Windows.Forms.CheckState.Checked;
             ToggleProjectTree.Name = "ToggleProjectTree";
             ToggleProjectTree.Size = new System.Drawing.Size(141, 22);
-            ToggleProjectTree.Tag = "ToggleProjectTree";
+            ToggleProjectTree.Tag = "";
             ToggleProjectTree.Text = "Project";
             ToggleProjectTree.Click += new System.EventHandler(this.MenuItem_Click);
             // 
@@ -359,7 +365,7 @@
             ToggleInspector.CheckState = System.Windows.Forms.CheckState.Checked;
             ToggleInspector.Name = "ToggleInspector";
             ToggleInspector.Size = new System.Drawing.Size(141, 22);
-            ToggleInspector.Tag = "ToggleInspector";
+            ToggleInspector.Tag = "";
             ToggleInspector.Text = "Inspector";
             ToggleInspector.Click += new System.EventHandler(this.MenuItem_Click);
             // 
@@ -372,9 +378,22 @@
             // 
             ToggleSidebar.Name = "ToggleSidebar";
             ToggleSidebar.Size = new System.Drawing.Size(141, 22);
-            ToggleSidebar.Tag = "ToggleSidebar";
+            ToggleSidebar.Tag = "";
             ToggleSidebar.Text = "Hide Sidebar";
             ToggleSidebar.Click += new System.EventHandler(this.MenuItem_Click);
+            // 
+            // Seperator10
+            // 
+            Seperator10.Name = "Seperator10";
+            Seperator10.Size = new System.Drawing.Size(123, 6);
+            // 
+            // ShowLog
+            // 
+            ShowLog.Name = "ShowLog";
+            ShowLog.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
+            ShowLog.Size = new System.Drawing.Size(168, 22);
+            ShowLog.Text = "Show Log";
+            ShowLog.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // Help
             // 
@@ -413,7 +432,7 @@
             About.Text = "About Honey Cube";
             About.Click += new System.EventHandler(this.MenuItem_Click);
             // 
-            // ApplicationMenu
+            // AppMenu
             // 
             this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             File,

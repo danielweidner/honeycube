@@ -27,11 +27,6 @@ namespace HoneyCube.Editor.Presenter
         /// Returns the associated view.
         /// </summary>
         TView View { get; }
-
-        /// <summary>
-        /// The application hub bundles core functionality for better decoupling.
-        /// </summary>
-        IAppHub Hub { get; }
     }
 
     /// <summary>
