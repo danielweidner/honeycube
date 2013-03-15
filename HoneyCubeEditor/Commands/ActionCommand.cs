@@ -16,7 +16,7 @@ namespace HoneyCube.Editor.Commands
     {
         #region Fields
 
-        private Func<bool> _executeAction;
+        private Action _executeAction;
         private Action _undoAction;
         private Action _redoAction;
 
@@ -29,7 +29,7 @@ namespace HoneyCube.Editor.Commands
         /// action to an external function.
         /// </summary>
         /// <param name="action">The funnction to call when the command is executed.</param>
-        public ActionCommand(Func<bool> action)
+        public ActionCommand(Action action)
         {
             _executeAction = action;
             _undoAction = null;
@@ -42,7 +42,7 @@ namespace HoneyCube.Editor.Commands
         /// </summary>
         /// <param name="execute">The funnction to call when the command is executed.</param>
         /// <param name="undo">The funnction to call when the action of the command should be reverted.</param>
-        public ActionCommand(Func<bool> execute, Action undo)
+        public ActionCommand(Action execute, Action undo)
         {
             _executeAction = execute;
             _undoAction = undo;
@@ -56,7 +56,7 @@ namespace HoneyCube.Editor.Commands
         /// /// <param name="execute">The funnction to call when the command is executed.</param>
         /// <param name="undo">The funnction to call when the action of the command should be reverted.</param>
         /// <param name="redo">The function to call when the command should be executed again, after an undo operation.</param>
-        public ActionCommand(Func<bool> execute, Action undo, Action redo)
+        public ActionCommand(Action execute, Action undo, Action redo)
         {
             _executeAction = execute;
             _undoAction = undo;
@@ -73,9 +73,9 @@ namespace HoneyCube.Editor.Commands
         protected override bool OnExecute()
         {
             if (_executeAction != null)
-                return _executeAction();
+                _executeAction();
 
-            return false;
+            return true;
         }
 
         /// <summary>

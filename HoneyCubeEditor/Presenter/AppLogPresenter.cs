@@ -4,17 +4,24 @@ using System;
 using System.Configuration;
 using System.Windows.Forms;
 using HoneyCube.Editor.Views;
+using System.Text.RegularExpressions;
+using System.Drawing;
 
 #endregion
 
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// TODO
+    /// The AppLogPresenter controls the overall behavior of the AppLogWindow.
+    /// An instance queries for all available logs and passes their messages 
+    /// to the associated control.
     /// </summary>
     public class AppLogPresenter : IAppLogPresenter
     {
         #region Fields
+
+        public static Regex ColorizePattern;
+        public static Color[] ColorPalette;
 
         private AppLog _activeLog;
 
@@ -26,7 +33,8 @@ namespace HoneyCube.Editor.Presenter
         #region Properties
 
         /// <summary>
-        /// TODO
+        /// The view holding the controls used to display created application
+        /// logs.
         /// </summary>
         public IAppLogWindow View
         {
@@ -38,10 +46,31 @@ namespace HoneyCube.Editor.Presenter
         #region Constructor
 
         /// <summary>
-        /// TODO
+        /// Static constructor. Generates the pattern used to colorize particular
+        /// strings of the output text.
         /// </summary>
-        /// <param name="view"></param>
-        /// <param name="dialog"></param>
+        static AppLogPresenter()
+        {
+            // Generate the pattern
+            string date = @"(\d{2,2}\.\d{2,2}\.\d{4,4}\s{1}\d{2,2}:\d{2,2}:\d{2,2})";
+            string warning = "(" + Regex.Escape(AppLog.WarningText) + ")";
+            string error = "(" + Regex.Escape(AppLog.ErrorText) + ")";
+            ColorizePattern = new Regex(date + "|" + warning + "|" + error);
+
+            // Select a color for each group
+            ColorPalette = new Color[] {
+                Color.Gray,
+                Color.FromArgb(255, 220, 0),
+                Color.FromArgb(255, 60, 60)
+            };
+        }
+
+        /// <summary>
+        /// Public constructor. Creates a new AppLogPresenter which maintains
+        /// available application logs and prepares them for display.
+        /// </summary>
+        /// <param name="view">The associated view.</param>
+        /// <param name="dialog">A SaveFileDialog used to select a valid path for log files.</param>
         public AppLogPresenter(IAppLogWindow view, SaveFileDialog dialog)
         {
             _view = view;
@@ -54,7 +83,8 @@ namespace HoneyCube.Editor.Presenter
         #endregion
 
         /// <summary>
-        /// TODO
+        /// Registers the presenter for log events and tell the view what 
+        /// to display.
         /// </summary>
         private void SetupView()
         {
@@ -75,76 +105,74 @@ namespace HoneyCube.Editor.Presenter
                 _view.SelectLog(logs[0]);
             }
 
-            // Allow to dynamically add new logs
+            // Allow to dynamically add new logs and show them in the GUI
             AppLog.LogAdded += new Action<AppLog>(AppLog_LogAdded);
             AppLog.LogRemoved += new Action<AppLog>(AppLog_LogRemoved);
         }
 
         /// <summary>
-        /// TODO
+        /// Updates the associated view.
         /// </summary>
-        /// <returns></returns>
-        public bool ShowControl()
-        {
-            _view.ShowControl();
-            UpdateControl();
-            return true;
-        }
-
-        /// <summary>
-        /// TODO
-        /// </summary>
-        private void UpdateControl()
+        private void UpdateView()
         {
             if (_view.Visible && _activeLog != null)
             {
                 _view.UpdateLog(_activeLog.Name, _activeLog.Text);
-                _view.ColorizeOutput(null, null);
+                _view.ColorizeOutput(ColorizePattern, ColorPalette);
                 _view.ScrollToEnd();
             }
         }
 
         /// <summary>
-        /// TODO
+        /// Should be called, if the user decides to view the associated control.
         /// </summary>
-        public void HideControl()
+        public void ShowClicked()
+        {
+            _view.ShowControl();
+            UpdateView();
+        }
+
+        /// <summary>
+        /// Should be called, if the user decides to hide the associated control.
+        /// </summary>
+        public void HideClicked()
         {
             _view.HideControl();
         }
 
         /// <summary>
-        /// TODO
+        /// Should be called once the user has chosen a different application log
+        /// as the currently active one.
         /// </summary>
-        /// <param name="name"></param>
-        public void SelectionChanged(string name)
+        /// <param name="name">The name of the log selected.</param>
+        public void SelectedLogChanged(string name)
         {
             _activeLog = AppLog.GetLog(name);
             _view.SelectLog(name);
-            UpdateControl();
+            UpdateView();
         }
 
         /// <summary>
-        /// TODO
+        /// Saves the specified log to a text file at the given path.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">The name of the log to save.</param>
+        /// <param name="path">The path to save the log file to.</param>
         public void SaveLog(string name, string path)
         {
-            AppLog log = AppLog.GetLog(name);
-            log.SaveTo(path);
+            AppLog.For(name).SaveTo(path);
         }
 
         /// <summary>
-        /// TODO
+        /// Clears the specified application log.
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">The name of the log to clear.</param>
         public void ClearLog(string name)
         {
-            AppLog log = AppLog.GetLog(name);
-            log.Clear();
+            AppLog.For(name).Clear();
         }
 
         /// <summary>
-        /// TODO
+        /// Clears all created application logs.
         /// </summary>
         public void ClearAllLogs()
         {
@@ -152,10 +180,11 @@ namespace HoneyCube.Editor.Presenter
         }
 
         /// <summary>
-        /// TODO
+        /// Opens a new dialog which allows the user to select a valid file path.
         /// </summary>
-        /// <returns></returns>
-        public string SelectFilePath()
+        /// <param name="name">The name of the log to generate a file path for.</param>
+        /// <returns>A path at which the specified log can be saved.</returns>
+        public string GetFilePathForLogFile(string name)
         {
             _dialog.RestoreDirectory = true;
             _dialog.Title = "Select a Folder and File Name for the Logfile";
@@ -176,9 +205,9 @@ namespace HoneyCube.Editor.Presenter
         #region Event Handlers
 
         /// <summary>
-        /// TODO
+        /// Is called when a new application log is created.
         /// </summary>
-        /// <param name="log"></param>
+        /// <param name="log">The new application log.</param>
         private void AppLog_LogAdded(AppLog log)
         {
             log.LogChanged += AppLog_LogChanged;
@@ -187,19 +216,21 @@ namespace HoneyCube.Editor.Presenter
         }
 
         /// <summary>
-        /// TODO
+        /// Is called when one of the observed application log has received 
+        /// new messages.
         /// </summary>
-        /// <param name="log"></param>
+        /// <param name="log">The log that has changed</param>
         private void AppLog_LogChanged(AppLog log)
         {
             if (_activeLog != null && _activeLog.Name == log.Name)
-                UpdateControl();
+                UpdateView();
         }
 
         /// <summary>
-        /// TODO
+        /// Is called when one of the observed application logs has been
+        /// removed.
         /// </summary>
-        /// <param name="log"></param>
+        /// <param name="log">The log to remove/delete.</param>
         private void AppLog_LogRemoved(AppLog log)
         {
             log.LogChanged -= AppLog_LogChanged;

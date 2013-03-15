@@ -31,7 +31,7 @@ namespace HoneyCube.Editor
             #region Shortcuts
 
             If(Keys.Control | Keys.L)
-                .ThenExecute(new ActionCommand(appLog.ShowControl));
+                .ThenExecute(new ActionCommand(appLog.ShowClicked));
 
             #endregion
 
@@ -46,12 +46,10 @@ namespace HoneyCube.Editor
             };
 
             If(Keys.Control | Keys.T)
-                .ThenExecute(new ActionCommand(() =>
-                {
+                .ThenExecute(new ActionCommand(() => {
                     AppLog.For("General").Add(
                         logMessages[new Random().Next(0, 4)],
-                        new Random().Next(0, 2) == 0 ? AppLog.MessageType.Warning : AppLog.MessageType.Error);
-                    return true;
+                        new Random().Next(0, 2) == 0 ? LogMessageType.Warning : LogMessageType.Error);
                 }));
 
             #endregion

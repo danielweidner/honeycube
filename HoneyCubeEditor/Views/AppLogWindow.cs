@@ -121,20 +121,27 @@ namespace HoneyCube.Editor.Views
         /// <summary>
         /// Forces the current view to colorize the generated output.
         /// </summary>
-        /// <param name="regex"></param>
-        /// <param name="colors"></param>
+        /// <param name="regex">The regular expression used to extract the elements that should be colorized.</param>
+        /// <param name="colors">A color for each group.</param>
         public void ColorizeOutput(Regex regex, Color[] colors)
         {
             if (colors != null && colors.Length > 0)
             {
-                var i = 0;
                 foreach (Match match in regex.Matches(CurrentLog.Text))
                 {
                     if (match.Success)
                     {
+                        // Determine the group number. We have to skip the first 
+                        // group as it matches the entire pattern.
+                        int groupNumber = 0;
+                        int totalGroups = match.Groups.Count;
+                        while (groupNumber + 1 < totalGroups && match.Groups[groupNumber + 1].Value == string.Empty)
+                            groupNumber++;
+                        
+                        // Pick the adequat color and highlight the selected text
                         CurrentLog.SelectionStart = match.Index;
                         CurrentLog.SelectionLength = match.Length;
-                        CurrentLog.SelectionColor = i < colors.Length ? colors[i++] : Color.Black;
+                        CurrentLog.SelectionColor = groupNumber < colors.Length ? colors[groupNumber] : Color.Black;
                     }
                 }
             }
@@ -243,15 +250,13 @@ namespace HoneyCube.Editor.Views
         /// <param name="e">Empty event argument.</param>
         private void SaveCurrentLog_Click(object sender, EventArgs e)
         {
-            if (Presenter != null)
+            if (Presenter != null && LogDropDown.SelectedItem != null)
             {
-                string path = Presenter.SelectFilePath();
+                string current = LogDropDown.SelectedItem.ToString();
+                string path = Presenter.GetFilePathForLogFile(current);
 
-                if (path != string.Empty)
-                {
-                    string current = LogDropDown.SelectedItem.ToString();
+                if (!string.IsNullOrEmpty(path))
                     Presenter.SaveLog(current, path);
-                }
             }
         }
 
@@ -262,7 +267,7 @@ namespace HoneyCube.Editor.Views
         /// <param name="e">Empty event argument.</param>
         private void ClearCurrentLog_Click(object sender, EventArgs e)
         {
-            if (Presenter != null)
+            if (Presenter != null && LogDropDown.SelectedItem != null)
             {
                 string current = LogDropDown.SelectedItem.ToString();
                 Presenter.ClearLog(current);
@@ -298,10 +303,10 @@ namespace HoneyCube.Editor.Views
         /// <param name="e">Empty event argument.</param>
         private void LogDropDown_SelectedChanged(object sender, EventArgs e)
         {
-            if (Presenter != null)
+            if (Presenter != null && LogDropDown.SelectedItem != null)
             {
                 string current = LogDropDown.SelectedItem.ToString();
-                Presenter.SelectionChanged(current);
+                Presenter.SelectedLogChanged(current);
             }
         }
 

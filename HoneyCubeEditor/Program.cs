@@ -18,8 +18,7 @@ namespace HoneyCube.Editor
     /// - Delegated keyboard input to the CommandMap
     /// 
     /// Next steps:
-    /// - Write Documentation for AppLog and its Presenter
-    /// - Refactor the AppLogPresenter
+    /// - Debug the Application Log. First messages sometimes dont show up.
     ///   
     /// -------------------------------------------------------------------
     /// </summary>

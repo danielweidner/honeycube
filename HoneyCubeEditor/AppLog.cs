@@ -2,51 +2,55 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using System.Security.AccessControl;
 using HoneyCube.Editor.Util;
+
 
 #endregion
 
 namespace HoneyCube.Editor
 {
     /// <summary>
-    /// TODO
+    /// Enumeration of message types that can be added to the log.
+    /// </summary>
+    public enum LogMessageType
+    {
+        /// <summary>
+        /// Used for all messages that are not flagged as a  warning or error.
+        /// </summary>
+        Default,
+
+        /// <summary>
+        /// Indicates that some logics reacted different from what we expected.
+        /// </summary>
+        Warning,
+
+        /// <summary>
+        /// Indicates that something went terribly wrong and should be fixed 
+        /// or reported to the developer.
+        /// </summary>
+        Error
+    }
+
+    /// <summary>
+    /// An application log bundles a series of log messages. A log message could
+    /// basically be everything, an error, an action peformed or just some state
+    /// information. Feel free to log what every you want.
     /// </summary>
     public class AppLog
     {
-        /// <summary>
-        /// Enumeration of message types that can be added to the log.
-        /// </summary>
-        public enum MessageType
-        {
-            /// <summary>
-            /// Used for all messages that are not flagged as a  warning or
-            /// error.
-            /// </summary>
-            Default,
-
-            /// <summary>
-            /// Indicates that some logics reacted different from what we 
-            /// expected.
-            /// </summary>
-            Warning,
-
-            /// <summary>
-            /// Indicates that something went terribly wrong and should be 
-            /// fixed or reported to the developer.
-            /// </summary>
-            Error
-        }
-
         #region Constants
-
-        public const string NewLine = "\r\n";
-        public const string Seperator = ": ";
+        
+        /// <summary>
+        /// A text added to the log if a warning is created.
+        /// </summary>
         public const string WarningText = "[WARNING] ";
+
+        /// <summary>
+        /// A text added to the log if an error is reported.
+        /// </summary>
         public const string ErrorText = "[ERROR] ";
         
         #endregion
@@ -56,6 +60,8 @@ namespace HoneyCube.Editor
         private static readonly Dictionary<string, AppLog> _logs = new Dictionary<string, AppLog>();
 
         private string _name;
+        private bool _isDirty = false;
+        private string _cache = string.Empty;
         private StringBuilder _text = new StringBuilder();
 
         private bool _includeTimestamp = true;
@@ -66,7 +72,8 @@ namespace HoneyCube.Editor
         #region Properties
 
         /// <summary>
-        /// TODO
+        /// The name of the current application log. Should be descriptive e.g.
+        /// similar to a category name.
         /// </summary>
         public string Name
         {
@@ -74,7 +81,7 @@ namespace HoneyCube.Editor
         }
 
         /// <summary>
-        /// TODO
+        /// Contains all messages added to the current log instance.
         /// </summary>
         public string Text
         {
@@ -82,13 +89,19 @@ namespace HoneyCube.Editor
             {
                 lock (_text)
                 {
-                    return _text.ToString();
+                    if (_isDirty)
+                    {
+                        _cache = _text.ToString();
+                        _isDirty = false;
+                    }
                 }
+
+                return _cache;
             }
         }
 
         /// <summary>
-        /// TODO
+        /// The maximum number of characters to keep in the application log.
         /// </summary>
         public int Limit
         {
@@ -97,7 +110,8 @@ namespace HoneyCube.Editor
         }
 
         /// <summary>
-        /// TODO
+        /// Determines whether to include a formated timestamp in the log. Will
+        /// use the general short time format DD.MM.YYYY HH:MM:SS.
         /// </summary>
         public bool IncludeTimestamp
         {
@@ -106,17 +120,18 @@ namespace HoneyCube.Editor
         }
 
         /// <summary>
-        /// TODO
+        /// Is raised when new log messages are added to the current log 
+        /// instance.
         /// </summary>
         public event Action<AppLog> LogChanged;
 
         /// <summary>
-        /// TODO
+        /// Is raised when a new application log is created.
         /// </summary>
         public static event Action<AppLog> LogAdded;
 
         /// <summary>
-        /// TODO
+        /// Is raised when an existing application log is removed.
         /// </summary>
         public static event Action<AppLog> LogRemoved;
 
@@ -125,9 +140,10 @@ namespace HoneyCube.Editor
         #region Constructor
 
         /// <summary>
-        /// TODO
+        /// Private constructor. Creates a new named application log. To create a new
+        /// log use AppLog.GetLog(name) or the alias method AppLog.For(name)
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">The name of the current log instance.</param>
         private AppLog(string name)
         {
             _name = name;
@@ -138,20 +154,21 @@ namespace HoneyCube.Editor
         #region Static Members
 
         /// <summary>
-        /// TODO
+        /// An alias for GetLog(name).
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The name of the log to retrieve.</param>
+        /// <returns>The log instance with the given name.</returns>
         public static AppLog For(string name)
         {
             return GetLog(name);
         }
 
         /// <summary>
-        /// TODO
+        /// Returns the application log with the given name. Creates a new
+        /// log instance, if it does not exist yet.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The name of the log to retrieve/create.</param>
+        /// <returns>A log instance with the given name.</returns>
         public static AppLog GetLog(string name)
         {
             AppLog log = null;
@@ -169,10 +186,10 @@ namespace HoneyCube.Editor
         }
 
         /// <summary>
-        /// TODO
+        /// Removes the specified log.
         /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
+        /// <param name="name">The log to remove.</param>
+        /// <returns>Returns the removed log instance. Null if no log with the given name exists.</returns>
         public static AppLog RemoveLog(string name)
         {
             AppLog log = null;
@@ -189,7 +206,36 @@ namespace HoneyCube.Editor
         }
 
         /// <summary>
-        /// TODO
+        /// Combines all available logs into a single log file.
+        /// </summary>
+        public static void DumpAll()
+        {
+            string file = Application.UserAppDataPath + "\\log\\app.log";
+
+            if (File.Exists(file))
+                File.Delete(file);
+
+            if (!Directory.Exists(Application.UserAppDataPath + "\\log\\"))
+                Directory.CreateDirectory(Application.UserAppDataPath);
+
+            string seperator = string.Empty;
+            for (int i = 0, l = 80; i < l; i++)
+                seperator += "-";
+
+            using (StreamWriter stream = new StreamWriter(file))
+            {
+                foreach (KeyValuePair<string, AppLog> entry in _logs)
+                {
+                    stream.WriteLine(entry.Key + " " + seperator.Substring(0, 80 - entry.Key.Length));
+                    stream.Write(Environment.NewLine);
+                    stream.Write(entry.Value.Text);
+                }
+                stream.Close();
+            }
+        }
+
+        /// <summary>
+        /// Clears all instantiated application logs.
         /// </summary>
         public static void ClearAll()
         {
@@ -200,41 +246,41 @@ namespace HoneyCube.Editor
         #endregion
 
         /// <summary>
-        /// TODO
+        /// Adds a new message to the current log instance.
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">The message to add.</param>
         public void Add(string message)
         {
-            Add(message, MessageType.Default);
+            Add(message, LogMessageType.Default);
         }
 
         /// <summary>
-        /// TODO
+        /// Adds a new message to the current log instance.
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="type"></param>
-        public void Add(string message, MessageType type)
+        /// <param name="message">The message to add.</param>
+        /// <param name="type">The type of message to add.</param>
+        public void Add(string message, LogMessageType type)
         {
             lock (_text)
             {
                 if (_includeTimestamp)
                 {
                     _text.Append(DateTime.Now.ToLocalTime());
-                    _text.Append(Seperator);
+                    _text.Append(": ");
                 }
 
                 switch (type)
                 {
-                    case MessageType.Warning:
+                    case LogMessageType.Warning:
                         _text.Append(WarningText);
                         break;
-                    case MessageType.Error:
+                    case LogMessageType.Error:
                         _text.Append(ErrorText);
                         break;
                 }
 
                 _text.Append(message);
-                _text.Append(NewLine);                
+                _text.Append(Environment.NewLine);                
 
                 if (_text.Length > _limit)
                 {
@@ -242,7 +288,7 @@ namespace HoneyCube.Editor
                     _text.Remove(0, _text.Length - _limit);
 
                     // Ensure that we have not fragmented some of the messages
-                    int linebreakPos = _text.IndexOf(NewLine) + NewLine.Length;
+                    int linebreakPos = _text.IndexOf(Environment.NewLine) + Environment.NewLine.Length;
                     if (linebreakPos > -1 && linebreakPos < _text.Length)
                         _text.Remove(0, linebreakPos);
                 }
@@ -252,50 +298,33 @@ namespace HoneyCube.Editor
         }
 
         /// <summary>
-        /// TODO
+        /// Loads the message log contents of the current instance from a file.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The path to the file to load.</param>
         public void LoadFrom(string path)
         {
-            try
+            if (File.Exists(path))
             {
-                if (File.Exists(path))
+                lock (_text)
                 {
-                    lock (_text)
+                    using (StreamReader stream = File.OpenText(path))
                     {
-                        using (StreamReader stream = File.OpenText(path))
-                        {
-                            _text.Clear();
-                            _text.Append(stream.ReadToEnd());
-                            stream.Close();
-                        }
+                        _text.Clear();
+                        _text.Append(stream.ReadToEnd());
+                        stream.Close();
                     }
-                }                
-            }
-            catch (Exception e)
-            {
-                if (e is FileNotFoundException)
-                    MessageBox.Show("Log file not found: " + path);
-
-                if (e is DirectoryNotFoundException)
-                    MessageBox.Show("The specified directory does not exist: " + path);
-
-                _text.Clear();
+                }
             }
 
             OnLogChanged();
         }
 
         /// <summary>
-        /// TODO
+        /// Saves the contents of the current application log to a file.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The file path of the file to create.</param>
         public void SaveTo(string path)
         {
-            // Handle: Nothing to save
-            if (_text.Length == 0)
-                return;
-
             // Remove old log files
             if (File.Exists(path))
                 File.Delete(path);
@@ -309,14 +338,14 @@ namespace HoneyCube.Editor
             {
                 using (StreamWriter stream = new StreamWriter(path))
                 {
-                    stream.Write(_text.ToString());
+                    stream.Write(Text);
                     stream.Close();
                 }
             }
         }
 
         /// <summary>
-        /// TODO
+        /// Clears the current message log instance.
         /// </summary>
         public void Clear()
         {
@@ -331,18 +360,21 @@ namespace HoneyCube.Editor
         #region Event Handler
 
         /// <summary>
-        /// TODO
+        /// Is called every time a new message is added to the current log
+        /// instance.
         /// </summary>
         protected virtual void OnLogChanged()
         {
             if (LogChanged != null)
                 LogChanged(this);
+
+            _isDirty = true;
         }
 
         /// <summary>
-        /// TODO
+        /// Is called every time a new log is created.
         /// </summary>
-        /// <param name="log"></param>
+        /// <param name="log">The log created.</param>
         private static void OnLogAdded(AppLog log)
         {
             if (LogAdded != null)
@@ -350,9 +382,9 @@ namespace HoneyCube.Editor
         }
 
         /// <summary>
-        /// TODO
+        /// Is called every time a log is removed from the collection.
         /// </summary>
-        /// <param name="log"></param>
+        /// <param name="log">The log removed.</param>
         private static void OnLogRemoved(AppLog log)
         {
             if (LogRemoved != null)
