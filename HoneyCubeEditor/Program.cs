@@ -13,12 +13,14 @@ namespace HoneyCube.Editor
     /// PROJECT NOTES: ----------------------------------------------------
     /// 
     /// Last steps:
+    /// - Removed a bug that caused the AppLog to return an old value from
+    ///   the cache.
     /// - Implemented an Application Log
     /// - The CommandMap now can handle the Shortcut enumeration as argument
-    /// - Delegated keyboard input to the CommandMap
     /// 
     /// Next steps:
-    /// - Debug the Application Log. First messages sometimes dont show up.
+    /// - Localization
+    /// - Toolbar Icons
     ///   
     /// -------------------------------------------------------------------
     /// </summary>

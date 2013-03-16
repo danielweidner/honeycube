@@ -99,12 +99,16 @@ namespace HoneyCube.Editor.Commands
                     State |= CommandState.Executed;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 // Executed = false
                 State &= ~CommandState.Executed;
 
-                // TODO: Report error to the application console/log
+                // Report the failure
+                AppLog.Default.Add(
+                    string.Format("The {0} command could not be executed. A {1} exception was catched.", GetType().Name, e.GetType().Name),
+                    LogMessageType.Warning
+                );
             }
         }
 

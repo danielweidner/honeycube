@@ -43,7 +43,7 @@ namespace HoneyCube.Editor.Presenter
 
         #endregion
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
         /// Static constructor. Generates the pattern used to colorize particular
@@ -52,6 +52,8 @@ namespace HoneyCube.Editor.Presenter
         static AppLogPresenter()
         {
             // Generate the pattern
+            // TODO: Not very flexible, would break once the used date format 
+            // would change
             string date = @"(\d{2,2}\.\d{2,2}\.\d{4,4}\s{1}\d{2,2}:\d{2,2}:\d{2,2})";
             string warning = "(" + Regex.Escape(AppLog.WarningText) + ")";
             string error = "(" + Regex.Escape(AppLog.ErrorText) + ")";
@@ -240,31 +242,4 @@ namespace HoneyCube.Editor.Presenter
 
         #endregion        
     }
-
-    // Convert the general ShortDateTime format to a regular expression
-    //string ds = Regex.Escape(DateTimeFormatInfo.CurrentInfo.DateSeparator);
-    //string ts = Regex.Escape(DateTimeFormatInfo.CurrentInfo.TimeSeparator);
-    //string date = @"\d{2,2}" + ds + @"\d{2,2}" + ds + @"\d{4,4}\s{1}\d{2,2}" + ts + @"\d{2,2}" + ts + @"\d{2,2}";
-            
-    //// Convert the warning and error labels to regular expression
-    //string warning = Regex.Escape(AppLog.WarningText);
-    //string error = Regex.Escape(AppLog.ErrorText);
-
-    //// Colorize date, warning messages and error messages by default
-    //_regex = new Regex("(" + date + ")|(" + warning + ")|(" + error +  ")");
-
-    ///// <summary>
-    ///// The color used to highlight the timestamp of a log message.
-    ///// </summary>
-    //public static Color TimeColor = Color.Gray;
-
-    ///// <summary>
-    ///// The color used to highlight a warning message.
-    ///// </summary>
-    //public static Color WarningColor = Color.FromArgb(255, 220, 0);
-
-    ///// <summary>
-    ///// The color used to highlight an error message.
-    ///// </summary>
-    //public static Color ErrorColor = Color.FromArgb(255, 60, 60);
 }

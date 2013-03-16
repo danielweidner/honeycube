@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -56,8 +57,6 @@ namespace HoneyCube.Editor
         #endregion
 
         #region Fields
-
-        private static readonly Dictionary<string, AppLog> _logs = new Dictionary<string, AppLog>();
 
         private string _name;
         private bool _isDirty = false;
@@ -137,7 +136,27 @@ namespace HoneyCube.Editor
 
         #endregion
 
-        #region Constructor
+        #region Constructors
+
+        /// <summary>
+        /// Static constructor. Reads the name of the default log from the application 
+        /// settings and assigns it to a static property.
+        /// </summary>
+        static AppLog()
+        {
+            string setting = ConfigurationManager.AppSettings["logs"];
+            string defaultLog = "General";
+
+            // Take the first log name from the settings as the default
+            if (!string.IsNullOrWhiteSpace(setting))
+            {
+                string[] logs = setting.Split(';');
+                defaultLog = logs != null && logs.Length > 0 ? logs[0] : "General";
+            }
+
+            // Use the default value, or the first value retrieved from the settings
+            Default = GetLog(defaultLog);
+        }
 
         /// <summary>
         /// Private constructor. Creates a new named application log. To create a new
@@ -152,6 +171,16 @@ namespace HoneyCube.Editor
         #endregion
 
         #region Static Members
+
+        /// <summary>
+        /// A collection holding all available application logs.
+        /// </summary>
+        public static readonly IDictionary<string, AppLog> Logs = new Dictionary<string, AppLog>();
+
+        /// <summary>
+        /// The default application log that holds mostly general log messages.
+        /// </summary>
+        public static readonly AppLog Default;  
 
         /// <summary>
         /// An alias for GetLog(name).
@@ -172,12 +201,12 @@ namespace HoneyCube.Editor
         public static AppLog GetLog(string name)
         {
             AppLog log = null;
-            _logs.TryGetValue(name, out log);
+            Logs.TryGetValue(name, out log);
 
             if (log == null)
             {
                 log = new AppLog(name);
-                _logs.Add(name, log);
+                Logs.Add(name, log);
 
                 AppLog.OnLogAdded(log);
             }
@@ -193,11 +222,11 @@ namespace HoneyCube.Editor
         public static AppLog RemoveLog(string name)
         {
             AppLog log = null;
-            _logs.TryGetValue(name, out log);
+            Logs.TryGetValue(name, out log);
 
             if (log != null)
             {
-                _logs.Remove(name);
+                Logs.Remove(name);
 
                 AppLog.OnLogRemoved(log);
             }
@@ -224,7 +253,7 @@ namespace HoneyCube.Editor
 
             using (StreamWriter stream = new StreamWriter(file))
             {
-                foreach (KeyValuePair<string, AppLog> entry in _logs)
+                foreach (KeyValuePair<string, AppLog> entry in Logs)
                 {
                     stream.WriteLine(entry.Key + " " + seperator.Substring(0, 80 - entry.Key.Length));
                     stream.Write(Environment.NewLine);
@@ -239,7 +268,7 @@ namespace HoneyCube.Editor
         /// </summary>
         public static void ClearAll()
         {
-            foreach (KeyValuePair<string, AppLog> entry in _logs)
+            foreach (KeyValuePair<string, AppLog> entry in Logs)
                 entry.Value.Clear();
         }
 
@@ -292,6 +321,8 @@ namespace HoneyCube.Editor
                     if (linebreakPos > -1 && linebreakPos < _text.Length)
                         _text.Remove(0, linebreakPos);
                 }
+
+                _isDirty = true;
             }
 
             OnLogChanged();
@@ -311,6 +342,7 @@ namespace HoneyCube.Editor
                     {
                         _text.Clear();
                         _text.Append(stream.ReadToEnd());
+                        _isDirty = true;
                         stream.Close();
                     }
                 }
@@ -352,6 +384,7 @@ namespace HoneyCube.Editor
             lock (_text)
             {
                 _text.Clear();
+                _isDirty = true;
             }
 
             OnLogChanged();
@@ -367,8 +400,6 @@ namespace HoneyCube.Editor
         {
             if (LogChanged != null)
                 LogChanged(this);
-
-            _isDirty = true;
         }
 
         /// <summary>

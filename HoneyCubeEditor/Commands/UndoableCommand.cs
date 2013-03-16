@@ -87,12 +87,16 @@ namespace HoneyCube.Editor.Commands
                     State |= CommandState.Executed;
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 // Executed = false
                 State &= ~CommandState.Executed;
 
-                // TODO: Report error to the application console/log
+                // Report the failure
+                AppLog.Default.Add(
+                    string.Format("The {0} command could not be executed. A {1} exception was catched.", GetType().Name, e.GetType().Name),
+                    LogMessageType.Warning
+                );
             }
 
             // Undone = false
@@ -116,9 +120,13 @@ namespace HoneyCube.Editor.Commands
             {
                 OnUndo();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // TODO: Report error to the application console/log
+                // Report the failure
+                AppLog.Default.Add(
+                    string.Format("The {0} command could not be undone. A {1} exception was catched.", GetType().Name, e.GetType().Name),
+                    LogMessageType.Warning
+                );
             }
 
             // Undone = true
@@ -145,9 +153,13 @@ namespace HoneyCube.Editor.Commands
             {
                 OnRedo();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // TODO: Report error to the application console/log
+                // Report the failure
+                AppLog.Default.Add(
+                    string.Format("The {0} command could not be redone. A {1} exception was catched.", GetType().Name, e.GetType().Name),
+                    LogMessageType.Warning
+                );
             }
 
             // Undone = false
