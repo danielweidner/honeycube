@@ -28,45 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ToolStripLabel DropDownLabel;
-            System.Windows.Forms.ToolStripSeparator ToolbarSeperator1;
-            System.Windows.Forms.ToolStripSeparator ToolbarSeperator2;
             System.Windows.Forms.ToolStripContainer ToolbarContainer;
-            System.Windows.Forms.ToolStrip Toolbar;
+            System.Windows.Forms.ToolStripLabel DropDownLabel;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AppLogWindow));
+            System.Windows.Forms.ToolStripMenuItem ClearCurrentLog;
+            System.Windows.Forms.ToolStripMenuItem ClearAllLogs;
             this.CurrentLog = new System.Windows.Forms.RichTextBox();
+            this.Toolbar = new System.Windows.Forms.ToolStrip();
             this.LogDropDown = new System.Windows.Forms.ToolStripComboBox();
+            this.Seperator01 = new System.Windows.Forms.ToolStripSeparator();
             this.SaveCurrentLog = new System.Windows.Forms.ToolStripButton();
-            this.ClearCurrentLog = new System.Windows.Forms.ToolStripButton();
-            this.ClearAllLogs = new System.Windows.Forms.ToolStripButton();
-            this.Seperator03 = new System.Windows.Forms.ToolStripSeparator();
-            this.ShowWindowOnTop = new System.Windows.Forms.ToolStripButton();
-            DropDownLabel = new System.Windows.Forms.ToolStripLabel();
-            ToolbarSeperator1 = new System.Windows.Forms.ToolStripSeparator();
-            ToolbarSeperator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.ClearLogs = new System.Windows.Forms.ToolStripSplitButton();
+            this.Seperator02 = new System.Windows.Forms.ToolStripSeparator();
             ToolbarContainer = new System.Windows.Forms.ToolStripContainer();
-            Toolbar = new System.Windows.Forms.ToolStrip();
+            DropDownLabel = new System.Windows.Forms.ToolStripLabel();
+            ClearCurrentLog = new System.Windows.Forms.ToolStripMenuItem();
+            ClearAllLogs = new System.Windows.Forms.ToolStripMenuItem();
             ToolbarContainer.ContentPanel.SuspendLayout();
             ToolbarContainer.TopToolStripPanel.SuspendLayout();
             ToolbarContainer.SuspendLayout();
-            Toolbar.SuspendLayout();
+            this.Toolbar.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // DropDownLabel
-            // 
-            DropDownLabel.Name = "DropDownLabel";
-            DropDownLabel.Size = new System.Drawing.Size(93, 22);
-            DropDownLabel.Text = "Message Types: ";
-            // 
-            // ToolbarSeperator1
-            // 
-            ToolbarSeperator1.Name = "ToolbarSeperator1";
-            ToolbarSeperator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // ToolbarSeperator2
-            // 
-            ToolbarSeperator2.Name = "ToolbarSeperator2";
-            ToolbarSeperator2.Size = new System.Drawing.Size(6, 25);
             // 
             // ToolbarContainer
             // 
@@ -84,11 +66,10 @@
             ToolbarContainer.RightToolStripPanelVisible = false;
             ToolbarContainer.Size = new System.Drawing.Size(624, 442);
             ToolbarContainer.TabIndex = 0;
-            ToolbarContainer.Text = "toolStripContainer1";
             // 
             // ToolbarContainer.TopToolStripPanel
             // 
-            ToolbarContainer.TopToolStripPanel.Controls.Add(Toolbar);
+            ToolbarContainer.TopToolStripPanel.Controls.Add(this.Toolbar);
             // 
             // CurrentLog
             // 
@@ -106,28 +87,36 @@
             // 
             // Toolbar
             // 
-            Toolbar.Dock = System.Windows.Forms.DockStyle.None;
-            Toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Toolbar.Dock = System.Windows.Forms.DockStyle.None;
+            this.Toolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             DropDownLabel,
             this.LogDropDown,
-            ToolbarSeperator1,
+            this.Seperator01,
             this.SaveCurrentLog,
-            this.ClearCurrentLog,
-            ToolbarSeperator2,
-            this.ClearAllLogs,
-            this.Seperator03,
-            this.ShowWindowOnTop});
-            Toolbar.Location = new System.Drawing.Point(0, 0);
-            Toolbar.Name = "Toolbar";
-            Toolbar.Size = new System.Drawing.Size(624, 25);
-            Toolbar.Stretch = true;
-            Toolbar.TabIndex = 0;
+            this.ClearLogs,
+            this.Seperator02});
+            this.Toolbar.Location = new System.Drawing.Point(0, 0);
+            this.Toolbar.Name = "Toolbar";
+            this.Toolbar.Size = new System.Drawing.Size(624, 25);
+            this.Toolbar.Stretch = true;
+            this.Toolbar.TabIndex = 0;
+            // 
+            // DropDownLabel
+            // 
+            DropDownLabel.Name = "DropDownLabel";
+            DropDownLabel.Size = new System.Drawing.Size(90, 22);
+            DropDownLabel.Text = "Message Types:";
             // 
             // LogDropDown
             // 
             this.LogDropDown.Name = "LogDropDown";
             this.LogDropDown.Size = new System.Drawing.Size(121, 25);
             this.LogDropDown.SelectedIndexChanged += new System.EventHandler(this.LogDropDown_SelectedChanged);
+            // 
+            // Seperator01
+            // 
+            this.Seperator01.Name = "Seperator01";
+            this.Seperator01.Size = new System.Drawing.Size(6, 25);
             // 
             // SaveCurrentLog
             // 
@@ -136,44 +125,40 @@
             this.SaveCurrentLog.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.SaveCurrentLog.Name = "SaveCurrentLog";
             this.SaveCurrentLog.Size = new System.Drawing.Size(23, 22);
-            this.SaveCurrentLog.Text = "Save Current Log";
+            this.SaveCurrentLog.Text = "Save Current Log ...";
             this.SaveCurrentLog.Click += new System.EventHandler(this.SaveCurrentLog_Click);
+            // 
+            // ClearLogs
+            // 
+            this.ClearLogs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ClearLogs.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            ClearCurrentLog,
+            ClearAllLogs});
+            this.ClearLogs.Image = ((System.Drawing.Image)(resources.GetObject("ClearLogs.Image")));
+            this.ClearLogs.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ClearLogs.Name = "ClearLogs";
+            this.ClearLogs.Size = new System.Drawing.Size(32, 22);
+            this.ClearLogs.Text = "Clear Current Log";
+            this.ClearLogs.ButtonClick += new System.EventHandler(this.ClearCurrentLog_Click);
             // 
             // ClearCurrentLog
             // 
-            this.ClearCurrentLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ClearCurrentLog.Image = ((System.Drawing.Image)(resources.GetObject("ClearCurrentLog.Image")));
-            this.ClearCurrentLog.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ClearCurrentLog.Name = "ClearCurrentLog";
-            this.ClearCurrentLog.Size = new System.Drawing.Size(23, 22);
-            this.ClearCurrentLog.Text = "Clear Current Log";
-            this.ClearCurrentLog.Click += new System.EventHandler(this.ClearCurrentLog_Click);
+            ClearCurrentLog.Name = "ClearCurrentLog";
+            ClearCurrentLog.Size = new System.Drawing.Size(167, 22);
+            ClearCurrentLog.Text = "Clear Current Log";
+            ClearCurrentLog.Click += new System.EventHandler(this.ClearCurrentLog_Click);
             // 
             // ClearAllLogs
             // 
-            this.ClearAllLogs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ClearAllLogs.Image = ((System.Drawing.Image)(resources.GetObject("ClearAllLogs.Image")));
-            this.ClearAllLogs.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ClearAllLogs.Name = "ClearAllLogs";
-            this.ClearAllLogs.Size = new System.Drawing.Size(23, 22);
-            this.ClearAllLogs.Text = "Clear All Logs";
-            this.ClearAllLogs.Click += new System.EventHandler(this.ClearAllLogs_Click);
+            ClearAllLogs.Name = "ClearAllLogs";
+            ClearAllLogs.Size = new System.Drawing.Size(167, 22);
+            ClearAllLogs.Text = "Clear All Logs";
+            ClearAllLogs.Click += new System.EventHandler(this.ClearAllLogs_Click);
             // 
-            // Seperator03
+            // Seperator02
             // 
-            this.Seperator03.Name = "Seperator03";
-            this.Seperator03.Size = new System.Drawing.Size(6, 25);
-            // 
-            // ShowWindowOnTop
-            // 
-            this.ShowWindowOnTop.CheckOnClick = true;
-            this.ShowWindowOnTop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.ShowWindowOnTop.Image = ((System.Drawing.Image)(resources.GetObject("ShowWindowOnTop.Image")));
-            this.ShowWindowOnTop.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.ShowWindowOnTop.Name = "ShowWindowOnTop";
-            this.ShowWindowOnTop.Size = new System.Drawing.Size(23, 22);
-            this.ShowWindowOnTop.Text = "Show Always on Top";
-            this.ShowWindowOnTop.Click += new System.EventHandler(this.ShowWindowOnTop_Click);
+            this.Seperator02.Name = "Seperator02";
+            this.Seperator02.Size = new System.Drawing.Size(6, 25);
             // 
             // AppLogWindow
             // 
@@ -181,7 +166,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 442);
             this.Controls.Add(ToolbarContainer);
-            this.Icon = global::HoneyCube.Editor.Properties.Resources.HoneyCube;
             this.Name = "AppLogWindow";
             this.Text = "Application Log";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AppLogWindow_Closing);
@@ -190,21 +174,21 @@
             ToolbarContainer.TopToolStripPanel.PerformLayout();
             ToolbarContainer.ResumeLayout(false);
             ToolbarContainer.PerformLayout();
-            Toolbar.ResumeLayout(false);
-            Toolbar.PerformLayout();
+            this.Toolbar.ResumeLayout(false);
+            this.Toolbar.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
+        private System.Windows.Forms.RichTextBox CurrentLog;
+        private System.Windows.Forms.ToolStrip Toolbar;
         private System.Windows.Forms.ToolStripComboBox LogDropDown;
         private System.Windows.Forms.ToolStripButton SaveCurrentLog;
-        private System.Windows.Forms.ToolStripButton ClearCurrentLog;
-        private System.Windows.Forms.ToolStripButton ShowWindowOnTop;
-        private System.Windows.Forms.RichTextBox CurrentLog;
-        private System.Windows.Forms.ToolStripButton ClearAllLogs;
-        private System.Windows.Forms.ToolStripSeparator Seperator03;
+        private System.Windows.Forms.ToolStripSeparator Seperator01;
+        private System.Windows.Forms.ToolStripSeparator Seperator02;
+        private System.Windows.Forms.ToolStripSplitButton ClearLogs;
 
     }
 }

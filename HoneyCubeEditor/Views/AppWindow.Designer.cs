@@ -96,7 +96,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 762);
             this.Controls.Add(this.ToolbarContainer);
-            this.Icon = global::HoneyCube.Editor.Properties.Resources.HoneyCube;
             this.KeyPreview = true;
             this.Name = "AppWindow";
             this.Text = "Honey Cube Editor";

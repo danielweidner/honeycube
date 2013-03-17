@@ -3,6 +3,7 @@
 using System.Windows.Forms;
 using HoneyCube.Editor.Presenter;
 using StructureMap;
+using HoneyCube.Editor.Views;
 
 #endregion
 
@@ -39,11 +40,22 @@ namespace HoneyCube.Editor
         /// </summary>
         private void SetupApplication()
         {
-            // Create the core presenter which will resolve all dependencies (view etc.)
-            IAppWindowPresenter presenter = _container.GetInstance<IAppWindowPresenter>();
+            // Create the core presenter
+            IAppWindowPresenter window = _container.GetInstance<IAppWindowPresenter>();
+
+            // Localize all components
+            foreach (ILocalizable instance in _container.Model.GetAllPossible<ILocalizable>())
+                instance.LocalizeComponent();
+
+            // Assign the main menu to all instances of the app window
+            foreach (IAppWindow instance in _container.Model.GetAllPossible<IAppWindow>())
+                instance.MainMenuStrip = _container.GetInstance<IAppMenuPresenter>().View as MenuStrip;
+
+            // Report missing localization to a log file
+            L10n.ReportMissingTranslations();
 
             // Assign the view as main form of the application
-            MainForm = presenter.View as Form;
+            MainForm = window.View as Form;
         }
     }
 }

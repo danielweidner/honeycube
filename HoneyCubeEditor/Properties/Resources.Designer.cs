@@ -59,12 +59,5 @@ namespace HoneyCube.Editor.Properties {
                 resourceCulture = value;
             }
         }
-        
-        internal static System.Drawing.Icon HoneyCube {
-            get {
-                object obj = ResourceManager.GetObject("HoneyCube", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
     }
 }

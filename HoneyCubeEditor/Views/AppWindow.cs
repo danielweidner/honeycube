@@ -2,9 +2,9 @@
 
 using System.ComponentModel;
 using System.Windows.Forms;
+using HoneyCube.Editor.Input;
 using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Services;
-using HoneyCube.Editor.Input;
 
 #endregion
 
@@ -14,7 +14,7 @@ namespace HoneyCube.Editor.Views
     /// Represents the main view within the application. Holds most of the
     /// control elements.
     /// </summary>
-    public partial class AppWindow : Form, IAppWindow, IControlService
+    public partial class AppWindow : Form, IAppWindow, IControlService, ILocalizable
     {
         #region Properties
 
@@ -66,14 +66,14 @@ namespace HoneyCube.Editor.Views
         public AppWindow(IMouseEventPublisher publisher)
         {
             InitializeComponent();
-            RegisterMouseEvents(publisher);
+            RegisterForMouseEvents(publisher);
         }
 
         /// <summary>
         /// Registeres the current application window for mouse events.
         /// </summary>
         /// <param name="publisher">The helper class publishing mouse events.</param>
-        private void RegisterMouseEvents(IMouseEventPublisher publisher)
+        private void RegisterForMouseEvents(IMouseEventPublisher publisher)
         {
             publisher.MouseDown += new MouseEventHandler(AppWindow_MouseDown);
             publisher.MouseUp += new MouseEventHandler(AppWindow_MouseUp);
@@ -83,6 +83,18 @@ namespace HoneyCube.Editor.Views
             IMessageFilter mouseMessageFilter = publisher as IMessageFilter;
             if (mouseMessageFilter != null)
                 Application.AddMessageFilter(mouseMessageFilter);
+        }
+
+        #endregion
+
+        #region ILocalizable Members
+
+        /// <summary>
+        /// Localizes all elements attached to the current window component.
+        /// </summary>
+        public void LocalizeComponent()
+        {
+            L10n.AssignIcon(this, "HoneyCube");
         }
 
         #endregion

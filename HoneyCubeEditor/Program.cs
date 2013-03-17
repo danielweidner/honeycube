@@ -40,7 +40,7 @@ namespace HoneyCube.Editor
             Container ioc = new Container();
             BootStrapper bootStrapper = new BootStrapper(ioc);
             ApplicationContext context = bootStrapper.GetAppContext();
-
+            
             // Run the application
             Application.Run(context);
         }

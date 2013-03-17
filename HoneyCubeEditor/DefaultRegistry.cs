@@ -28,28 +28,6 @@ namespace HoneyCube.Editor
         {
             #region Core Modules
 
-            // For all objects implementing the generic IEventHandler interface...
-            IfTypeMatches(type =>
-            {
-                Type handlerType = typeof(IEventHandler<>);
-
-                foreach (Type interfaceType in handlerType.GetInterfaces())
-                {
-                    if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == handlerType)
-                        return true;
-                }
-
-                return false;
-            })
-
-            // ...register each event handler on the mediator
-            .InterceptWith((context, handler) =>
-            {
-                IEventPublisher eventPublisher = context.GetInstance<IEventPublisher>();
-                eventPublisher.RegisterHandlers(handler);
-                return handler;
-            });
-
             For<ApplicationContext>()
                 .Singleton()
                 .Use<AppContext>();
@@ -67,9 +45,11 @@ namespace HoneyCube.Editor
                 .Use<DefaultCommandMap>();
 
             For<IEventPublisher>()
+                .Singleton()
                 .Use<EventPublisher>();
 
             For<ICommandHistory<IUndoableCommand>>()
+                .Singleton()
                 .Use(() => new CommandHistory());
 
             #endregion
@@ -77,12 +57,15 @@ namespace HoneyCube.Editor
             #region Presenter Implementations
 
             For<IAppWindowPresenter>()
+                .Singleton()
                 .Use<AppWindowPresenter>();
 
             For<IAppMenuPresenter>()
+                .Singleton()
                 .Use<MenuCommandExecuter>();
 
             For<IAppLogPresenter>()
+                .Singleton()
                 .Use<AppLogPresenter>();
             
             #endregion
@@ -90,21 +73,15 @@ namespace HoneyCube.Editor
             #region View Implementations
 
             For<IAppWindow>()
-                .Use<AppWindow>()
-                .OnCreation((context, view) => 
-                {
-                    IAppMenuPresenter menuPresenter = context.GetInstance<IAppMenuPresenter>();
-                    MenuStrip menu = menuPresenter.View as MenuStrip;
-
-                    // Load application menu
-                    if (menu != null)
-                        view.MainMenuStrip = menu;
-                });
+                .Singleton()
+                .Use<AppWindow>();
 
             For<IAppMenu>()
+                .Singleton()
                 .Use<AppMenu>();
 
             For<IAppLogWindow>()
+                .Singleton()
                 .Use<AppLogWindow>();
 
             For<SaveFileDialog>()

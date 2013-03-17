@@ -15,7 +15,7 @@ namespace HoneyCube.Editor.Views
     /// application log in a RichTextBox and allows to highlight 
     /// certain keywords.
     /// </summary>
-    public partial class AppLogWindow : Form, IAppLogWindow
+    public partial class AppLogWindow : Form, IAppLogWindow, ILocalizable
     {
         #region Properties
 
@@ -39,6 +39,21 @@ namespace HoneyCube.Editor.Views
         public AppLogWindow()
         {
             InitializeComponent();
+        }
+
+        #endregion
+
+        #region ILocalizable Members
+
+        /// <summary>
+        /// Localizes the application log window and all components attached to it.
+        /// </summary>
+        public void LocalizeComponent()
+        {
+            L10n.AssignIcon(this, "HoneyCube");
+            L10n.AssignIcon(SaveCurrentLog, "SaveFileDialog");
+            L10n.AssignIcon(ClearLogs, "ClearContent");
+            L10n.LocalizeControl(this, "AppLog");
         }
 
         #endregion

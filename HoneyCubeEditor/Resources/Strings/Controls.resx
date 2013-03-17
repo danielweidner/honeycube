@@ -117,4 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppLogClearAllLogs" xml:space="preserve">
+    <value>Clear All Logs</value>
+  </data>
+  <data name="AppLogClearCurrentLog" xml:space="preserve">
+    <value>Clear Current Log</value>
+  </data>
+  <data name="AppLogClearLogs" xml:space="preserve">
+    <value>Clear Current Log</value>
+  </data>
+  <data name="AppLogDropDownLabel" xml:space="preserve">
+    <value>Message Types:</value>
+  </data>
+  <data name="AppLogSaveCurrentLog" xml:space="preserve">
+    <value>Save Current Log ...</value>
+  </data>
+  <data name="AppLogShowWindowOnTop" xml:space="preserve">
+    <value>Show Always on Top</value>
+  </data>
 </root>

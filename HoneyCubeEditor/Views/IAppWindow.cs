@@ -2,6 +2,7 @@
 
 using System.Windows.Forms;
 using HoneyCube.Editor.Presenter;
+using System.ComponentModel;
 
 #endregion
 
@@ -13,6 +14,13 @@ namespace HoneyCube.Editor.Views
     /// </summary>
     public interface IAppWindow : IView<IAppWindowPresenter>
     {
-        // Empty
+        /// <summary>
+        /// The menu attached to the main application window.
+        /// </summary>
+        MenuStrip MainMenuStrip
+        {
+            get;
+            set;
+        }
     }
 }

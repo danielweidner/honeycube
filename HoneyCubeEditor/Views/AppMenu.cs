@@ -12,7 +12,7 @@ namespace HoneyCube.Editor.Views
     /// Represents the application menu which provides all available application
     /// commands seperated into various dropdown menus.
     /// </summary>
-    public partial class AppMenu : MenuStrip, IAppMenu
+    public partial class AppMenu : MenuStrip, IAppMenu, ILocalizable
     {
         #region Properties
 
@@ -36,6 +36,18 @@ namespace HoneyCube.Editor.Views
         public AppMenu()
         {
             InitializeComponent();
+        }
+
+        #endregion
+
+        #region ILocalizable Members
+
+        /// <summary>
+        /// Localizes all elements attached to the current component.
+        /// </summary>
+        public void LocalizeComponent()
+        {
+            // Empty
         }
 
         #endregion
@@ -99,16 +111,6 @@ namespace HoneyCube.Editor.Views
                 item.ShortcutKeys = shortcut;
         }
 
-        /// <summary>
-        /// Is called everytime a valid menu item is clicked. Can be overwritten.
-        /// </summary>
-        /// <param name="item">The item that has been clicked.</param>
-        protected virtual void OnMenuItemClicked(ToolStripMenuItem item)
-        {
-            if (Presenter != null)
-                Presenter.HandleMenuItemClicked(item);
-        }
-
         #region Event Handler
 
         /// <summary>
@@ -121,6 +123,16 @@ namespace HoneyCube.Editor.Views
             ToolStripMenuItem item = sender as ToolStripMenuItem;
             if (item != null)
                 OnMenuItemClicked(item);
+        }
+
+        /// <summary>
+        /// Is called everytime a valid menu item is clicked. Can be overwritten.
+        /// </summary>
+        /// <param name="item">The item that has been clicked.</param>
+        protected virtual void OnMenuItemClicked(ToolStripMenuItem item)
+        {
+            if (Presenter != null)
+                Presenter.HandleMenuItemClicked(item);
         }
 
         #endregion
