@@ -7,6 +7,11 @@ using System.IO;
 using System.Reflection;
 using System.Resources;
 using System.Windows.Forms;
+using System.Globalization;
+using System.Linq;
+using HoneyCube.Editor.Util;
+using System.Threading;
+using HoneyCube.Editor.Views;
 
 #endregion
 
@@ -40,14 +45,34 @@ namespace HoneyCube.Editor
 
     /// <summary>
     /// A static class used for string localization.
-    /// TODO: Report if translation for current language is missing entirely
     /// </summary>
     public static class L10n
     {
         #region Static Fields
 
+        // Public fields
+        public static readonly CultureInfo DefaultCulture = CultureInfo.GetCultureInfo("en-US");
+
+        // Private fields
+        private static readonly Assembly _currentAssembly = typeof(L10n).Assembly;
+        private static CultureInfo _uiCulture = Thread.CurrentThread.CurrentUICulture;
+
         private static readonly Dictionary<string, string> _missing = new Dictionary<string, string>();
         private static readonly ResourceManager[] _l10nResources;
+        private static readonly bool?[] _isLocalized;
+        
+        #endregion
+
+        #region Static Properties
+
+        /// <summary>
+        /// Indicates whether the current language applied is the default 
+        /// language (true) or a localized version (false).
+        /// </summary>
+        public static bool IsDefaultLanguage
+        {
+            get { return Application.CurrentCulture.Name == DefaultCulture.Name; }
+        }
 
         #endregion
 
@@ -62,18 +87,43 @@ namespace HoneyCube.Editor
         {
             string[] types = Enum.GetNames(typeof(L10nResourceType));
             _l10nResources = new ResourceManager[types.Length];
-            
-            Assembly assembly = typeof(L10n).Assembly;
+            _isLocalized = new bool?[types.Length];
+
             for (int i = 0, l = types.Length - 1; i < l; i++)
             {
-                _l10nResources[i] = new ResourceManager("HoneyCube.Editor.Resources.Strings." + types[i], assembly);
+                _l10nResources[i] = new ResourceManager("HoneyCube.Editor.Resources.Strings." + types[i], _currentAssembly);
                 _l10nResources[i].IgnoreCase = true;
             }
 
-            _l10nResources[_l10nResources.Length - 1] = new ResourceManager("HoneyCube.Editor.Resources.Icons", assembly);
+            _l10nResources[(int)L10nResourceType.Icons] = new ResourceManager("HoneyCube.Editor.Resources.Icons", _currentAssembly);
         }
 
         #endregion
+
+        /// <summary>
+        /// Changes the language applied to the application interface.
+        /// </summary>
+        /// <param name="language">The language to apply.</param>
+        public static void ChangeLanguage(string language)
+        {
+            if (_uiCulture.Name != language)
+            {
+                _uiCulture = CultureInfo.GetCultureInfo(language);
+                Thread.CurrentThread.CurrentUICulture = _uiCulture;
+
+                // Reset the registry
+                _missing.Clear();
+
+                // Reset the state flag for all resource types
+                for (int i = 0, l = _isLocalized.Length; i < l; i++)
+                    _isLocalized[i] = null;
+
+                // Force localizable forms to update themselfs
+                // TODO: THis will probably not be enough, as forms not opened, will not be localized again
+                foreach (ILocalizable localizable in Application.OpenForms.OfType<ILocalizable>())
+                    localizable.LocalizeComponent();
+            }
+        }
 
         #region Report
 
@@ -94,8 +144,9 @@ namespace HoneyCube.Editor
         /// </summary>
         public static void ReportMissingTranslations()
         {
+            string language = _uiCulture.Name;
             string path = Application.UserAppDataPath + "\\logs\\";
-            string filepath = path + "l10n.log";
+            string filepath = path + "l10n." + language + ".log";
 
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
@@ -111,9 +162,79 @@ namespace HoneyCube.Editor
             }
         }
 
+        /// <summary>
+        /// Registers a missing translation for a given resource key.
+        /// </summary>
+        /// <param name="key">The resource key a translation is missing for.</param>
+        /// <param name="defaultValue">The default value used for the key.</param>
+        private static void RegisterMissingL10nFor(string key, string defaultValue)
+        {
+            _missing[key] = string.IsNullOrWhiteSpace(defaultValue) ? "<Empty>" : defaultValue;
+        }
+
         #endregion
 
         #region String Localization
+
+        /// <summary>
+        /// Checks whether a localized file for the given resource type is 
+        /// available. Caches the result for the current culture as the 
+        /// operation relies on expensive reflections.
+        /// </summary>
+        /// <param name="type">The type to check for a localized copy.</param>
+        /// <returns>True if a localized version of the associated resource file exists.</returns>
+        private static bool IsResourceTypeLocalized(L10nResourceType type)
+        {
+            int index = (int)type;
+
+            // We cache the result to improve the overall performance.
+            if (!_isLocalized[index].HasValue)
+            {
+                // For the default language all strings should be available
+                if (IsDefaultLanguage)
+                {
+                    _isLocalized[index] = true;
+                    return true;
+                }
+
+                // Try to load the satelite assembly for the current culture and 
+                // check if a resource file for the current culture is embedded.        
+                Assembly satellite = null;
+                if (_currentAssembly.TryGetSatelliteAssembly(_uiCulture, out satellite))
+                {
+                    string resourceBaseName = _l10nResources[index].BaseName;
+                    _isLocalized[index] = satellite.ContainsResource(resourceBaseName, _uiCulture);
+                }
+                else
+                {
+                    _isLocalized[index] = false;
+                }
+            }
+
+            return _isLocalized[index].Value;
+        }
+
+        /// <summary>
+        /// Tries to retrieve a translated string with respect the currently active 
+        /// application language.
+        /// </summary>
+        /// <param name="key">The unique identifier of the string to lookup.</param>
+        /// <param name="type">The resource file to use for the lookup process.</param>
+        /// <returns>The translated string, or null if no tranlation available.</returns>
+        private static string LookUpLocalizedString(string key, L10nResourceType type)
+        {
+            // Handle: No key value given
+            if (string.IsNullOrWhiteSpace(key))
+                return string.Empty;
+
+            ResourceManager resx = _l10nResources[(int)type];
+            string value = string.Empty;
+
+            if (resx != null)
+                value = resx.GetString(key, _uiCulture);
+
+            return !string.IsNullOrWhiteSpace(value) ? value : null;
+        }
 
         /// <summary>
         /// Localizes the text property of the current control and all its child nodes.
@@ -147,13 +268,13 @@ namespace HoneyCube.Editor
 
             if (!string.IsNullOrWhiteSpace(controlName))
             {
-                string localized = LookUp(controlName, L10nResourceType.Controls);
+                L10nResourceType type = L10nResourceType.Controls;
+                string localized = LookUpLocalizedString(controlName, type);
 
                 // If no value is returned, register as missing translation
-                if (string.IsNullOrWhiteSpace(localized))
+                if (!IsResourceTypeLocalized(type) || string.IsNullOrWhiteSpace(localized))
                 {
-                    string text = control.Text;
-                    _missing[controlName] = string.IsNullOrWhiteSpace(text) ? "<Empt>" : text;
+                    RegisterMissingL10nFor(controlName, control.Text);
                 }
 
                 // Otherwise assign the translation to the control element
@@ -165,39 +286,6 @@ namespace HoneyCube.Editor
 
             if (includeChildren)
                 LocalizeChildControls(control, prefix);
-        }
-
-        /// <summary>
-        /// Tries to retrieve a translated string with respect the currently active 
-        /// application language.
-        /// </summary>
-        /// <param name="key">The unique identifier of the string to lookup.</param>
-        /// <returns>The translated string, or null if no tranlation available.</returns>
-        private static string LookUp(string key)
-        {
-            return LookUp(key, L10nResourceType.General);
-        }
-
-        /// <summary>
-        /// Tries to retrieve a translated string with respect the currently active 
-        /// application language.
-        /// </summary>
-        /// <param name="key">The unique identifier of the string to lookup.</param>
-        /// <param name="type">The resource file to use for the lookup process.</param>
-        /// <returns>The translated string, or null if no tranlation available.</returns>
-        private static string LookUp(string key, L10nResourceType type)
-        {
-            // Handle: No key value given
-            if (string.IsNullOrWhiteSpace(key))
-                return string.Empty;
-
-            ResourceManager resx = _l10nResources[(int)type];
-            string value = string.Empty;
-
-            if (resx != null)
-                value = resx.GetString(key, Application.CurrentCulture);
-
-            return !string.IsNullOrWhiteSpace(value) ? value : null;
         }
 
         /// <summary>
@@ -238,11 +326,11 @@ namespace HoneyCube.Editor
         /// <param name="file">The file name of the icon to assign.</param>
         public static void AssignIcon(Form form, string file)
         {
-            //ResourceManager resx = _l10nResources[(int)L10nResourceType.Icon];
-            //Icon icon = resx.GetObject(file, Application.CurrentCulture) as Icon;
+            ResourceManager resx = _l10nResources[(int)L10nResourceType.Icons];
+            Icon icon = resx.GetObject(file, _uiCulture) as Icon;
 
-            //if (icon != null)
-            //    form.Icon = icon;
+            if (icon != null)
+                form.Icon = icon;
         }
 
         /// <summary>
@@ -255,7 +343,7 @@ namespace HoneyCube.Editor
         public static void AssignIcon(ToolStripItem item, string file)
         {
             ResourceManager resx = _l10nResources[(int)L10nResourceType.Icons];
-            Image image = resx.GetObject(file, Application.CurrentCulture) as Image;
+            Image image = resx.GetObject(file, _uiCulture) as Image;
 
             if (image != null)
                 item.Image = image;
@@ -278,18 +366,17 @@ namespace HoneyCube.Editor
             if (item is ToolStripSeparator)
                 return;
 
-            // Allow to prefix given component names
             string itemName = string.IsNullOrWhiteSpace(prefix) ? item.Name : prefix + item.Name;
 
             if (!string.IsNullOrWhiteSpace(itemName))
             {
-                string localized = LookUp(itemName, L10nResourceType.Controls);
+                L10nResourceType type = L10nResourceType.Controls;
+                string localized = LookUpLocalizedString(itemName, type);
 
                 // If no value is returned, register as missing translation
-                if (string.IsNullOrWhiteSpace(localized))
+                if (!IsResourceTypeLocalized(type) || string.IsNullOrWhiteSpace(localized))
                 {
-                    string text = item.Text;
-                    _missing[itemName] = string.IsNullOrWhiteSpace(text) ? "<Empt>" : text;
+                    RegisterMissingL10nFor(itemName, item.Text);
                 }
 
                 // Otherwise assign the translation to the control element
@@ -323,13 +410,13 @@ namespace HoneyCube.Editor
 
             if (!string.IsNullOrWhiteSpace(buttonName))
             {
-                string localized = LookUp(buttonName, L10nResourceType.Controls);
+                L10nResourceType type = L10nResourceType.Controls;
+                string localized = LookUpLocalizedString(buttonName, type);
 
                 // If no value is returned, register as missing translation
-                if (string.IsNullOrWhiteSpace(localized))
+                if (!IsResourceTypeLocalized(type) || string.IsNullOrWhiteSpace(localized))
                 {
-                    string text = button.Text;
-                    _missing[buttonName] = string.IsNullOrWhiteSpace(text) ? "<Empt>" : text;
+                    RegisterMissingL10nFor(buttonName, button.Text);
                 }
 
                 // Otherwise assign the translation to the control element

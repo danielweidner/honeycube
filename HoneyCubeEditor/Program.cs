@@ -13,14 +13,15 @@ namespace HoneyCube.Editor
     /// PROJECT NOTES: ----------------------------------------------------
     /// 
     /// Last steps:
+    /// - Implemented rudimental localization
     /// - Removed a bug that caused the AppLog to return an old value from
     ///   the cache.
     /// - Implemented an Application Log
     /// - The CommandMap now can handle the Shortcut enumeration as argument
     /// 
     /// Next steps:
-    /// - Localization
-    /// - Toolbar Icons
+    /// - Currently all strings need to be retrieved via an identifier, is 
+    ///   there a better approach? Probably not (at least not using resources)
     ///   
     /// -------------------------------------------------------------------
     /// </summary>

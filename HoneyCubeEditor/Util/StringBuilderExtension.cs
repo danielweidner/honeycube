@@ -7,7 +7,7 @@ using System.Text;
 namespace HoneyCube.Editor.Util
 {
     /// <summary>
-    /// Extends the StringBuilder class.
+    /// Extends the StringBuilder class of the mscorlib Assembly.
     /// </summary>
     public static class StringBuilderExtension
     {

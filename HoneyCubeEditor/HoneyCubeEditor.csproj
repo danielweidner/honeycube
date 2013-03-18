@@ -93,6 +93,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\IControlService.cs" />
+    <Compile Include="Util\AssemblyExtension.cs" />
     <Compile Include="Util\StringBuilderExtension.cs" />
     <Compile Include="Views\AppLogWindow.cs">
       <SubType>Form</SubType>
@@ -173,6 +174,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Icons\SaveFileDialog.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icons\Pin.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

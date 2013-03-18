@@ -40,6 +40,7 @@
             this.SaveCurrentLog = new System.Windows.Forms.ToolStripButton();
             this.ClearLogs = new System.Windows.Forms.ToolStripSplitButton();
             this.Seperator02 = new System.Windows.Forms.ToolStripSeparator();
+            this.AlwaysOnTop = new System.Windows.Forms.ToolStripButton();
             ToolbarContainer = new System.Windows.Forms.ToolStripContainer();
             DropDownLabel = new System.Windows.Forms.ToolStripLabel();
             ClearCurrentLog = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,7 +95,8 @@
             this.Seperator01,
             this.SaveCurrentLog,
             this.ClearLogs,
-            this.Seperator02});
+            this.Seperator02,
+            this.AlwaysOnTop});
             this.Toolbar.Location = new System.Drawing.Point(0, 0);
             this.Toolbar.Name = "Toolbar";
             this.Toolbar.Size = new System.Drawing.Size(624, 25);
@@ -160,6 +162,17 @@
             this.Seperator02.Name = "Seperator02";
             this.Seperator02.Size = new System.Drawing.Size(6, 25);
             // 
+            // AlwaysOnTop
+            // 
+            this.AlwaysOnTop.CheckOnClick = true;
+            this.AlwaysOnTop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AlwaysOnTop.Image = ((System.Drawing.Image)(resources.GetObject("AlwaysOnTop.Image")));
+            this.AlwaysOnTop.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AlwaysOnTop.Name = "AlwaysOnTop";
+            this.AlwaysOnTop.Size = new System.Drawing.Size(23, 22);
+            this.AlwaysOnTop.Text = "Keep Window Always on Top";
+            this.AlwaysOnTop.Click += new System.EventHandler(this.AlwaysOnTop_Click);
+            // 
             // AppLogWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -189,6 +202,7 @@
         private System.Windows.Forms.ToolStripSeparator Seperator01;
         private System.Windows.Forms.ToolStripSeparator Seperator02;
         private System.Windows.Forms.ToolStripSplitButton ClearLogs;
+        private System.Windows.Forms.ToolStripButton AlwaysOnTop;
 
     }
 }

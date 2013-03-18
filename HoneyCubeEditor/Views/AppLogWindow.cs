@@ -51,8 +51,9 @@ namespace HoneyCube.Editor.Views
         public void LocalizeComponent()
         {
             L10n.AssignIcon(this, "HoneyCube");
-            L10n.AssignIcon(SaveCurrentLog, "SaveFileDialog");
             L10n.AssignIcon(ClearLogs, "ClearContent");
+            L10n.AssignIcon(AlwaysOnTop, "Pin");
+            L10n.AssignIcon(SaveCurrentLog, "SaveFileDialog");
             L10n.LocalizeControl(this, "AppLog");
         }
 
@@ -305,7 +306,7 @@ namespace HoneyCube.Editor.Views
         /// </summary>
         /// <param name="sender">The button clicked.</param>
         /// <param name="e">Empty event argument.</param>
-        private void ShowWindowOnTop_Click(object sender, EventArgs e)
+        private void AlwaysOnTop_Click(object sender, EventArgs e)
         {
             TopMost = !TopMost;
         }
