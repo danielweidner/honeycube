@@ -22,5 +22,52 @@ namespace HoneyCube.Editor.Views
             get;
             set;
         }
+
+        /// <summary>
+        /// Shows the application sidebar.
+        /// </summary>
+        void ShowSidebar();
+
+        /// <summary>
+        /// Hides the application sidebar.
+        /// </summary>
+        void HideSidebar();
+
+        /// <summary>
+        /// Toggles the visibility of the application sidebar.
+        /// </summary>
+        void ToggleSidebar();
+
+        /// <summary>
+        /// Shows the project tree displaying all scene nodes in a hierarchy.
+        /// </summary>
+        void ShowProjectTree();
+
+        /// <summary>
+        /// Hides the project tree displaying all scene nodes in a hierarchy.
+        /// </summary>
+        void HideProjectTree();
+
+        /// <summary>
+        /// Toggles the visibility of the project tree.
+        /// </summary>
+        void ToggleProjectTree();
+
+        /// <summary>
+        /// Shows the object inspector displaying all attributes of the 
+        /// currently selected scene object.
+        /// </summary>
+        void ShowInspector();
+
+        /// <summary>
+        /// Hides the object inspector displaying all attributes of the 
+        /// currently selected scene object.
+        /// </summary>
+        void HideInspector();
+
+        /// <summary>
+        /// Toggles the visibility of the object inspector.
+        /// </summary>
+        void ToggleInspector();
     }
 }

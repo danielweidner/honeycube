@@ -97,7 +97,16 @@ namespace HoneyCube.Editor.Presenter
         /// </summary>
         public void CloseRequested()
         {
-            _hub.Raise(new AppClosingEvent());
+            var args = new AppClosingEvent();
+
+            // Give application components the chance to cancel the closing event
+            _hub.Raise(args);
+
+            // Close the application if not canceled
+            if (!args.Canceled)
+            {
+                Application.Exit();
+            }
         }
 
         #endregion

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using HoneyCube.Editor.Input;
 using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Services;
+using System.Collections.Generic;
 
 #endregion
 
@@ -16,6 +17,14 @@ namespace HoneyCube.Editor.Views
     /// </summary>
     public partial class AppWindow : Form, IAppWindow, IControlService, ILocalizable
     {
+        #region Fields
+
+        private bool sidebarCollapsed = false;
+        private bool projectTreeCollapsed = false;
+        private bool inspectorCollapsed = false;
+
+        #endregion
+
         #region Properties
 
         /// <summary>
@@ -171,6 +180,129 @@ namespace HoneyCube.Editor.Views
 
         #endregion
 
+        #region IAppWindow
+
+        /// <summary>
+        /// Takes all panel flags into account and updates the corresponding 
+        /// form elements.
+        /// </summary>
+        private void UpdateSidebarComponents()
+        {
+            WorkspaceSplitContainer.Panel2Collapsed = sidebarCollapsed;
+
+            // Update label of the menu item
+            ToolStripMenuItem sidebarItem = GetControl<ToolStripMenuItem>("MenuViewSidebarSidebar");
+            sidebarItem.Text = L10n.LookUpLocalizedString("MenuViewSidebarSidebar" + (sidebarCollapsed ? "Collapsed" : "Visible"), L10nResourceType.Controls);
+
+            if (!sidebarCollapsed && projectTreeCollapsed && inspectorCollapsed)
+            {
+                HideSidebar();
+            }
+            else
+            {
+                SidebarSplitContainer.Panel1Collapsed = projectTreeCollapsed;
+                SidebarSplitContainer.Panel2Collapsed = inspectorCollapsed;
+
+                // Update radio button
+                ToolStripMenuItem projectTreeItem = GetControl<ToolStripMenuItem>("MenuViewSidebarProjectTree");
+                projectTreeItem.Checked = !projectTreeCollapsed;
+                ToolStripMenuItem inspectorItem = GetControl<ToolStripMenuItem>("MenuViewSidebarInspector");
+                inspectorItem.Checked = !inspectorCollapsed;
+            }
+        }
+
+        /// <summary>
+        /// Shows the application sidebar.
+        /// </summary>
+        public void ShowSidebar()
+        {
+            sidebarCollapsed = false;
+            UpdateSidebarComponents();
+        }
+
+        /// <summary>
+        /// Hides the application sidebar.
+        /// </summary>
+        public void HideSidebar()
+        {
+            sidebarCollapsed = true;
+            UpdateSidebarComponents();
+        }
+
+        /// <summary>
+        /// Toggles the visibility of the application sidebar.
+        /// </summary>
+        public void ToggleSidebar()
+        {
+            sidebarCollapsed = !sidebarCollapsed;
+
+            if (!sidebarCollapsed && projectTreeCollapsed && inspectorCollapsed)
+            {
+                projectTreeCollapsed = false;
+                inspectorCollapsed = false;
+            }
+
+            UpdateSidebarComponents();
+        }
+
+        /// <summary>
+        /// Shows the project tree displaying all scene nodes in a hierarchy.
+        /// </summary>
+        public void ShowProjectTree()
+        {
+            projectTreeCollapsed = false;
+            UpdateSidebarComponents();
+        }
+
+        /// <summary>
+        /// Hides the project tree displaying all scene nodes in a hierarchy.
+        /// </summary>
+        public void HideProjectTree()
+        {
+            projectTreeCollapsed = true;
+            UpdateSidebarComponents();
+        }
+
+        /// <summary>
+        /// Toggles the visibility of the project tree.
+        /// </summary>
+        public void ToggleProjectTree()
+        {
+            projectTreeCollapsed = !projectTreeCollapsed;
+            UpdateSidebarComponents();
+        }
+
+        /// <summary>
+        /// Shows the object inspector displaying all attributes of the 
+        /// currently selected scene object.
+        /// </summary>
+        public void ShowInspector()
+        {
+            inspectorCollapsed = false;
+            UpdateSidebarComponents();
+        }
+
+        /// <summary>
+        /// Hides the object inspector displaying all attributes of the 
+        /// currently selected scene object.
+        /// </summary>
+        public void HideInspector()
+        {
+            inspectorCollapsed = true;
+            UpdateSidebarComponents();
+        }
+
+        /// <summary>
+        /// Toggles the visibility of the object inspector.
+        /// </summary>
+        public void ToggleInspector()
+        {
+            inspectorCollapsed = !inspectorCollapsed;
+            UpdateSidebarComponents();
+        }
+
+        #endregion
+
         #region EventHandler
 
         /// <summary>
@@ -237,7 +369,14 @@ namespace HoneyCube.Editor.Views
         private void AppWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Presenter != null)
-                Presenter.CloseRequested();
+            {
+                // Cancel the default event we use our own closing procedure
+                if (e.CloseReason != CloseReason.ApplicationExitCall)
+                {
+                    e.Cancel = true;
+                    Presenter.CloseRequested();
+                }                
+            }
         }
 
         #endregion        

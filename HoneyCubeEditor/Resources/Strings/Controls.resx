@@ -135,4 +135,10 @@
   <data name="AppLogShowWindowOnTop" xml:space="preserve">
     <value>Show Always on Top</value>
   </data>
+  <data name="MenuViewSidebarSidebarCollapsed" xml:space="preserve">
+    <value>Show Sidebar</value>
+  </data>
+  <data name="MenuViewSidebarSidebarVisible" xml:space="preserve">
+    <value>Hide Sidebar</value>
+  </data>
 </root>

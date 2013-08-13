@@ -4,6 +4,9 @@ using System;
 using System.Windows.Forms;
 using HoneyCube.Editor.Commands;
 using HoneyCube.Editor.Presenter;
+using HoneyCube.Editor.Services;
+using HoneyCube.Editor.Views;
+using System.Diagnostics;
 
 #endregion
 
@@ -19,8 +22,9 @@ namespace HoneyCube.Editor
         /// Public constructor. Creates a default set of commands that can be
         /// triggered throughout the entire application.
         /// </summary>
+        /// <param name="window">TODO</param>
         /// <param name="appLog">TODO</param>
-        public DefaultCommandMap(IAppLogPresenter appLog)
+        public DefaultCommandMap(IAppWindow window, IAppLogPresenter appLog)
         {
             #region Application Menu Commands
 
@@ -30,8 +34,35 @@ namespace HoneyCube.Editor
 
             #region Shortcuts
 
+            If(Keys.Control | Keys.Q)
+                .ThenExecute(new ActionCommand(() => {
+                    window.Presenter.CloseRequested();
+                }));
+
             If(Keys.Control | Keys.L)
                 .ThenExecute(new ActionCommand(appLog.ShowClicked));
+
+            #endregion
+
+            #region Menu: View
+
+            If("MenuViewSidebarSidebar")
+                .ThenExecute(new ActionCommand(window.ToggleSidebar));
+
+            If("MenuViewSidebarProjectTree")
+                .ThenExecute(new ActionCommand(window.ToggleProjectTree));
+
+            If("MenuViewSidebarInspector")
+                .ThenExecute(new ActionCommand(window.ToggleInspector));
+
+            #endregion
+
+            #region Menu: Help
+
+            If("MenuHelpGithub")
+                .ThenExecute(new ActionCommand(() => {
+                    Process.Start(L10n.LookUpLocalizedString("GithubUrl"));
+                }));
 
             #endregion
 

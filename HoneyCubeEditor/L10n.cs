@@ -119,7 +119,7 @@ namespace HoneyCube.Editor
                     _isLocalized[i] = null;
 
                 // Force localizable forms to update themselfs
-                // TODO: THis will probably not be enough, as forms not opened, will not be localized again
+                // TODO: This will probably not be enough, as forms not opened, will not be localized again
                 foreach (ILocalizable localizable in Application.OpenForms.OfType<ILocalizable>())
                     localizable.LocalizeComponent();
             }
@@ -221,7 +221,7 @@ namespace HoneyCube.Editor
         /// <param name="key">The unique identifier of the string to lookup.</param>
         /// <param name="type">The resource file to use for the lookup process.</param>
         /// <returns>The translated string, or null if no tranlation available.</returns>
-        private static string LookUpLocalizedString(string key, L10nResourceType type)
+        public static string LookUpLocalizedString(string key, L10nResourceType type)
         {
             // Handle: No key value given
             if (string.IsNullOrWhiteSpace(key))
@@ -234,6 +234,17 @@ namespace HoneyCube.Editor
                 value = resx.GetString(key, _uiCulture);
 
             return !string.IsNullOrWhiteSpace(value) ? value : null;
+        }
+
+        /// <summary>
+        /// Tries to retrieve a translated string with respect the currently active 
+        /// application language.
+        /// </summary>
+        /// <param name="key">The unique identifier of the string to lookup.</param>
+        /// <returns>The translated string, or null if no tranlation available.</returns>
+        public static string LookUpLocalizedString(string key)
+        {
+            return LookUpLocalizedString(key, L10nResourceType.General);
         }
 
         /// <summary>
