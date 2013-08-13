@@ -22,29 +22,25 @@ namespace HoneyCube.Editor
         /// Public constructor. Creates a default set of commands that can be
         /// triggered throughout the entire application.
         /// </summary>
-        /// <param name="window">TODO</param>
-        /// <param name="appLog">TODO</param>
+        /// <param name="window">The application window maintaining most of the control elements.</param>
+        /// <param name="appLog">The logging element.</param>
         public DefaultCommandMap(IAppWindow window, IAppLogPresenter appLog)
         {
-            #region Application Menu Commands
+            #region Menu: File
 
-            // Empty
-            
-            #endregion
-
-            #region Shortcuts
-
+            // MenuFileExit
             If(Keys.Control | Keys.Q)
                 .ThenExecute(new ActionCommand(() => {
                     window.Presenter.CloseRequested();
                 }));
 
-            If(Keys.Control | Keys.L)
-                .ThenExecute(new ActionCommand(appLog.ShowClicked));
-
             #endregion
 
             #region Menu: View
+
+            // MenuViewShowLog
+            If(Keys.Control | Keys.L)
+                .ThenExecute(new ActionCommand(appLog.ShowClicked));
 
             If("MenuViewSidebarSidebar")
                 .ThenExecute(new ActionCommand(window.ToggleSidebar));
@@ -53,7 +49,7 @@ namespace HoneyCube.Editor
                 .ThenExecute(new ActionCommand(window.ToggleProjectTree));
 
             If("MenuViewSidebarInspector")
-                .ThenExecute(new ActionCommand(window.ToggleInspector));
+                .ThenExecute(new ActionCommand(window.ToggleInspector));            
 
             #endregion
 

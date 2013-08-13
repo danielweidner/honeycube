@@ -35,6 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="StructureMap, Version=2.6.1.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libraries\StructureMap\StructureMap.dll</HintPath>
@@ -86,12 +88,14 @@
     <Compile Include="Presenter\IAppWindowPresenter.cs" />
     <Compile Include="Presenter\IAppMenuPresenter.cs" />
     <Compile Include="Presenter\IPresenter.cs" />
+    <Compile Include="Presenter\ISceneViewerPresenter.cs" />
     <Compile Include="Presenter\MenuCommandExecuter.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\GraphicsDeviceService.cs" />
     <Compile Include="Services\IControlService.cs" />
     <Compile Include="Util\AssemblyExtension.cs" />
     <Compile Include="Util\StringBuilderExtension.cs" />
@@ -113,12 +117,25 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\IAppMenu.cs" />
     <Compile Include="Views\ILocalizable.cs" />
+    <Compile Include="Views\ISceneViewer.cs" />
     <Compile Include="Views\IView.cs" />
     <Compile Include="Views\AppMenu.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Views\AppMenu.Designer.cs">
       <DependentUpon>AppMenu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScenePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\ScenePanel.Designer.cs">
+      <DependentUpon>ScenePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SceneViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\SceneViewer.Designer.cs">
+      <DependentUpon>SceneViewer.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Resources\Icons.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -143,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\AppMenu.resx">
       <DependentUpon>AppMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ScenePanel.resx">
+      <DependentUpon>ScenePanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config">
       <SubType>Designer</SubType>

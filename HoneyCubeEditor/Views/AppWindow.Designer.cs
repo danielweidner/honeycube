@@ -30,10 +30,12 @@
         {
             this.ToolbarContainer = new System.Windows.Forms.ToolStripContainer();
             this.WorkspaceSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.ScenePreview = new HoneyCube.Editor.Views.ScenePanel();
             this.SidebarSplitContainer = new System.Windows.Forms.SplitContainer();
             this.ToolbarContainer.ContentPanel.SuspendLayout();
             this.ToolbarContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WorkspaceSplitContainer)).BeginInit();
+            this.WorkspaceSplitContainer.Panel1.SuspendLayout();
             this.WorkspaceSplitContainer.Panel2.SuspendLayout();
             this.WorkspaceSplitContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SidebarSplitContainer)).BeginInit();
@@ -62,14 +64,27 @@
             this.WorkspaceSplitContainer.Location = new System.Drawing.Point(0, 0);
             this.WorkspaceSplitContainer.Name = "WorkspaceSplitContainer";
             // 
+            // WorkspaceSplitContainer.Panel1
+            // 
+            this.WorkspaceSplitContainer.Panel1.Controls.Add(this.ScenePreview);
+            // 
             // WorkspaceSplitContainer.Panel2
             // 
             this.WorkspaceSplitContainer.Panel2.Controls.Add(this.SidebarSplitContainer);
             this.WorkspaceSplitContainer.Size = new System.Drawing.Size(1264, 737);
-            this.WorkspaceSplitContainer.SplitterDistance = 700;
+            this.WorkspaceSplitContainer.SplitterDistance = 800;
             this.WorkspaceSplitContainer.SplitterIncrement = 10;
             this.WorkspaceSplitContainer.SplitterWidth = 6;
             this.WorkspaceSplitContainer.TabIndex = 0;
+            // 
+            // ScenePreview
+            // 
+            this.ScenePreview.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ScenePreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ScenePreview.Location = new System.Drawing.Point(0, 0);
+            this.ScenePreview.Name = "ScenePreview";
+            this.ScenePreview.Size = new System.Drawing.Size(800, 737);
+            this.ScenePreview.TabIndex = 0;
             // 
             // SidebarSplitContainer
             // 
@@ -84,8 +99,8 @@
             // SidebarSplitContainer.Panel2
             // 
             this.SidebarSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.SidebarSplitContainer.Size = new System.Drawing.Size(558, 737);
-            this.SidebarSplitContainer.SplitterDistance = 279;
+            this.SidebarSplitContainer.Size = new System.Drawing.Size(458, 737);
+            this.SidebarSplitContainer.SplitterDistance = 229;
             this.SidebarSplitContainer.SplitterIncrement = 10;
             this.SidebarSplitContainer.SplitterWidth = 6;
             this.SidebarSplitContainer.TabIndex = 0;
@@ -104,6 +119,7 @@
             this.ToolbarContainer.ContentPanel.ResumeLayout(false);
             this.ToolbarContainer.ResumeLayout(false);
             this.ToolbarContainer.PerformLayout();
+            this.WorkspaceSplitContainer.Panel1.ResumeLayout(false);
             this.WorkspaceSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.WorkspaceSplitContainer)).EndInit();
             this.WorkspaceSplitContainer.ResumeLayout(false);
@@ -118,6 +134,7 @@
         private System.Windows.Forms.SplitContainer WorkspaceSplitContainer;
         private System.Windows.Forms.SplitContainer SidebarSplitContainer;
         private System.Windows.Forms.ToolStripContainer ToolbarContainer;
+        private ScenePanel ScenePreview;
     }
 }
 
