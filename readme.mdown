@@ -1,4 +1,4 @@
-﻿# ![Honey Cube Game Engine](http://danielweidner.de/shared/honeycube/logo.png)
+﻿# ![Honey Cube Game Engine](http://dweidner.github.io/honeycube/images/logo.png)
 
 Every once in a while a developer is under a charm of creating his own sublime game engine. Simply, because he can! Or just because he prefers his own mental models over the ones of others... While most attempts result in a collection of code performing poor, creating a custom engine helps to learn more about the technology all of our well beloved games are based on.
 
@@ -9,12 +9,9 @@ The Honey Cube Engine is exactly such a kind of project. It is an attempt to dev
 ## Features (so far)
 
 * Scene Editor
-* Entity/Component System
-* Animation System with Support for Bone Deformation
-* Collision Detection
+* First Draft of an Entity/Component System
 * Input Management for Keyboard and Mouse
 * Camera Management
-* Space Partioning Structures
 * A lot of useful Utilities (e.g. Entity-Factories, Object-Pools, Rendering-Batches ...)
 
 ## Requirements
