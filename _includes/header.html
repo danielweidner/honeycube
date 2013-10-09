@@ -4,12 +4,12 @@
     <title>{{ page.title }}</title>
     <meta name="author" content="{{ site.author }}" />
     <link rel="stylesheet" href="{{ site.url }}/styles/style.css" />
-    <link rel="icon" type="image/x-icon" href="{{ site.url }}/favicon.ico" />
+    <link rel="shortcut icon" href="{{ site.url }}/favicon.ico" />
 </head>
 <body>
     
 <header role="banner" class="page-head">
-    <a href="/" title="Return to homepage" class="branding">
+    <a href="{{ site.url }}/" title="Return to homepage" class="branding">
         <img src="{{ site.url }}/images/logo-stacked.png" alt="HoneyCube" width="200" height="180"/>
     </a>
     {% include nav.html %}
