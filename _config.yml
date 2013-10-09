@@ -1,3 +1,5 @@
+relative_permalinks: false
+baseurl: '/honeycube'
 author: Daniel Weidner
 repository: https://github.com/dweidner/honeycube
 exclude:

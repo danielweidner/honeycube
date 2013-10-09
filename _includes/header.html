@@ -3,14 +3,14 @@
 <head>
     <title>{{ page.title }}</title>
     <meta name="author" content="{{ site.author }}" />
-    <link rel="stylesheet" href="{{ site.url }}/styles/style.css" />
-    <link rel="shortcut icon" href="{{ site.url }}/favicon.ico" />
+    <link rel="stylesheet" href="{{ site.baseurl }}/styles/style.css" />
+    <link rel="shortcut icon" href="{{ site.baseurl }}/favicon.ico" />
 </head>
 <body>
     
 <header role="banner" class="page-head">
-    <a href="{{ site.url }}/" title="Return to homepage" class="branding">
-        <img src="{{ site.url }}/images/logo-stacked.png" alt="HoneyCube" width="200" height="180"/>
+    <a href="{{ site.baseurl }}/" title="Return to homepage" class="branding">
+        <img src="{{ site.baseurl }}/images/logo-stacked.png" alt="HoneyCube" width="200" height="180"/>
     </a>
     {% include nav.html %}
 </header>

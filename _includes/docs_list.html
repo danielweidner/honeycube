@@ -17,7 +17,7 @@
 
     {% for p in site.pages %}
         {% if p.url == url %}
-            <li class="{{ c }}"><a href="{{ site.url }}{{ p.url }}">{{ p.title }}</a></li>
+            <li class="{{ c }}"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
         {% endif %}
     {% endfor %}
 
