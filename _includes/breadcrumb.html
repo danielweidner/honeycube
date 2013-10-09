@@ -1,0 +1,14 @@
+{% assign urlParts = page.url | remove_first: '/' | remove: 'index.html' | split: '/' %}
+{% assign parent = null %}
+<ol class="breadcrumb">
+    <li><a href="{{ site.url }}/">Home</a></li>
+    {% for part in urlParts %}
+        {% assign url = part | prepend: parent | prepend: '/' | append: '/' %}
+        {% for p in site.pages %}
+            {% if p.url == url %}
+                <li class="{{ c }}"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% assign parent = parent | append: part | append: '/' %}
+    {% endfor %}
+</ol>

@@ -5,7 +5,7 @@
     {% assign folder = include.subfolder | prepend: '/docs/' | append: '/' %}    
 {% endif %}
 
-<ul>
+<ul class="docs-nav menu">
 {% for item in items %}
     {% assign url = item | prepend: folder | append: '/' %}
     
