@@ -1,6 +1,6 @@
 ﻿namespace HoneyCube.Editor.Views
 {
-    partial class SceneViewer
+    partial class SceneView
     {
         /// <summary> 
         /// Required designer variable.
@@ -34,7 +34,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // SceneViewer
+            // 
+            this.BackColorChanged += new System.EventHandler(this.SceneViewer_BackColorChanged);
+            this.BackColor = System.Drawing.Color.CornflowerBlue;
+            this.ResumeLayout(false);
+
         }
 
         #endregion

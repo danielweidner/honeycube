@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using StructureMap;
+using System.Windows.Forms;
 
 #endregion
 
@@ -16,37 +17,65 @@ namespace HoneyCube.Editor.Commands
     {
         #region Fields
 
+        private ICommandMap _map;
         private IContainer _container;
+
         private List<ICommand> _commands;
         private List<Action<IList<ICommand>>> _callbacks;
 
         #endregion
 
-        #region Constructors
-
-        /// <summary>
-        /// Internal constructor. Creates a collection of commands which are 
-        /// bound to a certain identifier/key combination.
-        /// </summary>
-        internal CommandBinding()
-            : this(null)
-        {
-            //Empty
-        }
+        #region Constructor
 
         /// <summary>
         /// Internal constructor. Creates a collection of commands which are 
         /// bound to a certain identifier/key combination.
         /// </summary>
         /// <param name="container">A reference to an IoC container used for object creation.</param>
-        internal CommandBinding(IContainer container)
+        /// <param name="map">A reference to the command map maintaining all bindings.</param>
+        internal CommandBinding(IContainer container, ICommandMap map)
         {
+            _map = map;
             _container = container;
+
             _commands = new List<ICommand>();
             _callbacks = new List<Action<IList<ICommand>>>();
         }
 
         #endregion
+
+        /// <summary>
+        /// Allows to specify multiple triggers for the resulting command binding.
+        /// </summary>
+        /// <param name="id">The command id triggering the binding.</param>
+        /// <returns>A reference to the command binding.</returns>
+        public CommandBinding Or(string id)
+        {
+            _map.Connect(this, id);
+            return this;
+        }
+
+        /// <summary>
+        /// Allows to specify multiple triggers for the resulting command binding.
+        /// </summary>
+        /// <param name="keys">The key combination triggering the binding.</param>
+        /// <returns>A reference to the command binding.</returns>
+        public CommandBinding Or(Keys keys)
+        {
+            _map.Connect(this, keys);
+            return this;
+        }
+
+        /// <summary>
+        /// Allows to specify multiple triggers for the resulting command binding.
+        /// </summary>
+        /// <param name="id">The shortcut triggering the binding.</param>
+        /// <returns>A reference to the command binding.</returns>
+        public CommandBinding Or(Shortcut shortcut)
+        {
+            _map.Connect(this, shortcut);
+            return this;
+        }
 
         /// <summary>
         /// Adds a command to execute once the current binding is triggered.

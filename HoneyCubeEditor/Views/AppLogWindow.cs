@@ -334,7 +334,9 @@ namespace HoneyCube.Editor.Views
         private void AppLogWindow_Closing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
-            Hide();
+
+            if (Presenter != null)
+                Presenter.HideClicked();
         }
 
         #endregion

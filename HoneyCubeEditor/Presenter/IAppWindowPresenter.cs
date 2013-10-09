@@ -33,8 +33,21 @@ namespace HoneyCube.Editor.Presenter
         void HandleKeyboardInput(Keys key, Keys modifiers);
 
         /// <summary>
-        /// Tells the Presenter that a close command for the current view has
-        /// been requested.
+        /// Is called every time a user clicks the tab of the welcome page.
+        /// </summary>
+        /// <param name="button">Indicates which mouse button was used by the user.</param>
+        void WelcomePageClicked(MouseButtons button);
+
+        /// <summary>
+        /// Is called every time a user clicks the tab of the scene view.
+        /// </summary>
+        /// <param name="view">The scene view clicked.</param>
+        /// <param name="button">Indicates which mouse button was used by the user.</param>
+        void SceneViewClicked(ISceneView view, MouseButtons button);
+
+        /// <summary>
+        /// Tells the presenter that a close for the current view has been 
+        /// requested.
         /// </summary>
         void CloseRequested();
     }

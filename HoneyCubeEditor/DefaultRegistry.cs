@@ -54,6 +54,14 @@ namespace HoneyCube.Editor
 
             #endregion
 
+            #region Services
+
+            For<ICameraService>()
+                .Singleton()
+                .Use<CameraService>();
+
+            #endregion
+
             #region Presenter Implementations
 
             For<IAppWindowPresenter>()
@@ -64,9 +72,16 @@ namespace HoneyCube.Editor
                 .Singleton()
                 .Use<MenuCommandExecuter>();
 
+            For<IAppToolbarPresenter>()
+                .Singleton()
+                .Use<ToolbarCommandExecuter>();
+
             For<IAppLogPresenter>()
                 .Singleton()
                 .Use<AppLogPresenter>();
+
+            For<ISceneViewPresenter>()
+                .Use<SceneViewPresenter>();
             
             #endregion
 
@@ -79,6 +94,13 @@ namespace HoneyCube.Editor
             For<IAppMenu>()
                 .Singleton()
                 .Use<AppMenu>();
+
+            For<IAppToolbar>()
+                .Singleton()
+                .Use<AppToolbar>();
+
+            For<ISceneView>()
+                .Use<SceneView>();
 
             For<IAppLogWindow>()
                 .Singleton()

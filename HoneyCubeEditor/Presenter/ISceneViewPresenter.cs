@@ -13,8 +13,14 @@ namespace HoneyCube.Editor.Presenter
     /// <summary>
     /// TODO
     /// </summary>
-    public interface ISceneViewerPresenter : IPresenter<ISceneViewer>
+    public interface ISceneViewPresenter : IPresenter<ISceneView>
     {
-        // Empty
+        /// <summary>
+        /// TODO
+        /// </summary>
+        ICamera Camera
+        {
+            get;
+        }
     }
 }

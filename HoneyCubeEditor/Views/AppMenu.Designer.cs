@@ -69,6 +69,8 @@
             System.Windows.Forms.ToolStripMenuItem MenuHelpGithub;
             System.Windows.Forms.ToolStripSeparator Seperator09;
             System.Windows.Forms.ToolStripMenuItem MenuHelpAbout;
+            this.MenuViewWelcomePage = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuStrip = new System.Windows.Forms.MenuStrip();
             MenuFile = new System.Windows.Forms.ToolStripMenuItem();
             MenuFileNewProject = new System.Windows.Forms.ToolStripMenuItem();
             MenuFileOpenProject = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,6 +112,7 @@
             MenuHelpGithub = new System.Windows.Forms.ToolStripMenuItem();
             Seperator09 = new System.Windows.Forms.ToolStripSeparator();
             MenuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuFile
@@ -134,6 +137,7 @@
             // 
             // MenuFileNewProject
             // 
+            MenuFileNewProject.Enabled = false;
             MenuFileNewProject.Name = "MenuFileNewProject";
             MenuFileNewProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             MenuFileNewProject.Size = new System.Drawing.Size(288, 22);
@@ -142,6 +146,7 @@
             // 
             // MenuFileOpenProject
             // 
+            MenuFileOpenProject.Enabled = false;
             MenuFileOpenProject.Name = "MenuFileOpenProject";
             MenuFileOpenProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             MenuFileOpenProject.Size = new System.Drawing.Size(288, 22);
@@ -177,6 +182,7 @@
             // 
             // MenuFileCloseProject
             // 
+            MenuFileCloseProject.Enabled = false;
             MenuFileCloseProject.Name = "MenuFileCloseProject";
             MenuFileCloseProject.Size = new System.Drawing.Size(288, 22);
             MenuFileCloseProject.Text = "Close Project";
@@ -189,6 +195,7 @@
             // 
             // MenuFileSaveProject
             // 
+            MenuFileSaveProject.Enabled = false;
             MenuFileSaveProject.Name = "MenuFileSaveProject";
             MenuFileSaveProject.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             MenuFileSaveProject.Size = new System.Drawing.Size(288, 22);
@@ -197,6 +204,7 @@
             // 
             // MenuFileSaveProjectAs
             // 
+            MenuFileSaveProjectAs.Enabled = false;
             MenuFileSaveProjectAs.Name = "MenuFileSaveProjectAs";
             MenuFileSaveProjectAs.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift)
                         | System.Windows.Forms.Keys.S)));
@@ -214,6 +222,7 @@
             MenuFileImport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             MenuFileImportEntity,
             MenuFileImportComponent});
+            MenuFileImport.Enabled = false;
             MenuFileImport.Name = "MenuFileImport";
             MenuFileImport.Size = new System.Drawing.Size(288, 22);
             MenuFileImport.Text = "Import";
@@ -221,19 +230,20 @@
             // MenuFileImportEntity
             // 
             MenuFileImportEntity.Name = "MenuFileImportEntity";
-            MenuFileImportEntity.Size = new System.Drawing.Size(147, 22);
+            MenuFileImportEntity.Size = new System.Drawing.Size(152, 22);
             MenuFileImportEntity.Text = "Entity...";
             MenuFileImportEntity.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // MenuFileImportComponent
             // 
             MenuFileImportComponent.Name = "MenuFileImportComponent";
-            MenuFileImportComponent.Size = new System.Drawing.Size(147, 22);
+            MenuFileImportComponent.Size = new System.Drawing.Size(152, 22);
             MenuFileImportComponent.Text = "Component...";
             MenuFileImportComponent.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // MenuFileExport
             // 
+            MenuFileExport.Enabled = false;
             MenuFileExport.Name = "MenuFileExport";
             MenuFileExport.Size = new System.Drawing.Size(288, 22);
             MenuFileExport.Text = "Export";
@@ -269,60 +279,67 @@
             // 
             // MenuEditUndo
             // 
+            MenuEditUndo.Enabled = false;
             MenuEditUndo.Name = "MenuEditUndo";
-            MenuEditUndo.Size = new System.Drawing.Size(135, 22);
+            MenuEditUndo.Size = new System.Drawing.Size(152, 22);
             MenuEditUndo.Text = "Undo";
             MenuEditUndo.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // MenuEditRedo
             // 
+            MenuEditRedo.Enabled = false;
             MenuEditRedo.Name = "MenuEditRedo";
-            MenuEditRedo.Size = new System.Drawing.Size(135, 22);
+            MenuEditRedo.Size = new System.Drawing.Size(152, 22);
             MenuEditRedo.Text = "Redo";
             MenuEditRedo.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // Seperator06
             // 
             Seperator06.Name = "Seperator06";
-            Seperator06.Size = new System.Drawing.Size(132, 6);
+            Seperator06.Size = new System.Drawing.Size(149, 6);
             // 
             // MenuEditCopy
             // 
+            MenuEditCopy.Enabled = false;
             MenuEditCopy.Name = "MenuEditCopy";
-            MenuEditCopy.Size = new System.Drawing.Size(135, 22);
+            MenuEditCopy.Size = new System.Drawing.Size(152, 22);
             MenuEditCopy.Text = "Copy";
             MenuEditCopy.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // MenuEditPaste
             // 
+            MenuEditPaste.Enabled = false;
             MenuEditPaste.Name = "MenuEditPaste";
-            MenuEditPaste.Size = new System.Drawing.Size(135, 22);
+            MenuEditPaste.Size = new System.Drawing.Size(152, 22);
             MenuEditPaste.Text = "Paste";
             MenuEditPaste.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // MenuEditCut
             // 
+            MenuEditCut.Enabled = false;
             MenuEditCut.Name = "MenuEditCut";
-            MenuEditCut.Size = new System.Drawing.Size(135, 22);
+            MenuEditCut.Size = new System.Drawing.Size(152, 22);
             MenuEditCut.Text = "Cut";
             MenuEditCut.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // MenuEditDelete
             // 
+            MenuEditDelete.Enabled = false;
             MenuEditDelete.Name = "MenuEditDelete";
-            MenuEditDelete.Size = new System.Drawing.Size(135, 22);
+            MenuEditDelete.Size = new System.Drawing.Size(152, 22);
             MenuEditDelete.Text = "Delete";
             MenuEditDelete.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // Seperator07
             // 
             Seperator07.Name = "Seperator07";
-            Seperator07.Size = new System.Drawing.Size(132, 6);
+            Seperator07.Size = new System.Drawing.Size(149, 6);
             // 
             // MenuEditPreferences
             // 
+            MenuEditPreferences.Enabled = false;
             MenuEditPreferences.Name = "MenuEditPreferences";
-            MenuEditPreferences.Size = new System.Drawing.Size(135, 22);
+            MenuEditPreferences.Size = new System.Drawing.Size(152, 22);
             MenuEditPreferences.Text = "Preferences";
             MenuEditPreferences.Click += new System.EventHandler(this.MenuItem_Click);
             // 
@@ -331,6 +348,7 @@
             MenuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             MenuViewSidebar,
             Seperator10,
+            this.MenuViewWelcomePage,
             MenuViewShowLog});
             MenuView.Name = "MenuView";
             MenuView.Size = new System.Drawing.Size(44, 20);
@@ -344,7 +362,7 @@
             Seperator08,
             MenuViewSidebarSidebar});
             MenuViewSidebar.Name = "MenuViewSidebar";
-            MenuViewSidebar.Size = new System.Drawing.Size(168, 22);
+            MenuViewSidebar.Size = new System.Drawing.Size(185, 22);
             MenuViewSidebar.Text = "Sidebar";
             // 
             // MenuViewSidebarProjectTree
@@ -385,13 +403,20 @@
             // Seperator10
             // 
             Seperator10.Name = "Seperator10";
-            Seperator10.Size = new System.Drawing.Size(165, 6);
+            Seperator10.Size = new System.Drawing.Size(182, 6);
+            // 
+            // MenuViewWelcomePage
+            // 
+            this.MenuViewWelcomePage.Name = "MenuViewWelcomePage";
+            this.MenuViewWelcomePage.Size = new System.Drawing.Size(185, 22);
+            this.MenuViewWelcomePage.Text = "Show Welcome Page";
+            this.MenuViewWelcomePage.Click += new System.EventHandler(this.MenuItem_Click);
             // 
             // MenuViewShowLog
             // 
             MenuViewShowLog.Name = "MenuViewShowLog";
             MenuViewShowLog.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.L)));
-            MenuViewShowLog.Size = new System.Drawing.Size(168, 22);
+            MenuViewShowLog.Size = new System.Drawing.Size(185, 22);
             MenuViewShowLog.Text = "Show Log";
             MenuViewShowLog.Click += new System.EventHandler(this.MenuItem_Click);
             // 
@@ -408,6 +433,7 @@
             // 
             // MenuHelpDocumentation
             // 
+            MenuHelpDocumentation.Enabled = false;
             MenuHelpDocumentation.Name = "MenuHelpDocumentation";
             MenuHelpDocumentation.Size = new System.Drawing.Size(176, 22);
             MenuHelpDocumentation.Text = "Documentation";
@@ -427,23 +453,43 @@
             // 
             // MenuHelpAbout
             // 
+            MenuHelpAbout.Enabled = false;
             MenuHelpAbout.Name = "MenuHelpAbout";
             MenuHelpAbout.Size = new System.Drawing.Size(176, 22);
             MenuHelpAbout.Text = "About Honey Cube";
             MenuHelpAbout.Click += new System.EventHandler(this.MenuItem_Click);
             // 
-            // AppMenu
+            // MenuStrip
             // 
-            this.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             MenuFile,
             MenuEdit,
             MenuView,
             MenuHelp});
+            this.MenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MenuStrip.MinimumSize = new System.Drawing.Size(800, 24);
+            this.MenuStrip.Name = "MenuStrip";
+            this.MenuStrip.Size = new System.Drawing.Size(800, 24);
+            this.MenuStrip.TabIndex = 0;
+            this.MenuStrip.Text = "MenuStrip";
+            // 
+            // AppMenu
+            // 
+            this.Controls.Add(this.MenuStrip);
+            this.MinimumSize = new System.Drawing.Size(800, 24);
+            this.Name = "AppMenu";
+            this.Size = new System.Drawing.Size(800, 24);
+            this.MenuStrip.ResumeLayout(false);
+            this.MenuStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.MenuStrip MenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem MenuViewWelcomePage;
 
     }
 }

@@ -13,6 +13,6 @@
         /// Allows the instance to handle a certain event type.
         /// </summary>
         /// <param name="eventData">Some event data.</param>
-        void Handle(T eventData);
+        void HandleApplicationEvent(T eventData);
     }
 }

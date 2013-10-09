@@ -15,9 +15,19 @@ namespace HoneyCube.Editor.Views
     public interface IAppWindow : IView<IAppWindowPresenter>
     {
         /// <summary>
-        /// The menu attached to the main application window.
+        /// The main menu of the application window.
         /// </summary>
-        MenuStrip MainMenuStrip
+        IAppMenu AppMenu
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The main toolbar of the application window providing shortcuts for
+        /// essential application features.
+        /// </summary>
+        IAppToolbar AppToolbar
         {
             get;
             set;
@@ -69,5 +79,21 @@ namespace HoneyCube.Editor.Views
         /// Toggles the visibility of the object inspector.
         /// </summary>
         void ToggleInspector();
+
+        /// <summary>
+        /// Show the welcome page presenting the user useful information on
+        /// startup.
+        /// </summary>
+        void ShowWelcomePage();
+
+        /// <summary>
+        /// Hide the welcome page.
+        /// </summary>
+        void HideWelcomePage();
+
+        /// <summary>
+        /// Closes the entire application.
+        /// </summary>
+        void Close();
     }
 }

@@ -6,6 +6,9 @@ using HoneyCube.Editor.Input;
 using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Services;
 using System.Collections.Generic;
+using StructureMap;
+using System.Drawing;
+using System;
 
 #endregion
 
@@ -18,6 +21,11 @@ namespace HoneyCube.Editor.Views
     public partial class AppWindow : Form, IAppWindow, IControlService, ILocalizable
     {
         #region Fields
+
+        private IAppMenu _menu;
+        private IAppToolbar _toolbar;
+
+        private bool _closing = false;
 
         private bool sidebarCollapsed = false;
         private bool projectTreeCollapsed = false;
@@ -37,26 +45,48 @@ namespace HoneyCube.Editor.Views
         }
 
         /// <summary>
-        /// Get/set the primary menu container of the application window.
+        /// Indicates whether a closing process has been initiated.
         /// </summary>
-        public new MenuStrip MainMenuStrip
+        public bool IsClosing
         {
-            get { return base.MainMenuStrip; }
-            set
-            {
-                if (MainMenuStrip != value)
+            get { return _closing; }
+        }
+
+        /// <summary>
+        /// The main menu of the application window.
+        /// </summary>
+        public IAppMenu AppMenu
+        {
+            get { return _menu; }
+            set 
+            { 
+                _menu = value;
+
+                Control control = _menu as Control;
+                if (control != null)
                 {
-                    // Cache the collection
-                    Control.ControlCollection elements = ToolbarContainer.TopToolStripPanel.Controls;
+                    control.Dock = DockStyle.Top;
+                    LayoutPanel.Controls.Add(control, 0, 0);
+                }
+            }
+        }
 
-                    // Remove the previous main menu
-                    elements.Remove(MainMenuStrip);
+        /// <summary>
+        /// The main toolbar of the application window providing shortcuts for
+        /// essential application features.
+        /// </summary>
+        public IAppToolbar AppToolbar
+        {
+            get { return _toolbar; }
+            set 
+            { 
+                _toolbar = value;
 
-                    // Change the main menu to the new one specified
-                    base.MainMenuStrip = value;
-
-                    // Add the new main menu back to the top panel
-                    ToolbarContainer.TopToolStripPanel.Controls.Add(value);
+                Control control = _toolbar as Control;
+                if (control != null)
+                {
+                    control.Dock = DockStyle.Top;
+                    LayoutPanel.Controls.Add(control, 0, 1);
                 }
             }
         }
@@ -76,6 +106,10 @@ namespace HoneyCube.Editor.Views
         {
             InitializeComponent();
             RegisterForMouseEvents(publisher);
+
+            // Accounting for a strange designer bug
+            WorkspaceSplitContainer.SplitterWidth = 1;
+            SidebarSplitContainer.SplitterWidth = 1;
         }
 
         /// <summary>
@@ -104,6 +138,11 @@ namespace HoneyCube.Editor.Views
         public void LocalizeComponent()
         {
             L10n.AssignIcon(this, "HoneyCube");
+            L10n.AssignIcon(WelcomePageLinkNewProject, "NewProject");
+            L10n.AssignIcon(WelcomePageLinkOpenProject, "OpenProject");
+
+            L10n.AssignImage(WelcomePageLogo, "Logo");
+            L10n.AssignImage(WelcomePageNavigationSeperator, "Separator");
         }
 
         #endregion
@@ -174,8 +213,7 @@ namespace HoneyCube.Editor.Views
         /// <returns>A reference to the element. Null if not found.</returns>
         private Component SearchMenuItems(string name)
         {
-            ToolStripItem[] items = MainMenuStrip.Items.Find(name, true);
-            return items.Length > 0 ? items[0] : null;
+            return _menu.FindItem(name);
         }
 
         #endregion
@@ -301,26 +339,47 @@ namespace HoneyCube.Editor.Views
             UpdateSidebarComponents();
         }
 
+        /// <summary>
+        /// Show the welcome page presenting the user useful information on
+        /// startup.
+        /// </summary>
+        public void ShowWelcomePage()
+        {
+            if (!SceneViewer.TabPages.Contains(WelcomePage))
+                SceneViewer.TabPages.Add(WelcomePage);
+        }
+
+        /// <summary>
+        /// Hide the welcome page.
+        /// </summary>
+        public void HideWelcomePage()
+        {
+            SceneViewer.TabPages.Remove(WelcomePage);
+        }
+
         #endregion
 
         #region EventHandler
 
         /// <summary>
-        /// Is raised every time a key is released.
+        /// Is called every time a close of the form is requested.
         /// </summary>
-        /// <param name="sender">The form that has registered the keypress event.</param>
-        /// <param name="e">Some event arguments holding informations about the keys pressed.</param>
-        private void AppWindow_KeyUp(object sender, KeyEventArgs e)
+        /// <param name="sender">The form that is going to be closed.</param>
+        /// <param name="e">Some event arguments (e.g. the closing reason).</param>
+        protected override void OnClosing(CancelEventArgs e)
         {
-            // Filter the keyup event of the Alt, Control and Shift keys, as 
-            // we are only interested in combinations with those keys
-            if (Presenter != null
-                    && e.KeyData != Keys.Menu
-                    && e.KeyData != Keys.ControlKey
-                    && e.KeyData != Keys.ShiftKey)
+            if (Presenter != null)
             {
-                Presenter.HandleKeyboardInput(e.KeyCode, e.Modifiers);
+                // Cancel the default event we use our own closing procedure
+                if (!_closing)
+                {
+                    e.Cancel = true;
+                    _closing = true;
+                    Presenter.CloseRequested();
+                }             
             }
+
+            base.OnClosing(e);
         }
 
         /// <summary>
@@ -353,7 +412,7 @@ namespace HoneyCube.Editor.Views
             if (Presenter != null)
             {
                 Presenter.HandleMouseInput(
-                    MouseButtons.Left, 
+                    MouseButtons.Left,
                     MouseButtonState.Released,
                     e.Clicks,
                     e.X, e.Y,
@@ -362,20 +421,48 @@ namespace HoneyCube.Editor.Views
         }
 
         /// <summary>
-        /// Is raised every time a close of the form is requested.
+        /// Is raised on every paint refresh of the welcome page. Allows us to
+        /// draw a border only on the left of the panel.
         /// </summary>
-        /// <param name="sender">The form that is going to be closed.</param>
-        /// <param name="e">Some event arguments (e.g. the closing reason).</param>
-        private void AppWindow_FormClosing(object sender, FormClosingEventArgs e)
+        /// <param name="sender">The panel drawn to the surface of the application.</param>
+        /// <param name="e">Some event arguments.</param>
+        private void WelcomePageContent_Paint(object sender, PaintEventArgs e)
+        {
+            Panel panel = sender as Panel;
+            if (panel != null)
+            {
+                // Draw only a left border for the control
+                ControlPaint.DrawBorder(e.Graphics,
+                    panel.ClientRectangle,
+                    Color.LightGray, 1, ButtonBorderStyle.Solid,
+                    Color.LightGray, 1, ButtonBorderStyle.None,
+                    Color.LightGray, 1, ButtonBorderStyle.None,
+                    Color.LightGray, 1, ButtonBorderStyle.None);
+            }
+        }
+
+        /// <summary>
+        /// Is raised every time the scene viewer is clicked. Checks which of
+        /// the tabs has been clicked.
+        /// </summary>
+        /// <param name="sender">A reference to the scene viewer component.</param>
+        /// <param name="e">Some event arguments.</param>
+        private void SceneViewer_MouseClick(object sender, MouseEventArgs e)
         {
             if (Presenter != null)
             {
-                // Cancel the default event we use our own closing procedure
-                if (e.CloseReason != CloseReason.ApplicationExitCall)
+                for (int i = 0; i < SceneViewer.TabCount; i++)
                 {
-                    e.Cancel = true;
-                    Presenter.CloseRequested();
-                }                
+                    if (SceneViewer.GetTabRect(i).Contains(e.Location))
+                    {
+                        TabPage page = SceneViewer.TabPages[i];
+                        if (page is ISceneView)
+                            Presenter.SceneViewClicked(page as ISceneView, e.Button);
+                        else if (page.Name.Equals("WelcomePage"))
+                            Presenter.WelcomePageClicked(e.Button);
+                        return;
+                    }
+                }
             }
         }
 

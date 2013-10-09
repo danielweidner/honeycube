@@ -40,7 +40,12 @@ namespace HoneyCube.Editor
         /// <summary>
         /// Interface icons.
         /// </summary>
-        Icons = 3
+        Icons = 3,
+
+        /// <summary>
+        /// Images
+        /// </summary>
+        Images = 4,
     }
 
     /// <summary>
@@ -96,6 +101,7 @@ namespace HoneyCube.Editor
             }
 
             _l10nResources[(int)L10nResourceType.Icons] = new ResourceManager("HoneyCube.Editor.Resources.Icons", _currentAssembly);
+            _l10nResources[(int)L10nResourceType.Images] = new ResourceManager("HoneyCube.Editor.Resources.Images", _currentAssembly);
         }
 
         #endregion
@@ -358,6 +364,56 @@ namespace HoneyCube.Editor
 
             if (image != null)
                 item.Image = image;
+        }
+
+        /// <summary>
+        /// Assign an icon to the specified label if available in the
+        /// corresponding resource file. The image retrieved can be overwritten
+        /// on a per language basis.
+        /// </summary>
+        /// <param name="label">The label to assign an image to.</param>
+        /// <param name="file">The file name of the image to assign.</param>
+        public static void AssignIcon(Label label, string file)
+        {
+            AssignIcon(label, file, true);
+        }
+
+        /// <summary>
+        /// Assign an icon to the specified label if available in the
+        /// corresponding resource file. The image retrieved can be overwritten
+        /// on a per language basis.
+        /// </summary>
+        /// <param name="label">The label to assign an image to.</param>
+        /// <param name="file">The file name of the image to assign.</param>
+        /// <param name="transparent">Whether the default color should be transparent.</param>
+        public static void AssignIcon(Label label, string file, bool transparent)
+        {
+            ResourceManager resx = _l10nResources[(int)L10nResourceType.Icons];
+            Bitmap image = resx.GetObject(file, _uiCulture) as Bitmap;
+
+            if (image != null)
+            {
+                if (transparent)
+                    image.MakeTransparent();
+
+                label.Image = image;
+            }
+        }
+        
+        /// <summary>
+        /// Assign an image to the specified pixture box if available in the
+        /// corresponding resource file. The image retrieved can be overwritten
+        /// on a per language basis.
+        /// </summary>
+        /// <param name="box">The picture box to assign an image to.</param>
+        /// <param name="file">The file name of the image to assign.</param>
+        public static void AssignImage(PictureBox box, string file)
+        {
+            ResourceManager resx = _l10nResources[(int)L10nResourceType.Images];
+            Image image = resx.GetObject(file, _uiCulture) as Image;
+
+            if (image != null)
+                box.Image = image;
         }
 
         #endregion

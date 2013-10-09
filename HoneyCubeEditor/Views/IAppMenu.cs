@@ -14,6 +14,13 @@ namespace HoneyCube.Editor.Views
     public interface IAppMenu : IView<IAppMenuPresenter>
     {
         /// <summary>
+        /// Returns the first menu item found with the given name.
+        /// </summary>
+        /// <param name="name">The name of the item to find.</param>
+        /// <returns>The first item found with the given name.</returns>
+        ToolStripItem FindItem(string name);
+
+        /// <summary>
         /// Enables the specified menu item. Only enabled elements can 
         /// react to user events.
         /// </summary>

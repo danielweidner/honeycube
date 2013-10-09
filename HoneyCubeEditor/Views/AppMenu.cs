@@ -12,7 +12,7 @@ namespace HoneyCube.Editor.Views
     /// Represents the application menu which provides all available application
     /// commands seperated into various dropdown menus.
     /// </summary>
-    public partial class AppMenu : MenuStrip, IAppMenu, ILocalizable
+    public partial class AppMenu : UserControl, IAppMenu, ILocalizable
     {
         #region Properties
 
@@ -40,7 +40,7 @@ namespace HoneyCube.Editor.Views
 
         #endregion
 
-        #region ILocalizable Members
+        #region ILocalizable
 
         /// <summary>
         /// Localizes all elements attached to the current component.
@@ -52,14 +52,16 @@ namespace HoneyCube.Editor.Views
 
         #endregion
 
+        #region IAppMenu
+
         /// <summary>
         /// Returns the first menu item found with the given name.
         /// </summary>
         /// <param name="name">The name of the item to find.</param>
         /// <returns>The first item found with the given name.</returns>
-        private ToolStripItem GetItem(string name)
+        public ToolStripItem FindItem(string name)
         {
-            ToolStripItem[] items = Items.Find(name, true);
+            ToolStripItem[] items = MenuStrip.Items.Find(name, true);
             return items.Length > 0 ? items[0] : null;
         }
 
@@ -70,7 +72,7 @@ namespace HoneyCube.Editor.Views
         /// <param name="name">The name of the item to enable.</param>
         public void EnableItem(string name)
         {
-            ToolStripItem item = GetItem(name);
+            ToolStripItem item = FindItem(name);
             if (item != null)
                 item.Enabled = true;
         }
@@ -82,7 +84,7 @@ namespace HoneyCube.Editor.Views
         /// <param name="name">The name of the item to disable.</param>
         public void DisableItem(string name)
         {
-            ToolStripItem item = GetItem(name);
+            ToolStripItem item = FindItem(name);
             if (item != null)
                 item.Enabled = false;
         }
@@ -94,7 +96,7 @@ namespace HoneyCube.Editor.Views
         /// <param name="text">The text to display for the menu item.</param>
         public void UpdateItemLabel(string name, string text)
         {
-            ToolStripItem item = GetItem(name);
+            ToolStripItem item = FindItem(name);
             if (item != null)
                 item.Text = text;
         }
@@ -106,10 +108,12 @@ namespace HoneyCube.Editor.Views
         /// <param name="shortcut">The shortcut to assign to the menu item</param>
         public void UpdateItemShortcut(string name, Keys shortcut)
         {
-            ToolStripMenuItem item = GetItem(name) as ToolStripMenuItem;
+            ToolStripMenuItem item = FindItem(name) as ToolStripMenuItem;
             if (item != null)
                 item.ShortcutKeys = shortcut;
         }
+
+        #endregion
 
         #region Event Handler
 

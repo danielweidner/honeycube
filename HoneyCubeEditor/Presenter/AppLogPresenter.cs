@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using HoneyCube.Editor.Views;
 using System.Text.RegularExpressions;
 using System.Drawing;
+using HoneyCube.Editor.Events;
 
 #endregion
 
@@ -25,6 +26,7 @@ namespace HoneyCube.Editor.Presenter
 
         private AppLog _activeLog;
 
+        private IAppHub _hub;
         private IAppLogWindow _view;
         private SaveFileDialog _dialog;
 
@@ -71,10 +73,12 @@ namespace HoneyCube.Editor.Presenter
         /// Public constructor. Creates a new AppLogPresenter which maintains
         /// available application logs and prepares them for display.
         /// </summary>
+        /// <param name="hub">The application hub providing elemental functionality.</param>
         /// <param name="view">The associated view.</param>
         /// <param name="dialog">A SaveFileDialog used to select a valid path for log files.</param>
-        public AppLogPresenter(IAppLogWindow view, SaveFileDialog dialog)
+        public AppLogPresenter(IAppHub hub, IAppLogWindow view, SaveFileDialog dialog)
         {
+            _hub = hub;
             _view = view;
             _view.Presenter = this;
             _dialog = dialog;
@@ -131,6 +135,7 @@ namespace HoneyCube.Editor.Presenter
         public void ShowClicked()
         {
             _view.ShowControl();
+            _hub.Raise<AppLogActiveEvent>(new AppLogActiveEvent());
             UpdateView();
         }
 
@@ -140,6 +145,7 @@ namespace HoneyCube.Editor.Presenter
         public void HideClicked()
         {
             _view.HideControl();
+            _hub.Raise<AppLogClosingEvent>(new AppLogClosingEvent());
         }
 
         /// <summary>

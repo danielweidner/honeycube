@@ -5,10 +5,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Services;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using Color = System.Drawing.Color;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Xna = Microsoft.Xna.Framework;
 
 #endregion
 
@@ -18,7 +19,7 @@ namespace HoneyCube.Editor.Views
     /// A custom control that uses the XNA GraphicsDevice to render a scene
     /// onto a TabPage control element.
     /// </summary>
-    public partial class SceneViewer : TabPage, ISceneViewer
+    public partial class SceneView : TabPage, ISceneView
     {
         #region Fields
 
@@ -28,15 +29,20 @@ namespace HoneyCube.Editor.Views
         /// </summary>
         private GraphicsDeviceService _graphicsDeviceService;
 
+        /// <summary>
+        /// The background color of the backbuffer (CornflowerBlue by default).
+        /// </summary>
+        private Xna.Color _backgroundColor = Xna.Color.CornflowerBlue;
+
         #endregion
 
         #region Properties
 
         /// <summary>
         /// Holds a reference to the associated presenter which controlls the 
-        /// overall behavior of the SceneViewer.
+        /// overall behavior of the SceneView.
         /// </summary>
-        public ISceneViewerPresenter Presenter
+        public ISceneViewPresenter Presenter
         {
             get;
             set;
@@ -57,7 +63,7 @@ namespace HoneyCube.Editor.Views
         /// <summary>
         /// TODO
         /// </summary>
-        public SceneViewer()
+        public SceneView()
         {
             InitializeComponent();
         }
@@ -87,7 +93,7 @@ namespace HoneyCube.Editor.Views
         /// </summary>
         protected virtual void Initialize()
         {
-            // Empty
+            _backgroundColor = new Xna.Color(BackColor.R, BackColor.G, BackColor.B);
         }
 
         #endregion
@@ -146,13 +152,11 @@ namespace HoneyCube.Editor.Views
         }
 
         /// <summary>
-        /// Allow deriving classes to perform some draw operations. By default
-        /// simply set the background of the back buffer to the "famous" 
-        /// cornflower blue.
+        /// Allow deriving classes to perform some draw operations.
         /// </summary>
         protected virtual void Draw()
         {
-            GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.CornflowerBlue);
+            GraphicsDevice.Clear(_backgroundColor);
         }
 
         /// <summary>
@@ -164,7 +168,7 @@ namespace HoneyCube.Editor.Views
         /// <param name="text">The text message to draw on the control.</param>
         protected virtual void DrawFallback(System.Drawing.Graphics graphics, string text)
         {
-            graphics.Clear(Color.CornflowerBlue);
+            graphics.Clear(BackColor);
 
             using (Brush brush = new SolidBrush(ForeColor))
             {
@@ -186,7 +190,7 @@ namespace HoneyCube.Editor.Views
             try
             {
                 // Display the contents of the back buffer
-                Rectangle source = new Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height);
+                Xna.Rectangle source = new Xna.Rectangle(0, 0, ClientRectangle.Width, ClientRectangle.Height);
                 GraphicsDevice.Present(source, null, Handle);
             }
             catch
@@ -206,10 +210,6 @@ namespace HoneyCube.Editor.Views
         {
             // Empty
         }
-
-        #endregion
-
-        #region Reset
 
         /// <summary>
         /// Checks whether the back buffer of the graphics device is large 
@@ -253,6 +253,35 @@ namespace HoneyCube.Editor.Views
             }
 
             return null;
+        }
+
+        #endregion
+
+        #region ISceneView
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public void Close()
+        {
+            TabControl tabControl = Parent as TabControl;
+            if (tabControl != null)
+                tabControl.TabPages.Remove(this);
+        }
+
+        #endregion
+
+        #region EventHandler
+
+        /// <summary>
+        /// Changes the color of the backbuffer when the background color of
+        /// the control is changed.
+        /// </summary>
+        /// <param name="sender">The control element changed.</param>
+        /// <param name="e">Empty event arguments.</param>
+        private void SceneViewer_BackColorChanged(object sender, EventArgs e)
+        {
+            _backgroundColor = new Xna.Color(BackColor.R, BackColor.G, BackColor.B);
         }
 
         #endregion

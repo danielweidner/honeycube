@@ -38,9 +38,11 @@ namespace HoneyCube.Editor
 
             #region Menu: View
 
-            // MenuViewShowLog
-            If(Keys.Control | Keys.L)
+            If("ToolbarLog").Or(Keys.Control | Keys.L)
                 .ThenExecute(new ActionCommand(appLog.ShowClicked));
+
+            If("MenuViewWelcomePage")
+                .ThenExecute(new ActionCommand(window.ShowWelcomePage));
 
             If("MenuViewSidebarSidebar")
                 .ThenExecute(new ActionCommand(window.ToggleSidebar));
@@ -58,25 +60,6 @@ namespace HoneyCube.Editor
             If("MenuHelpGithub")
                 .ThenExecute(new ActionCommand(() => {
                     Process.Start(L10n.LookUpLocalizedString("GithubUrl"));
-                }));
-
-            #endregion
-
-            #region Test Logging
-
-            // Some random log messages
-            string[] logMessages = new string[] {
-                "Crowding all sail the Pequod pressed after them; the harpooneers handling their weapons, and loudly cheering from the heads of their yet suspended boats.",
-                "Now, Bildad, like Peleg, and indeed many other Nantucketers, was a Quaker, the island having been originally settled by that sect.",
-                "During the most violent shocks of the Typhoon, the man at the Pequod's jaw-bone tiller had several times been reelingly hurled to the deck by its spasmodic motions",
-                "More Moby Dick anyone? Buy the book!"
-            };
-
-            If(Keys.Control | Keys.T)
-                .ThenExecute(new ActionCommand(() => {
-                    AppLog.For("General").Add(
-                        logMessages[new Random().Next(0, 4)],
-                        new Random().Next(0, 2) == 0 ? LogMessageType.Warning : LogMessageType.Error);
                 }));
 
             #endregion

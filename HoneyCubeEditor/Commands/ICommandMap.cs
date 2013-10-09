@@ -38,6 +38,27 @@ namespace HoneyCube.Editor.Commands
         CommandBinding If(Shortcut shortcut);
 
         /// <summary>
+        /// Connects an existing binding object with the specified command id.
+        /// </summary>
+        /// <param name="binding">The binding object to connect.</param>
+        /// <param name="id">The command id that should execute the binding.</param>
+        void Connect(CommandBinding binding, string id);
+
+        /// <summary>
+        /// Connects an existing binding object with the specified key combination.
+        /// </summary>
+        /// <param name="binding">The binding object to connect.</param>
+        /// <param name="key">The key combination that should execute the binding.</param>
+        void Connect(CommandBinding binding, Keys key);
+
+        /// <summary>
+        /// Connects an existing binding object with the specified shortcut.
+        /// </summary>
+        /// <param name="binding">The binding object to connect.</param>
+        /// <param name="shortcut">The shortcut that should execute the binding.</param>
+        void Connect(CommandBinding binding, Shortcut shortcut);
+
+        /// <summary>
         /// Tries to execute all commands bound to the given identifier.
         /// </summary>
         /// <param name="id">The identifier the commands are bound to.</param>

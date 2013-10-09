@@ -65,7 +65,7 @@ namespace HoneyCube.Editor.Presenter
 
         #endregion
 
-        #region IAppWindowPresenter Members
+        #region IAppWindowPresenter
 
         /// <summary>
         /// Handles mouse interaction detected by the application window.
@@ -92,6 +92,27 @@ namespace HoneyCube.Editor.Presenter
         }
 
         /// <summary>
+        /// Is called every time a user clicks the tab of the welcome page.
+        /// </summary>
+        /// <param name="button">Indicates which mouse button was used by the user.</param>
+        public void WelcomePageClicked(MouseButtons button)
+        {
+            if (button == MouseButtons.Middle)
+                View.HideWelcomePage();
+        }
+
+        /// <summary>
+        /// Is called every time a user clicks the tab of the scene view.
+        /// </summary>
+        /// <param name="sceneView">The scene view clicked.</param>
+        /// <param name="button">Indicates which mouse button was used by the user.</param>
+        public void SceneViewClicked(ISceneView sceneView, MouseButtons button)
+        {
+            if (button == MouseButtons.Middle)
+                sceneView.Close();
+        }
+
+        /// <summary>
         /// Is called every time the user prompts to close the application 
         /// window.
         /// </summary>
@@ -104,9 +125,7 @@ namespace HoneyCube.Editor.Presenter
 
             // Close the application if not canceled
             if (!args.Canceled)
-            {
-                Application.Exit();
-            }
+                View.Close();
         }
 
         #endregion

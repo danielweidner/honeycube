@@ -2,12 +2,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using HoneyCube.Editor.Presenter;
 
 #endregion
 
@@ -16,18 +13,11 @@ namespace HoneyCube.Editor.Views
     /// <summary>
     /// TODO
     /// </summary>
-    public partial class ScenePanel : UserControl
+    public interface ISceneView : IView<ISceneViewPresenter>
     {
-        #region Constructor
-
         /// <summary>
         /// TODO
         /// </summary>
-        public ScenePanel()
-        {
-            InitializeComponent();
-        }
-
-        #endregion
+        void Close();
     }
 }

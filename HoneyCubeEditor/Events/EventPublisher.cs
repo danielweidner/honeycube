@@ -129,7 +129,7 @@ namespace HoneyCube.Editor.Events
                 {
                     IEventHandler<T> eventHandler = handler as IEventHandler<T>;
                     if (eventHandler != null)
-                        eventHandler.Handle(eventData);
+                        eventHandler.HandleApplicationEvent(eventData);
                 }
             }
 

@@ -40,22 +40,24 @@ namespace HoneyCube.Editor
         /// </summary>
         private void SetupApplication()
         {
-            // Create the core presenter
+            // Create the presenter
             IAppWindowPresenter window = _container.GetInstance<IAppWindowPresenter>();
+            IAppMenuPresenter menu = _container.GetInstance<IAppMenuPresenter>();
+            IAppToolbarPresenter toolbar = _container.GetInstance<IAppToolbarPresenter>();
 
+            // Setup the main window
+            window.View.AppMenu = menu.View;
+            window.View.AppToolbar = toolbar.View;
+
+            // Assign the view as main form of the application
+            MainForm = window.View as Form;
+            
             // Localize all components
             foreach (ILocalizable instance in _container.Model.GetAllPossible<ILocalizable>())
                 instance.LocalizeComponent();
 
-            // Assign the main menu to all instances of the app window
-            foreach (IAppWindow instance in _container.Model.GetAllPossible<IAppWindow>())
-                instance.MainMenuStrip = _container.GetInstance<IAppMenuPresenter>().View as MenuStrip;
-
             // Report missing localization to a log file
             L10n.ReportMissingTranslations();
-
-            // Assign the view as main form of the application
-            MainForm = window.View as Form;
         }
     }
 }
