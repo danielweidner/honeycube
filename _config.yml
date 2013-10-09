@@ -1,0 +1,4 @@
+author: Daniel Weidner
+repository: https://github.com/dweidner/honeycube
+exclude:
+- README.md
