@@ -1,0 +1,25 @@
+{% assign items = include.items | split: ' ' %}
+
+{% assign folder = '/docs/' %}
+{% if include.subfolder %}
+    {% assign folder = include.subfolder | prepend: '/docs/' | append: '/' %}    
+{% endif %}
+
+<ul>
+{% for item in items %}
+    {% assign url = item | prepend: folder | append: '/' %}
+    
+    {% if url == page.url %}
+        {% assign c = 'current' %}
+    {% else %}
+        {% assign c = '' %}
+    {% endif %}
+
+    {% for p in site.pages %}
+        {% if p.url == url %}
+            <li class="{{ c }}"><a href="{{ site.url }}{{ p.url }}">{{ p.title }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+{% endfor %}
+</ul>

@@ -1,0 +1,160 @@
+/**
+ * BASE
+ */
+
+* {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+html {
+    font: 62.5%/1.5 "Lato", sans-serif;
+    overflow-y: scroll;
+    -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    border-top: 4px solid #ffd204;
+    font-size: 18px;
+    font-size: 1.8rem;
+    background: #333;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+  display: block;
+}
+
+main {
+    min-height: 32em;
+}
+
+a {
+    color: #ffd204;
+    text-decoration: none;
+}
+
+a:focus,
+a:hover {
+    color: #fff000;
+}
+
+/**
+ * GRID
+ */
+
+.g {
+    margin-left: -3%;
+    max-width: 105%;
+}
+
+.c {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    vertical-align: top;
+    margin-left: 3%;
+    margin-right: -4px;
+    overflow: visible;
+    *overflow: visible;
+}
+
+.c--1-2 {
+  width: 47%;
+}
+
+.c--1-3 {
+  width: 30.33333%;
+}
+
+.c--2-3 {
+  width: 63.66667%;
+}
+
+.c--full {
+  width: 97%;
+}
+
+/**
+ * HEADER
+ */
+
+.page-head {
+    max-width: 54em;
+    margin: 2em auto;
+    text-align: center;
+}
+
+.branding {
+    display: block;
+    margin: 3em 0;
+}
+
+/**
+ * NAVIGATION
+ */
+
+.menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.site-nav {
+    
+}
+
+.site-nav a {
+    font-weight: 700;
+}
+
+.site-nav li {
+    display: inline-block;
+    margin-left: 1em;
+}
+
+.site-nav li:first-child {
+    margin-left: 0;
+}
+
+/**
+ * FOOTER
+ */
+
+.page-foot {
+    padding: 1.5em 0 1em;
+    color: #999;
+    background: #111;
+}
+
+.page-foot a {
+    color: #f1f1f1;
+}
+
+.page-foot a:focus,
+.page-foot a:hover {
+    color: #fff000;
+}
+
+.page-foot .g {
+    max-width: 54em;
+    margin: 0 auto;
+}
+
+.page-foot .c:last-child {
+    text-align: right;
+}
