@@ -1,6 +1,7 @@
-relative_permalinks: false
 baseurl: '/honeycube'
-author: Daniel Weidner
-repository: https://github.com/dweidner/honeycube
+relative_permalinks: false
 exclude:
 - README.md
+
+author: Daniel Weidner
+repository: https://github.com/dweidner/honeycube

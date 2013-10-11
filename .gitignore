@@ -18,6 +18,7 @@ tmp
 
 # SublimeText
 *.sublime-workspace
+*.sublime-project
 
 # Windows image file caches
 Thumbs.db
