@@ -508,6 +508,26 @@ namespace HoneyCube.Editor.Views
         }
 
         /// <summary>
+        /// Is raised once the project tree panel gains user focus.
+        /// </summary>
+        /// <param name="sender">Split panel gaining focus.</param>
+        /// <param name="e">Event arguments</param>
+        private void ProjectTree_Enter(object sender, EventArgs e)
+        {
+            SidebarPanel1Split.Panel1.BackColor = SystemColors.GradientActiveCaption;
+        }
+
+        /// <summary>
+        /// Is raised once the project tree panel lost user focus.
+        /// </summary>
+        /// <param name="sender">Split panel loosing focus.</param>
+        /// <param name="e">Event arguments</param>
+        private void ProjectTree_Leave(object sender, EventArgs e)
+        {
+            SidebarPanel1Split.Panel1.BackColor = SystemColors.GradientInactiveCaption;
+        }
+
+        /// <summary>
         /// Is raised when the close button on the project tree panel is clicked.
         /// </summary>
         /// <param name="sender">A reference to the close button.</param>
@@ -515,6 +535,26 @@ namespace HoneyCube.Editor.Views
         private void HideProjectTreeButton_Click(object sender, EventArgs e)
         {
             this.HideProjectTree();
+        }
+
+        /// <summary>
+        /// Is raised once the inspector panel gains user focus.
+        /// </summary>
+        /// <param name="sender">Split panel gaining focus.</param>
+        /// <param name="e">Event arguments</param>
+        private void Inspector_Enter(object sender, EventArgs e)
+        {
+            SidebarPanel2Split.Panel1.BackColor = SystemColors.GradientActiveCaption;
+        }
+
+        /// <summary>
+        /// Is raised once the inspector panel lost user focus.
+        /// </summary>
+        /// <param name="sender">Split panel loosing focus.</param>
+        /// <param name="e">Event arguments</param>
+        private void Inspector_Leave(object sender, EventArgs e)
+        {
+            SidebarPanel2Split.Panel1.BackColor = SystemColors.GradientInactiveCaption;
         }
 
         /// <summary>
@@ -527,6 +567,6 @@ namespace HoneyCube.Editor.Views
             this.HideInspector();
         }
 
-        #endregion
+        #endregion        
     }
 }

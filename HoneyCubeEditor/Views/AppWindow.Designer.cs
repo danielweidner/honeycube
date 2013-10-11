@@ -277,7 +277,7 @@
             // 
             // SidebarPanel1Split.Panel1
             // 
-            this.SidebarPanel1Split.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.SidebarPanel1Split.Panel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.SidebarPanel1Split.Panel1.Controls.Add(this.HideProjectTreeButton);
             this.SidebarPanel1Split.Panel1.Controls.Add(this.SidebarPanel1Label);
             this.SidebarPanel1Split.Panel1.Padding = new System.Windows.Forms.Padding(2, 5, 2, 5);
@@ -289,6 +289,8 @@
             this.SidebarPanel1Split.Size = new System.Drawing.Size(219, 647);
             this.SidebarPanel1Split.SplitterDistance = 25;
             this.SidebarPanel1Split.TabIndex = 0;
+            this.SidebarPanel1Split.Enter += new System.EventHandler(this.ProjectTree_Enter);
+            this.SidebarPanel1Split.Leave += new System.EventHandler(this.ProjectTree_Leave);
             // 
             // SidebarPanel1Label
             // 
@@ -312,7 +314,7 @@
             // 
             // SidebarPanel2Split.Panel1
             // 
-            this.SidebarPanel2Split.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.SidebarPanel2Split.Panel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.SidebarPanel2Split.Panel1.Controls.Add(this.HideInspectorButton);
             this.SidebarPanel2Split.Panel1.Controls.Add(this.SidebarPanel2Label);
             this.SidebarPanel2Split.Panel1.Padding = new System.Windows.Forms.Padding(2, 5, 2, 5);
@@ -324,6 +326,8 @@
             this.SidebarPanel2Split.Size = new System.Drawing.Size(220, 647);
             this.SidebarPanel2Split.SplitterDistance = 25;
             this.SidebarPanel2Split.TabIndex = 0;
+            this.SidebarPanel2Split.Enter += new System.EventHandler(this.Inspector_Enter);
+            this.SidebarPanel2Split.Leave += new System.EventHandler(this.Inspector_Leave);
             // 
             // SidebarPanel2Label
             // 

@@ -34,6 +34,7 @@
             // Grid
             // 
             this.Grid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Grid.Enabled = false;
             this.Grid.HelpVisible = false;
             this.Grid.Location = new System.Drawing.Point(0, 0);
             this.Grid.Name = "Grid";
@@ -45,7 +46,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.Grid);
-            this.Enabled = false;
             this.Name = "ObjectInspector";
             this.Size = new System.Drawing.Size(280, 620);
             this.ResumeLayout(false);

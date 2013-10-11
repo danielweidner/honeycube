@@ -36,6 +36,7 @@
             // 
             this.Tree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tree.Enabled = false;
+            this.Tree.LabelEdit = true;
             this.Tree.Location = new System.Drawing.Point(0, 0);
             this.Tree.Name = "Tree";
             treeNode1.Name = "Root";

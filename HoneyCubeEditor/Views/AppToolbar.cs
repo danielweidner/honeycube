@@ -39,10 +39,9 @@ namespace HoneyCube.Editor.Views
         /// <summary>
         /// Public constructor. Creates a new application toolbar.
         /// </summary>
-        public AppToolbar(IEventPublisher publisher)
+        public AppToolbar()
         {
             InitializeComponent();
-            publisher.RegisterHandlers(this);
         }
 
         #endregion
@@ -85,7 +84,8 @@ namespace HoneyCube.Editor.Views
         public void HandleApplicationEvent(AppLogClosingEvent e)
         {
             ToolbarLog.Checked = false;
-        }
+        }
+
         /// <summary>
         /// Is called every time a button of the toolbar is clicked.
         /// </summary>

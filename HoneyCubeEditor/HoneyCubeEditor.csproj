@@ -74,8 +74,11 @@
     <Compile Include="DefaultRegistry.cs" />
     <Compile Include="Events\AppClosingEvent.cs" />
     <Compile Include="Events\EventPublisher.cs" />
-    <Compile Include="Events\AppLogClosingEvent.cs" />
-    <Compile Include="Events\AppLogActiveEvent.cs" />
+    <Compile Include="Events\Log\AppLogClosingEvent.cs" />
+    <Compile Include="Events\Log\AppLogActiveEvent.cs" />
+    <Compile Include="Events\Scene\CurrentSceneChangedEvent.cs" />
+    <Compile Include="Events\Scene\CurrentSceneClosedEvent.cs" />
+    <Compile Include="Events\Scene\SceneCreatedEvent.cs" />
     <Compile Include="IAppHub.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Events\IEventHandler.cs" />
@@ -107,6 +110,8 @@
     <Compile Include="Services\GraphicsDeviceService.cs" />
     <Compile Include="Services\ICameraService.cs" />
     <Compile Include="Services\IControlService.cs" />
+    <Compile Include="Services\IProjectManager.cs" />
+    <Compile Include="Services\ProjectManager.cs" />
     <Compile Include="Util\AssemblyExtension.cs" />
     <Compile Include="Util\StringBuilderExtension.cs" />
     <Compile Include="Views\AppLogWindow.cs">

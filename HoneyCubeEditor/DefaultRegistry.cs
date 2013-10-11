@@ -60,6 +60,10 @@ namespace HoneyCube.Editor
                 .Singleton()
                 .Use<CameraService>();
 
+            For<IProjectManager>()
+                .Singleton()
+                .Use<ProjectManager>();
+
             #endregion
 
             #region Presenter Implementations

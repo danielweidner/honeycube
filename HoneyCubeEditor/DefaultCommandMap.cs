@@ -23,10 +23,17 @@ namespace HoneyCube.Editor
         /// triggered throughout the entire application.
         /// </summary>
         /// <param name="window">The application window maintaining most of the control elements.</param>
+        /// <param name="projects">Object that manages loaded scene instances.</param>
         /// <param name="appLog">The logging element.</param>
-        public DefaultCommandMap(IAppWindow window, IAppLogPresenter appLog)
+        public DefaultCommandMap(IAppWindow window, IProjectManager projects, IAppLogPresenter appLog)
         {
             #region Menu: File
+
+            // MenuFileNew
+            If(Keys.Control | Keys.N)
+                .ThenExecute(new ActionCommand(() => {
+                    projects.CreateNewScene();
+                }));
 
             // MenuFileExit
             If(Keys.Control | Keys.Q)

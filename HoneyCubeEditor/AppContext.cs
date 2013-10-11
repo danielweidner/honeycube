@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using HoneyCube.Editor.Presenter;
 using StructureMap;
 using HoneyCube.Editor.Views;
+using HoneyCube.Editor.Events;
 
 #endregion
 
@@ -40,6 +41,9 @@ namespace HoneyCube.Editor
         /// </summary>
         private void SetupApplication()
         {
+            // Services
+            IEventPublisher _eventPublisher = _container.GetInstance<IEventPublisher>();
+
             // Create the presenter
             IAppWindowPresenter window = _container.GetInstance<IAppWindowPresenter>();
             IAppMenuPresenter menu = _container.GetInstance<IAppMenuPresenter>();
@@ -52,6 +56,10 @@ namespace HoneyCube.Editor
             window.View.AppToolbar = toolbar.View;
             window.View.Inspector = inspector.View;
             window.View.ProjectTree = tree.View;
+
+            // Automatic event handler registration
+            foreach (IEventHandler handler in _container.Model.GetAllPossible<IEventHandler>())
+                _eventPublisher.RegisterHandlers(handler);
 
             // Assign the view as main form of the application
             MainForm = window.View as Form;
