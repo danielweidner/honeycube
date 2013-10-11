@@ -31,6 +31,7 @@ namespace HoneyCube.Editor
 
             // MenuFileNew
             If(Keys.Control | Keys.N)
+                .Or("ToolbarNewProject")
                 .ThenExecute(new ActionCommand(() => {
                     projects.CreateNewScene();
                 }));

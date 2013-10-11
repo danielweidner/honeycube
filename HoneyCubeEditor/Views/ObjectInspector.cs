@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using HoneyCube.Editor.Presenter;
+using HoneyCube.Editor.Inspector;
 
 #endregion
 
@@ -24,7 +25,7 @@ namespace HoneyCube.Editor.Views
         /// <summary>
         ///  The presenter controlling the behavior of the object property view. 
         /// </summary>
-        public IObjectInspectorPresenter Presenter
+        public IInspectorPresenter Presenter
         {
             get;
             set;
@@ -56,12 +57,6 @@ namespace HoneyCube.Editor.Views
 
         #endregion
 
-        #region IPropertyView
-
-        // Empty
-
-        #endregion
-
         #region IObjectInspector
 
         /// <summary>
@@ -69,7 +64,7 @@ namespace HoneyCube.Editor.Views
         /// inspector.
         /// </summary>
         /// <param name="obj">The object to display.</param>
-        public void Show(IScene obj)
+        public void Show(IInspectorObject obj)
         {
             Grid.SelectedObject = obj;
         }

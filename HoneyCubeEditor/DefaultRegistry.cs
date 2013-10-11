@@ -80,9 +80,9 @@ namespace HoneyCube.Editor
                 .Singleton()
                 .Use<ToolbarCommandExecuter>();
 
-            For<IObjectInspectorPresenter>()
+            For<IInspectorPresenter>()
                 .Singleton()
-                .Use<ObjectInspectorPresenter>();
+                .Use<InspectorPresenter>();
 
             For<IProjectTreePresenter>()
                 .Singleton()

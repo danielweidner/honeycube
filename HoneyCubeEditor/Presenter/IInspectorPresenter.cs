@@ -13,7 +13,7 @@ namespace HoneyCube.Editor.Presenter
     /// <summary>
     /// TODO
     /// </summary>
-    public interface IObjectInspectorPresenter : IPresenter<IObjectInspector>
+    public interface IInspectorPresenter : IPresenter<IObjectInspector>
     {
         // Empty
     }

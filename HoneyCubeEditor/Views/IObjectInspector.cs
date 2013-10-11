@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HoneyCube.Editor.Presenter;
+using HoneyCube.Editor.Inspector;
 
 #endregion
 
@@ -13,14 +14,14 @@ namespace HoneyCube.Editor.Views
     /// <summary>
     /// TODO
     /// </summary>
-    public interface IObjectInspector : IView<IObjectInspectorPresenter>
+    public interface IObjectInspector : IView<IInspectorPresenter>
     {
         /// <summary>
         /// Displays the specified object and all its public properties in the
         /// inspector.
         /// </summary>
         /// <param name="obj">The object to display.</param>
-        void Show(IScene obj);
+        void Show(IInspectorObject obj);
 
         /// <summary>
         /// Resets the object inspector to its initial state. Stops the 

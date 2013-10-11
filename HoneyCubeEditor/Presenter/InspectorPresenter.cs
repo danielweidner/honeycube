@@ -1,12 +1,9 @@
 ﻿#region Using Statements
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using HoneyCube.Editor.Views;
 using HoneyCube.Editor.Events;
 using HoneyCube.Editor.Events.Scene;
+using HoneyCube.Editor.Inspector;
+using HoneyCube.Editor.Views;
 
 #endregion
 
@@ -15,7 +12,7 @@ namespace HoneyCube.Editor.Presenter
     /// <summary>
     /// TODO
     /// </summary>
-    public class ObjectInspectorPresenter : IObjectInspectorPresenter, IEventHandler<CurrentSceneChangedEvent>, IEventHandler<CurrentSceneClosedEvent>
+    public class InspectorPresenter : IInspectorPresenter, IEventHandler<CurrentSceneChangedEvent>, IEventHandler<CurrentSceneClosedEvent>
     {
         #region Fields
 
@@ -41,7 +38,7 @@ namespace HoneyCube.Editor.Presenter
         /// TODO
         /// </summary>
         /// <param name="view"></param>
-        public ObjectInspectorPresenter(IObjectInspector view)
+        public InspectorPresenter(IObjectInspector view)
         {
             _view = view;
             _view.Presenter = this;
@@ -59,7 +56,7 @@ namespace HoneyCube.Editor.Presenter
         {
             if (args.CurrentScene != null)
             {
-                _view.Show(args.CurrentScene);
+                _view.Show(new SceneWrapper(args.CurrentScene));
                 _view.Enable();
             }
             else
