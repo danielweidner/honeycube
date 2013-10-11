@@ -24,6 +24,8 @@ namespace HoneyCube.Editor.Views
 
         private IAppMenu _menu;
         private IAppToolbar _toolbar;
+        private IObjectInspector _inspector;
+        private IProjectTree _tree;
 
         private bool _closing = false;
 
@@ -87,6 +89,45 @@ namespace HoneyCube.Editor.Views
                 {
                     control.Dock = DockStyle.Top;
                     LayoutPanel.Controls.Add(control, 0, 1);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The inspector displays object properties that can be modified by 
+        /// the user.
+        /// </summary>
+        public IObjectInspector Inspector
+        {
+            get { return _inspector; }
+            set
+            {
+                _inspector = value;
+
+                Control control = _inspector as Control;
+                if (control != null)
+                {
+                    control.Dock = DockStyle.Fill;
+                    SidebarPanel2Split.Panel2.Controls.Add(control);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The project tree displays created scene nodes in a hierarchy.
+        /// </summary>
+        public IProjectTree ProjectTree
+        {
+            get { return _tree; }
+            set
+            {
+                _tree = value;
+
+                Control control = _tree as Control;
+                if (control != null)
+                {
+                    control.Dock = DockStyle.Fill;
+                    SidebarPanel1Split.Panel2.Controls.Add(control);
                 }
             }
         }
@@ -466,6 +507,26 @@ namespace HoneyCube.Editor.Views
             }
         }
 
-        #endregion        
+        /// <summary>
+        /// Is raised when the close button on the project tree panel is clicked.
+        /// </summary>
+        /// <param name="sender">A reference to the close button.</param>
+        /// <param name="e">Some event arguments.</param>
+        private void HideProjectTreeButton_Click(object sender, EventArgs e)
+        {
+            this.HideProjectTree();
+        }
+
+        /// <summary>
+        /// Is raised when the close button on the inspector panel is clicked.
+        /// </summary>
+        /// <param name="sender">A reference to the close button.</param>
+        /// <param name="e">Some event arguments.</param>
+        private void HideInspectorButton_Click(object sender, EventArgs e)
+        {
+            this.HideInspector();
+        }
+
+        #endregion
     }
 }

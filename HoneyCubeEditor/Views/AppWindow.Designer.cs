@@ -41,6 +41,12 @@
             this.SceneViewer = new System.Windows.Forms.TabControl();
             this.WelcomePage = new System.Windows.Forms.TabPage();
             this.SidebarSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.SidebarPanel1Split = new System.Windows.Forms.SplitContainer();
+            this.SidebarPanel1Label = new System.Windows.Forms.Label();
+            this.SidebarPanel2Split = new System.Windows.Forms.SplitContainer();
+            this.SidebarPanel2Label = new System.Windows.Forms.Label();
+            this.HideProjectTreeButton = new System.Windows.Forms.Button();
+            this.HideInspectorButton = new System.Windows.Forms.Button();
             WelcomePageLayout = new System.Windows.Forms.TableLayoutPanel();
             WelcomePageNavigation = new System.Windows.Forms.Panel();
             WelcomePageLabelOpenedRecently = new System.Windows.Forms.Label();
@@ -57,7 +63,15 @@
             this.SceneViewer.SuspendLayout();
             this.WelcomePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SidebarSplitContainer)).BeginInit();
+            this.SidebarSplitContainer.Panel1.SuspendLayout();
+            this.SidebarSplitContainer.Panel2.SuspendLayout();
             this.SidebarSplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SidebarPanel1Split)).BeginInit();
+            this.SidebarPanel1Split.Panel1.SuspendLayout();
+            this.SidebarPanel1Split.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SidebarPanel2Split)).BeginInit();
+            this.SidebarPanel2Split.Panel1.SuspendLayout();
+            this.SidebarPanel2Split.SuspendLayout();
             this.SuspendLayout();
             // 
             // WelcomePageLayout
@@ -195,12 +209,12 @@
             // WorkspaceSplitContainer.Panel2
             // 
             this.WorkspaceSplitContainer.Panel2.Controls.Add(this.SidebarSplitContainer);
-            this.WorkspaceSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 27, 5, 5);
+            this.WorkspaceSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 24, 5, 3);
             this.WorkspaceSplitContainer.Panel2MinSize = 200;
             this.WorkspaceSplitContainer.Size = new System.Drawing.Size(1258, 680);
             this.WorkspaceSplitContainer.SplitterDistance = 796;
             this.WorkspaceSplitContainer.SplitterIncrement = 10;
-            this.WorkspaceSplitContainer.SplitterWidth = 1;
+            this.WorkspaceSplitContainer.SplitterWidth = 3;
             this.WorkspaceSplitContainer.TabIndex = 3;
             // 
             // SceneViewer
@@ -229,24 +243,124 @@
             // 
             this.SidebarSplitContainer.BackColor = System.Drawing.SystemColors.ControlDark;
             this.SidebarSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SidebarSplitContainer.Location = new System.Drawing.Point(0, 27);
+            this.SidebarSplitContainer.Location = new System.Drawing.Point(0, 24);
             this.SidebarSplitContainer.Margin = new System.Windows.Forms.Padding(0);
             this.SidebarSplitContainer.Name = "SidebarSplitContainer";
             // 
             // SidebarSplitContainer.Panel1
             // 
-            this.SidebarSplitContainer.Panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.SidebarSplitContainer.Panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.SidebarSplitContainer.Panel1.Controls.Add(this.SidebarPanel1Split);
+            this.SidebarSplitContainer.Panel1.Padding = new System.Windows.Forms.Padding(3);
             this.SidebarSplitContainer.Panel1MinSize = 100;
             // 
             // SidebarSplitContainer.Panel2
             // 
-            this.SidebarSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.SidebarSplitContainer.Panel2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.SidebarSplitContainer.Panel2.Controls.Add(this.SidebarPanel2Split);
+            this.SidebarSplitContainer.Panel2.Padding = new System.Windows.Forms.Padding(3);
             this.SidebarSplitContainer.Panel2MinSize = 100;
-            this.SidebarSplitContainer.Size = new System.Drawing.Size(456, 648);
-            this.SidebarSplitContainer.SplitterDistance = 226;
+            this.SidebarSplitContainer.Size = new System.Drawing.Size(454, 653);
+            this.SidebarSplitContainer.SplitterDistance = 225;
             this.SidebarSplitContainer.SplitterIncrement = 10;
-            this.SidebarSplitContainer.SplitterWidth = 1;
+            this.SidebarSplitContainer.SplitterWidth = 3;
             this.SidebarSplitContainer.TabIndex = 0;
+            // 
+            // SidebarPanel1Split
+            // 
+            this.SidebarPanel1Split.BackColor = System.Drawing.SystemColors.Control;
+            this.SidebarPanel1Split.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SidebarPanel1Split.IsSplitterFixed = true;
+            this.SidebarPanel1Split.Location = new System.Drawing.Point(3, 3);
+            this.SidebarPanel1Split.Name = "SidebarPanel1Split";
+            this.SidebarPanel1Split.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // SidebarPanel1Split.Panel1
+            // 
+            this.SidebarPanel1Split.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.SidebarPanel1Split.Panel1.Controls.Add(this.HideProjectTreeButton);
+            this.SidebarPanel1Split.Panel1.Controls.Add(this.SidebarPanel1Label);
+            this.SidebarPanel1Split.Panel1.Padding = new System.Windows.Forms.Padding(2, 5, 2, 5);
+            // 
+            // SidebarPanel1Split.Panel2
+            // 
+            this.SidebarPanel1Split.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.SidebarPanel1Split.Panel2.Padding = new System.Windows.Forms.Padding(2, 27, 2, 2);
+            this.SidebarPanel1Split.Size = new System.Drawing.Size(219, 647);
+            this.SidebarPanel1Split.SplitterDistance = 25;
+            this.SidebarPanel1Split.TabIndex = 0;
+            // 
+            // SidebarPanel1Label
+            // 
+            this.SidebarPanel1Label.AutoSize = true;
+            this.SidebarPanel1Label.Dock = System.Windows.Forms.DockStyle.Left;
+            this.SidebarPanel1Label.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.SidebarPanel1Label.Location = new System.Drawing.Point(2, 5);
+            this.SidebarPanel1Label.Name = "SidebarPanel1Label";
+            this.SidebarPanel1Label.Size = new System.Drawing.Size(70, 15);
+            this.SidebarPanel1Label.TabIndex = 0;
+            this.SidebarPanel1Label.Text = "Project Tree";
+            // 
+            // SidebarPanel2Split
+            // 
+            this.SidebarPanel2Split.BackColor = System.Drawing.SystemColors.Control;
+            this.SidebarPanel2Split.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SidebarPanel2Split.IsSplitterFixed = true;
+            this.SidebarPanel2Split.Location = new System.Drawing.Point(3, 3);
+            this.SidebarPanel2Split.Name = "SidebarPanel2Split";
+            this.SidebarPanel2Split.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // SidebarPanel2Split.Panel1
+            // 
+            this.SidebarPanel2Split.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.SidebarPanel2Split.Panel1.Controls.Add(this.HideInspectorButton);
+            this.SidebarPanel2Split.Panel1.Controls.Add(this.SidebarPanel2Label);
+            this.SidebarPanel2Split.Panel1.Padding = new System.Windows.Forms.Padding(2, 5, 2, 5);
+            // 
+            // SidebarPanel2Split.Panel2
+            // 
+            this.SidebarPanel2Split.Panel2.BackColor = System.Drawing.SystemColors.Control;
+            this.SidebarPanel2Split.Panel2.Padding = new System.Windows.Forms.Padding(2);
+            this.SidebarPanel2Split.Size = new System.Drawing.Size(220, 647);
+            this.SidebarPanel2Split.SplitterDistance = 25;
+            this.SidebarPanel2Split.TabIndex = 0;
+            // 
+            // SidebarPanel2Label
+            // 
+            this.SidebarPanel2Label.AutoSize = true;
+            this.SidebarPanel2Label.Dock = System.Windows.Forms.DockStyle.Left;
+            this.SidebarPanel2Label.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.SidebarPanel2Label.Location = new System.Drawing.Point(2, 5);
+            this.SidebarPanel2Label.Name = "SidebarPanel2Label";
+            this.SidebarPanel2Label.Size = new System.Drawing.Size(56, 15);
+            this.SidebarPanel2Label.TabIndex = 1;
+            this.SidebarPanel2Label.Text = "Inspector";
+            // 
+            // HideProjectTreeButton
+            // 
+            this.HideProjectTreeButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.HideProjectTreeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.HideProjectTreeButton.Location = new System.Drawing.Point(201, 5);
+            this.HideProjectTreeButton.Margin = new System.Windows.Forms.Padding(0);
+            this.HideProjectTreeButton.MaximumSize = new System.Drawing.Size(16, 16);
+            this.HideProjectTreeButton.Name = "HideProjectTreeButton";
+            this.HideProjectTreeButton.Size = new System.Drawing.Size(16, 15);
+            this.HideProjectTreeButton.TabIndex = 1;
+            this.HideProjectTreeButton.UseVisualStyleBackColor = true;
+            this.HideProjectTreeButton.Click += new System.EventHandler(this.HideProjectTreeButton_Click);
+            // 
+            // HideInspectorButton
+            // 
+            this.HideInspectorButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.HideInspectorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.HideInspectorButton.Location = new System.Drawing.Point(202, 5);
+            this.HideInspectorButton.Margin = new System.Windows.Forms.Padding(0);
+            this.HideInspectorButton.MaximumSize = new System.Drawing.Size(16, 16);
+            this.HideInspectorButton.Name = "HideInspectorButton";
+            this.HideInspectorButton.Size = new System.Drawing.Size(16, 15);
+            this.HideInspectorButton.TabIndex = 2;
+            this.HideInspectorButton.UseVisualStyleBackColor = true;
+            this.HideInspectorButton.Click += new System.EventHandler(this.HideInspectorButton_Click);
             // 
             // AppWindow
             // 
@@ -270,8 +384,18 @@
             this.WorkspaceSplitContainer.ResumeLayout(false);
             this.SceneViewer.ResumeLayout(false);
             this.WelcomePage.ResumeLayout(false);
+            this.SidebarSplitContainer.Panel1.ResumeLayout(false);
+            this.SidebarSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SidebarSplitContainer)).EndInit();
             this.SidebarSplitContainer.ResumeLayout(false);
+            this.SidebarPanel1Split.Panel1.ResumeLayout(false);
+            this.SidebarPanel1Split.Panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SidebarPanel1Split)).EndInit();
+            this.SidebarPanel1Split.ResumeLayout(false);
+            this.SidebarPanel2Split.Panel1.ResumeLayout(false);
+            this.SidebarPanel2Split.Panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SidebarPanel2Split)).EndInit();
+            this.SidebarPanel2Split.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -287,6 +411,12 @@
         private System.Windows.Forms.LinkLabel WelcomePageLinkNewProject;
         private System.Windows.Forms.PictureBox WelcomePageLogo;
         private System.Windows.Forms.SplitContainer SidebarSplitContainer;
+        private System.Windows.Forms.SplitContainer SidebarPanel1Split;
+        private System.Windows.Forms.SplitContainer SidebarPanel2Split;
+        private System.Windows.Forms.Label SidebarPanel1Label;
+        private System.Windows.Forms.Label SidebarPanel2Label;
+        private System.Windows.Forms.Button HideProjectTreeButton;
+        private System.Windows.Forms.Button HideInspectorButton;
 
     }
 }

@@ -34,6 +34,25 @@ namespace HoneyCube.Editor.Views
         }
 
         /// <summary>
+        /// The project tree displays created scene nodes in a hierarchy.
+        /// </summary>
+        IProjectTree ProjectTree
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The inspector displays object properties that can be modified by 
+        /// the user.
+        /// </summary>
+        IObjectInspector Inspector
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Shows the application sidebar.
         /// </summary>
         void ShowSidebar();

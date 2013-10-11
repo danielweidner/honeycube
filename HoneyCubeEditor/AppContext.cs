@@ -44,10 +44,14 @@ namespace HoneyCube.Editor
             IAppWindowPresenter window = _container.GetInstance<IAppWindowPresenter>();
             IAppMenuPresenter menu = _container.GetInstance<IAppMenuPresenter>();
             IAppToolbarPresenter toolbar = _container.GetInstance<IAppToolbarPresenter>();
+            IObjectInspectorPresenter inspector = _container.GetInstance<IObjectInspectorPresenter>();
+            IProjectTreePresenter tree = _container.GetInstance<IProjectTreePresenter>();
 
             // Setup the main window
             window.View.AppMenu = menu.View;
             window.View.AppToolbar = toolbar.View;
+            window.View.Inspector = inspector.View;
+            window.View.ProjectTree = tree.View;
 
             // Assign the view as main form of the application
             MainForm = window.View as Form;

@@ -35,8 +35,7 @@ namespace HoneyCube.Editor.Presenter
         #region Properties
 
         /// <summary>
-        /// The view holding the controls used to display created application
-        /// logs.
+        /// The view holding controls used to display available application logs.
         /// </summary>
         public IAppLogWindow View
         {

@@ -76,6 +76,14 @@ namespace HoneyCube.Editor
                 .Singleton()
                 .Use<ToolbarCommandExecuter>();
 
+            For<IObjectInspectorPresenter>()
+                .Singleton()
+                .Use<ObjectInspectorPresenter>();
+
+            For<IProjectTreePresenter>()
+                .Singleton()
+                .Use<ProjectTreePresenter>();
+
             For<IAppLogPresenter>()
                 .Singleton()
                 .Use<AppLogPresenter>();
@@ -98,6 +106,14 @@ namespace HoneyCube.Editor
             For<IAppToolbar>()
                 .Singleton()
                 .Use<AppToolbar>();
+
+            For<IObjectInspector>()
+                .Singleton()
+                .Use<ObjectInspector>();
+
+            For<IProjectTree>()
+                .Singleton()
+                .Use<ProjectTree>();
 
             For<ISceneView>()
                 .Use<SceneView>();
