@@ -12,29 +12,20 @@ using HoneyCube.Editor.Views;
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// TODO
+    /// Controls the actual behavior of a SceneView.
     /// </summary>
     public class SceneViewPresenter : ISceneViewPresenter
     {
         #region Fields
 
         private ISceneView _view;
-        private ICameraService _cameras;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// TODO
-        /// </summary>
-        public ICamera Camera
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        /// <summary>
-        /// TODO
+        /// Returns the associated view.
         /// </summary>
         public ISceneView View
         {
@@ -46,13 +37,13 @@ namespace HoneyCube.Editor.Presenter
         #region Constructor
 
         /// <summary>
-        /// TODO
+        /// Public constrcutor. Creats a new presenter for a scene view.
         /// </summary>
-        public SceneViewPresenter(ISceneView view, ICameraService cameras)
+        /// <param name="view">Associated scene view.</param>
+        public SceneViewPresenter(ISceneView view)
         {
             _view = view;
             _view.Presenter = this;
-            _cameras = cameras;
         }
 
         #endregion

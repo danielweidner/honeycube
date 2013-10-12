@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Scene");
             this.Tree = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
             // 
@@ -39,12 +38,9 @@
             this.Tree.LabelEdit = true;
             this.Tree.Location = new System.Drawing.Point(0, 0);
             this.Tree.Name = "Tree";
-            treeNode1.Name = "Root";
-            treeNode1.Text = "Scene";
-            this.Tree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
             this.Tree.Size = new System.Drawing.Size(280, 620);
             this.Tree.TabIndex = 0;
+            this.Tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.Tree_AfterSelect);
             // 
             // ProjectTree
             // 

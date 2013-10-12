@@ -10,7 +10,8 @@ using System.Text;
 namespace HoneyCube
 {
     /// <summary>
-    /// TODO
+    /// A scene represents the root node within the game entity hierarchy. All
+    /// entities added to a scene can be retrieve from the scene node.
     /// </summary>
     public class Scene : IScene
     {
@@ -38,11 +39,9 @@ namespace HoneyCube
         /// <summary>
         /// Public constructor. Creates a new game scene.
         /// </summary>
-        public Scene()
+        public Scene() : this(string.Empty)
         {
-            _created++;
-
-            Name = "Scene" + string.Format("{0:00}", _created);
+            // Empty
         }
 
         /// <summary>
@@ -54,6 +53,10 @@ namespace HoneyCube
             _created++;
 
             Name = name;
+
+            // Autogenerate a name if none is given
+            if (name == string.Empty)
+                Name = "Scene" + string.Format("{0:00}", _created);
         }
 
         #endregion

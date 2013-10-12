@@ -11,16 +11,10 @@ using HoneyCube.Editor.Views;
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// TODO
+    /// Controls the behavior of a SceneView.
     /// </summary>
     public interface ISceneViewPresenter : IPresenter<ISceneView>
     {
-        /// <summary>
-        /// TODO
-        /// </summary>
-        ICamera Camera
-        {
-            get;
-        }
+        // Empty
     }
 }

@@ -10,17 +10,17 @@ using System.Text;
 namespace HoneyCube.Editor.Events.Scene
 {
     /// <summary>
-    /// Raised once a new scene is created.
+    /// Raised when a scene is selected by the user.
     /// </summary>
-    public class SceneCreatedEvent : SceneEvent
+    public class SceneNameChangedEvent : SceneEvent
     {
         #region Constructor
 
         /// <summary>
-        /// Public constructor. Creates a new scene created event.
+        /// Public constructor. Creates a new scene name changed event.
         /// </summary>
-        /// <param name="scene">Scene created by the user.</param>
-        public SceneCreatedEvent(IScene scene) 
+        /// <param name="scene">Scene that has changed its name.</param>
+        public SceneNameChangedEvent(IScene scene)
             : base(scene)
         {
             // Empty

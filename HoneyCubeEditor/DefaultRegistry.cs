@@ -56,10 +56,6 @@ namespace HoneyCube.Editor
 
             #region Services
 
-            For<ICameraService>()
-                .Singleton()
-                .Use<CameraService>();
-
             For<IProjectManager>()
                 .Singleton()
                 .Use<ProjectManager>();
@@ -74,11 +70,11 @@ namespace HoneyCube.Editor
 
             For<IAppMenuPresenter>()
                 .Singleton()
-                .Use<MenuCommandExecuter>();
+                .Use<AppMenuPresenter>();
 
             For<IAppToolbarPresenter>()
                 .Singleton()
-                .Use<ToolbarCommandExecuter>();
+                .Use<AppToolbarPresenter>();
 
             For<IInspectorPresenter>()
                 .Singleton()
@@ -128,6 +124,24 @@ namespace HoneyCube.Editor
 
             For<SaveFileDialog>()
                 .Singleton();
+
+            #endregion
+
+            #region Dialogs
+
+            For<IInputDialog>().Use<InputDialog>().Named("CreateProjectDialog")
+                .Ctor<string>("title").Is("Create Project...")
+                .Ctor<string>("heading").Is("Create Project")
+                .Ctor<string>("description").Is("Please enter a name for the project.");
+
+            #endregion
+
+            #region Models
+
+            SelectConstructor<Scene>(() => new Scene());
+
+            For<IScene>()
+                .Use<Scene>();
 
             #endregion
         }

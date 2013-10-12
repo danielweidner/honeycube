@@ -12,7 +12,8 @@ using HoneyCube.Editor.Inspector;
 namespace HoneyCube.Editor.Views
 {
     /// <summary>
-    /// TODO
+    /// IObjectInspector describes a control that allows the user to modify 
+    /// object properties.
     /// </summary>
     public interface IObjectInspector : IView<IInspectorPresenter>
     {

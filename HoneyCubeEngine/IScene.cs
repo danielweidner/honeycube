@@ -10,7 +10,8 @@ using System.Text;
 namespace HoneyCube
 {
     /// <summary>
-    /// TODO
+    /// Describes a scene within the game. A scene represents the root node 
+    /// within the entity hierarchy.
     /// </summary>
     public interface IScene
     {

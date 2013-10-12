@@ -1,22 +1,17 @@
 ﻿#region Using Statements
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Inspector;
+using HoneyCube.Editor.Presenter;
+
 
 #endregion
 
 namespace HoneyCube.Editor.Views
 {
     /// <summary>
-    /// TODO
+    /// The ObjectInspector displays properties of a selected object in a property
+    /// grid and allows the user to modify certain values.
     /// </summary>
     public partial class ObjectInspector : UserControl, IObjectInspector, ILocalizable
     {
@@ -36,7 +31,7 @@ namespace HoneyCube.Editor.Views
         #region Constructor
 
         /// <summary>
-        /// TODO
+        /// Public constructor. Creates a new object inspector.
         /// </summary>
         public ObjectInspector()
         {

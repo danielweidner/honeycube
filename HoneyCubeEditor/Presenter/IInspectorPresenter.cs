@@ -11,7 +11,7 @@ using HoneyCube.Editor.Views;
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// TODO
+    /// Controls the behavior of the object inspector view.
     /// </summary>
     public interface IInspectorPresenter : IPresenter<IObjectInspector>
     {

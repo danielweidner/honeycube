@@ -42,11 +42,11 @@
             this.WelcomePage = new System.Windows.Forms.TabPage();
             this.SidebarSplitContainer = new System.Windows.Forms.SplitContainer();
             this.SidebarPanel1Split = new System.Windows.Forms.SplitContainer();
+            this.HideProjectTreeButton = new System.Windows.Forms.Button();
             this.SidebarPanel1Label = new System.Windows.Forms.Label();
             this.SidebarPanel2Split = new System.Windows.Forms.SplitContainer();
-            this.SidebarPanel2Label = new System.Windows.Forms.Label();
-            this.HideProjectTreeButton = new System.Windows.Forms.Button();
             this.HideInspectorButton = new System.Windows.Forms.Button();
+            this.SidebarPanel2Label = new System.Windows.Forms.Label();
             WelcomePageLayout = new System.Windows.Forms.TableLayoutPanel();
             WelcomePageNavigation = new System.Windows.Forms.Panel();
             WelcomePageLabelOpenedRecently = new System.Windows.Forms.Label();
@@ -129,6 +129,7 @@
             // 
             this.WelcomePageLinkOpenProject.ActiveLinkColor = System.Drawing.SystemColors.MenuHighlight;
             this.WelcomePageLinkOpenProject.AutoSize = true;
+            this.WelcomePageLinkOpenProject.Enabled = false;
             this.WelcomePageLinkOpenProject.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.WelcomePageLinkOpenProject.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.WelcomePageLinkOpenProject.LinkColor = System.Drawing.SystemColors.MenuHighlight;
@@ -156,6 +157,7 @@
             this.WelcomePageLinkNewProject.TabStop = true;
             this.WelcomePageLinkNewProject.Text = "New Project...";
             this.WelcomePageLinkNewProject.VisitedLinkColor = System.Drawing.SystemColors.MenuHighlight;
+            this.WelcomePageLinkNewProject.Click += new System.EventHandler(this.WelcomePageLinkNewProject_Click);
             // 
             // WelcomePageLogo
             // 
@@ -292,6 +294,19 @@
             this.SidebarPanel1Split.Enter += new System.EventHandler(this.ProjectTree_Enter);
             this.SidebarPanel1Split.Leave += new System.EventHandler(this.ProjectTree_Leave);
             // 
+            // HideProjectTreeButton
+            // 
+            this.HideProjectTreeButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.HideProjectTreeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.HideProjectTreeButton.Location = new System.Drawing.Point(201, 5);
+            this.HideProjectTreeButton.Margin = new System.Windows.Forms.Padding(0);
+            this.HideProjectTreeButton.MaximumSize = new System.Drawing.Size(16, 16);
+            this.HideProjectTreeButton.Name = "HideProjectTreeButton";
+            this.HideProjectTreeButton.Size = new System.Drawing.Size(16, 15);
+            this.HideProjectTreeButton.TabIndex = 1;
+            this.HideProjectTreeButton.UseVisualStyleBackColor = true;
+            this.HideProjectTreeButton.Click += new System.EventHandler(this.HideProjectTreeButton_Click);
+            // 
             // SidebarPanel1Label
             // 
             this.SidebarPanel1Label.AutoSize = true;
@@ -329,30 +344,6 @@
             this.SidebarPanel2Split.Enter += new System.EventHandler(this.Inspector_Enter);
             this.SidebarPanel2Split.Leave += new System.EventHandler(this.Inspector_Leave);
             // 
-            // SidebarPanel2Label
-            // 
-            this.SidebarPanel2Label.AutoSize = true;
-            this.SidebarPanel2Label.Dock = System.Windows.Forms.DockStyle.Left;
-            this.SidebarPanel2Label.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.SidebarPanel2Label.Location = new System.Drawing.Point(2, 5);
-            this.SidebarPanel2Label.Name = "SidebarPanel2Label";
-            this.SidebarPanel2Label.Size = new System.Drawing.Size(56, 15);
-            this.SidebarPanel2Label.TabIndex = 1;
-            this.SidebarPanel2Label.Text = "Inspector";
-            // 
-            // HideProjectTreeButton
-            // 
-            this.HideProjectTreeButton.Dock = System.Windows.Forms.DockStyle.Right;
-            this.HideProjectTreeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.HideProjectTreeButton.Location = new System.Drawing.Point(201, 5);
-            this.HideProjectTreeButton.Margin = new System.Windows.Forms.Padding(0);
-            this.HideProjectTreeButton.MaximumSize = new System.Drawing.Size(16, 16);
-            this.HideProjectTreeButton.Name = "HideProjectTreeButton";
-            this.HideProjectTreeButton.Size = new System.Drawing.Size(16, 15);
-            this.HideProjectTreeButton.TabIndex = 1;
-            this.HideProjectTreeButton.UseVisualStyleBackColor = true;
-            this.HideProjectTreeButton.Click += new System.EventHandler(this.HideProjectTreeButton_Click);
-            // 
             // HideInspectorButton
             // 
             this.HideInspectorButton.Dock = System.Windows.Forms.DockStyle.Right;
@@ -366,6 +357,17 @@
             this.HideInspectorButton.UseVisualStyleBackColor = true;
             this.HideInspectorButton.Click += new System.EventHandler(this.HideInspectorButton_Click);
             // 
+            // SidebarPanel2Label
+            // 
+            this.SidebarPanel2Label.AutoSize = true;
+            this.SidebarPanel2Label.Dock = System.Windows.Forms.DockStyle.Left;
+            this.SidebarPanel2Label.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.SidebarPanel2Label.Location = new System.Drawing.Point(2, 5);
+            this.SidebarPanel2Label.Name = "SidebarPanel2Label";
+            this.SidebarPanel2Label.Size = new System.Drawing.Size(56, 15);
+            this.SidebarPanel2Label.TabIndex = 1;
+            this.SidebarPanel2Label.Text = "Inspector";
+            // 
             // AppWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -375,6 +377,7 @@
             this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "AppWindow";
+            this.Tag = "Honey Cube Editor";
             this.Text = "Honey Cube Editor";
             WelcomePageLayout.ResumeLayout(false);
             WelcomePageNavigation.ResumeLayout(false);

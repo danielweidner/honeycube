@@ -69,6 +69,9 @@
             System.Windows.Forms.ToolStripMenuItem MenuHelpGithub;
             System.Windows.Forms.ToolStripSeparator Seperator09;
             System.Windows.Forms.ToolStripMenuItem MenuHelpAbout;
+            System.Windows.Forms.ToolStripMenuItem MenuProject;
+            System.Windows.Forms.ToolStripMenuItem MenuProjectAddScene;
+            System.Windows.Forms.ToolStripSeparator Separator11;
             this.MenuViewWelcomePage = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             MenuFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,6 +115,9 @@
             MenuHelpGithub = new System.Windows.Forms.ToolStripMenuItem();
             Seperator09 = new System.Windows.Forms.ToolStripSeparator();
             MenuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
+            MenuProject = new System.Windows.Forms.ToolStripMenuItem();
+            MenuProjectAddScene = new System.Windows.Forms.ToolStripMenuItem();
+            Separator11 = new System.Windows.Forms.ToolStripSeparator();
             this.MenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -181,6 +187,7 @@
             // 
             // MenuFileCloseProject
             // 
+            MenuFileCloseProject.Enabled = false;
             MenuFileCloseProject.Name = "MenuFileCloseProject";
             MenuFileCloseProject.Size = new System.Drawing.Size(288, 22);
             MenuFileCloseProject.Text = "Close Project";
@@ -457,11 +464,34 @@
             MenuHelpAbout.Text = "About Honey Cube";
             MenuHelpAbout.Click += new System.EventHandler(this.MenuItem_Click);
             // 
+            // MenuProject
+            // 
+            MenuProject.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            MenuProjectAddScene,
+            Separator11});
+            MenuProject.Enabled = false;
+            MenuProject.Name = "MenuProject";
+            MenuProject.Size = new System.Drawing.Size(56, 20);
+            MenuProject.Text = "Project";
+            // 
+            // MenuProjectAddScene
+            // 
+            MenuProjectAddScene.Name = "MenuProjectAddScene";
+            MenuProjectAddScene.Size = new System.Drawing.Size(152, 22);
+            MenuProjectAddScene.Text = "Add Scene";
+            MenuProjectAddScene.Click += new System.EventHandler(this.MenuItem_Click);
+            // 
+            // Separator11
+            // 
+            Separator11.Name = "Separator11";
+            Separator11.Size = new System.Drawing.Size(149, 6);
+            // 
             // MenuStrip
             // 
             this.MenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             MenuFile,
             MenuEdit,
+            MenuProject,
             MenuView,
             MenuHelp});
             this.MenuStrip.Location = new System.Drawing.Point(0, 0);

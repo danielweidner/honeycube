@@ -9,11 +9,11 @@ using HoneyCube.Editor.Commands;
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// The ToolbarCommandExecuter is an implementation of the 
-    /// IAppToolbarPresenter interface. It will retrieve click events from the
-    /// menu view and run associated commands.
+    /// The ToolbarPresenter is an implementation of the IAppToolbarPresenter
+    /// interface. It will retrieve click events from the menu view and run 
+    /// associated commands from the default command map.
     /// </summary>
-    public class ToolbarCommandExecuter : IAppToolbarPresenter
+    public class AppToolbarPresenter : IAppToolbarPresenter
     {
         #region Fields
 
@@ -42,7 +42,7 @@ namespace HoneyCube.Editor.Presenter
         /// </summary>
         /// <param name="map">A command map that associates string identifiers or key shortcuts to specific commands.</param>
         /// <param name="view">The menu controlled by the current presenter.</param>
-        public ToolbarCommandExecuter(ICommandMap map, IAppToolbar view)
+        public AppToolbarPresenter(ICommandMap map, IAppToolbar view)
         {
             _map = map;
             _view = view;

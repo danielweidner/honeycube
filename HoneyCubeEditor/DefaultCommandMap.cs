@@ -7,6 +7,7 @@ using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Services;
 using HoneyCube.Editor.Views;
 using System.Diagnostics;
+using StructureMap;
 
 #endregion
 
@@ -22,18 +23,36 @@ namespace HoneyCube.Editor
         /// Public constructor. Creates a default set of commands that can be
         /// triggered throughout the entire application.
         /// </summary>
-        /// <param name="window">The application window maintaining most of the control elements.</param>
-        /// <param name="projects">Object that manages loaded scene instances.</param>
-        /// <param name="appLog">The logging element.</param>
-        public DefaultCommandMap(IAppWindow window, IProjectManager projects, IAppLogPresenter appLog)
+        /// <param name="container">Container implementing the service locator pattern.</param>
+        public DefaultCommandMap(IContainer container)
         {
+            // TODO: Not very clean, as it hides dependencies, don't know how 
+            // to include dialogs using constructor injection though. Maybe a
+            // DialogService? Or creating actual commands with proper 
+            // dependencies?
+            IAppWindow window = container.GetInstance<IAppWindow>();
+            IAppLogPresenter log = container.GetInstance<IAppLogPresenter>();
+            IProjectManager project = container.GetInstance<IProjectManager>();
+
             #region Menu: File
 
-            // MenuFileNew
-            If(Keys.Control | Keys.N)
-                .Or("ToolbarNewProject")
+            IInputDialog createProjectDialog = container.GetInstance<IInputDialog>("CreateProjectDialog");
+
+            // MenuFileNewProject
+            If(Keys.Control | Keys.N).Or("ToolbarNewProject")
                 .ThenExecute(new ActionCommand(() => {
-                    projects.CreateNewScene();
+                    DialogResult result = createProjectDialog.ShowDialog();
+                    
+                    string projectName = createProjectDialog.UserInput;
+                    if (result == DialogResult.OK && projectName != string.Empty)
+                        project.CreateProject(projectName);
+                }));
+
+            // MenuFileCloseProject
+            If("MenuFileCloseProject")
+                .ThenExecute(new ActionCommand(() => {
+                    if (project.Loaded)
+                        project.CloseProject();
                 }));
 
             // MenuFileExit
@@ -44,10 +63,21 @@ namespace HoneyCube.Editor
 
             #endregion
 
+            #region Menu: Project
+
+            // MenuProjectAddScene
+            If("MenuProjectAddScene")
+                .ThenExecute(new ActionCommand(() => {
+                    if (project.Loaded)
+                        project.CreateScene();
+                }));
+
+            #endregion
+
             #region Menu: View
 
             If("ToolbarLog").Or(Keys.Control | Keys.L)
-                .ThenExecute(new ActionCommand(appLog.ShowClicked));
+                .ThenExecute(new ActionCommand(log.ShowClicked));
 
             If("MenuViewWelcomePage")
                 .ThenExecute(new ActionCommand(window.ShowWelcomePage));

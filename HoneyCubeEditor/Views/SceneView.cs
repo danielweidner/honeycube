@@ -24,6 +24,11 @@ namespace HoneyCube.Editor.Views
         #region Fields
 
         /// <summary>
+        /// The scene displayed by the current view.
+        /// </summary>
+        private IScene _scene;
+
+        /// <summary>
         /// A reference to the graphics device service maintaining the unique
         /// graphics device instance.
         /// </summary>
@@ -37,6 +42,14 @@ namespace HoneyCube.Editor.Views
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Returns the scene associated with the current view.
+        /// </summary>
+        public IScene Scene
+        {
+            get { return _scene; }
+        }
 
         /// <summary>
         /// Holds a reference to the associated presenter which controlls the 
@@ -61,11 +74,18 @@ namespace HoneyCube.Editor.Views
         #region Constructor
 
         /// <summary>
-        /// TODO
+        /// Public constructor. Creates a scene view that is able to render
+        /// all scene entities in a custom graphics control.
         /// </summary>
-        public SceneView()
+        /// <param name="scene">Scene to render.</param>
+        public SceneView(IScene scene)
         {
             InitializeComponent();
+
+            _scene = scene;
+
+            Name = scene.Name;
+            Text = scene.Name;
         }
 
         #endregion
@@ -260,7 +280,16 @@ namespace HoneyCube.Editor.Views
         #region ISceneView
 
         /// <summary>
-        /// TODO
+        /// Changes the label used to display the current scene view.
+        /// </summary>
+        /// <param name="text">Text to display.</param>
+        public void UpdateLabel(string text)
+        {
+            Text = text;
+        }
+
+        /// <summary>
+        /// Closes the current scene view.
         /// </summary>
         public void Close()
         {

@@ -11,9 +11,11 @@ using System.ComponentModel;
 namespace HoneyCube.Editor.Inspector
 {
     /// <summary>
-    /// TODO
+    /// A wrapper for scene objects. The wrapper allows to display a scene
+    /// properly in the inspector without the need to modify the actual
+    /// engine classes.
     /// </summary>
-    public class SceneWrapper : InspectorObject<IScene>
+    public class SceneContainer : InspectorObject<IScene>
     {
         #region Properties
 
@@ -25,7 +27,14 @@ namespace HoneyCube.Editor.Inspector
         public string Name
         {
             get { return WrappedObject.Name; }
-            set { WrappedObject.Name = value; }
+            set 
+            {
+                if (WrappedObject.Name != value)
+                {
+                    WrappedObject.Name = value;
+                    OnPropertyChanged("Name");
+                }
+            }
         }
 
         #endregion
@@ -33,10 +42,11 @@ namespace HoneyCube.Editor.Inspector
         #region Constructor
 
         /// <summary>
-        /// TODO
+        /// Public constructor. Creates a wrapper for a scene to display
+        /// the object properly in the ObjectInspector.
         /// </summary>
-        /// <param name="scene"></param>
-        public SceneWrapper(IScene scene)
+        /// <param name="scene">Scene to display in the ObjectInspector.</param>
+        public SceneContainer(IScene scene)
         {
             WrappedObject = scene;
         }

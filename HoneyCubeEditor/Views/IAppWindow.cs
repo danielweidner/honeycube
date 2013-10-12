@@ -53,6 +53,12 @@ namespace HoneyCube.Editor.Views
         }
 
         /// <summary>
+        /// Changes the title of the application window.
+        /// </summary>
+        /// <param name="text">Text to display in the title.</param>
+        void UpdateTitle(string text);
+
+        /// <summary>
         /// Shows the application sidebar.
         /// </summary>
         void ShowSidebar();
@@ -109,6 +115,24 @@ namespace HoneyCube.Editor.Views
         /// Hide the welcome page.
         /// </summary>
         void HideWelcomePage();
+
+        /// <summary>
+        /// Display the given scene representation.
+        /// </summary>
+        /// <param name="scene">Scene representation to display.</param>
+        void ShowScene(ISceneView scene);
+
+        /// <summary>
+        /// Updates the given scene representation.
+        /// </summary>
+        /// <param name="scene">Scene to update.</param>
+        void UpdateScene(ISceneView scene);
+
+        /// <summary>
+        /// Hide the specified scene representation.
+        /// </summary>
+        /// <param name="scene">Scene representation to hide.</param>
+        void HideScene(ISceneView scene);
 
         /// <summary>
         /// Closes the entire application.

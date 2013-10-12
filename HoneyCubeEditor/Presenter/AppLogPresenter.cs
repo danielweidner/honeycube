@@ -53,8 +53,7 @@ namespace HoneyCube.Editor.Presenter
         static AppLogPresenter()
         {
             // Generate the pattern
-            // TODO: Not very flexible, would break once the used date format 
-            // would change
+            // TODO: Not very flexible, would break once the used date format changes
             string date = @"(\d{2,2}\.\d{2,2}\.\d{4,4}\s{1}\d{2,2}:\d{2,2}:\d{2,2})";
             string warning = "(" + Regex.Escape(AppLog.WarningText) + ")";
             string error = "(" + Regex.Escape(AppLog.ErrorText) + ")";

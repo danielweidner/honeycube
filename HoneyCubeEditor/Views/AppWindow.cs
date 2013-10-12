@@ -1,14 +1,12 @@
 ﻿#region Using Statements
 
+using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using HoneyCube.Editor.Input;
 using HoneyCube.Editor.Presenter;
 using HoneyCube.Editor.Services;
-using System.Collections.Generic;
-using StructureMap;
-using System.Drawing;
-using System;
 
 #endregion
 
@@ -261,6 +259,64 @@ namespace HoneyCube.Editor.Views
 
         #region IAppWindow
 
+        #region AppWindow
+
+        /// <summary>
+        /// Changes the title of the application window.
+        /// </summary>
+        /// <param name="text">Text to display in the title.</param>
+        public void UpdateTitle(string text)
+        {
+            Text = (string)Tag + (text.Length > 0 ? " - " + text : "");
+        }
+
+        #endregion
+
+        #region SceneViewer
+
+        /// <summary>
+        /// Display the given scene representation.
+        /// </summary>
+        /// <param name="view">Scene representation to display.</param>
+        public void ShowScene(ISceneView view)
+        {
+            TabPage tab = view as TabPage;
+
+            if (tab != null && !SceneViewer.TabPages.Contains(tab))
+            {
+                SceneViewer.TabPages.Add(tab);
+                SceneViewer.SelectedTab = tab;
+            }
+        }
+
+        /// <summary>
+        /// Updates the given scene representation.
+        /// </summary>
+        /// <param name="scene">Scene to update.</param>
+        public void UpdateScene(ISceneView view)
+        {
+            TabPage tab = view as TabPage;
+
+            if (tab != null)
+                tab.Text = view.Scene.Name;
+        }
+
+        /// <summary>
+        /// Hide the specified scene representation.
+        /// </summary>
+        /// <param name="view">Scene representation to hide.</param>
+        public void HideScene(ISceneView view)
+        {
+            TabPage tab = view as TabPage;
+
+            if (tab != null)
+                SceneViewer.TabPages.Remove(tab);
+        }
+
+        #endregion
+
+        #region Sidebar
+
         /// <summary>
         /// Takes all panel flags into account and updates the corresponding 
         /// form elements.
@@ -324,6 +380,10 @@ namespace HoneyCube.Editor.Views
             UpdateSidebarComponents();
         }
 
+        #endregion
+
+        #region ProjectTree
+
         /// <summary>
         /// Shows the project tree displaying all scene nodes in a hierarchy.
         /// </summary>
@@ -350,6 +410,10 @@ namespace HoneyCube.Editor.Views
             projectTreeCollapsed = !projectTreeCollapsed;
             UpdateSidebarComponents();
         }
+
+        #endregion
+
+        #region Inspector
 
         /// <summary>
         /// Shows the object inspector displaying all attributes of the 
@@ -380,6 +444,10 @@ namespace HoneyCube.Editor.Views
             UpdateSidebarComponents();
         }
 
+        #endregion
+
+        #region WelcomePage
+
         /// <summary>
         /// Show the welcome page presenting the user useful information on
         /// startup.
@@ -400,7 +468,11 @@ namespace HoneyCube.Editor.Views
 
         #endregion
 
+        #endregion
+
         #region EventHandler
+
+        #region AppWindow
 
         /// <summary>
         /// Is called every time a close of the form is requested.
@@ -461,6 +533,10 @@ namespace HoneyCube.Editor.Views
             }
         }
 
+        #endregion
+
+        #region WelcomePage
+
         /// <summary>
         /// Is raised on every paint refresh of the welcome page. Allows us to
         /// draw a border only on the left of the panel.
@@ -481,6 +557,23 @@ namespace HoneyCube.Editor.Views
                     Color.LightGray, 1, ButtonBorderStyle.None);
             }
         }
+
+        /// <summary>
+        /// Is raised when the user clicks on the new project button placed on 
+        /// the welcome page.
+        /// </summary>
+        /// <param name="sender">Create project link clicked.</param>
+        /// <param name="e">Some event arguments.</param>
+        private void WelcomePageLinkNewProject_Click(object sender, EventArgs e)
+        {
+            // Pretend the user has pressed CTRL+N
+            if (Presenter != null)
+                Presenter.HandleKeyboardInput(Keys.N, Keys.Control);
+        }
+
+        #endregion
+
+        #region SceneViewer
 
         /// <summary>
         /// Is raised every time the scene viewer is clicked. Checks which of
@@ -506,6 +599,10 @@ namespace HoneyCube.Editor.Views
                 }
             }
         }
+
+        #endregion
+
+        #region ProjectTree
 
         /// <summary>
         /// Is raised once the project tree panel gains user focus.
@@ -537,6 +634,10 @@ namespace HoneyCube.Editor.Views
             this.HideProjectTree();
         }
 
+        #endregion
+
+        #region Inspector
+
         /// <summary>
         /// Is raised once the inspector panel gains user focus.
         /// </summary>
@@ -567,6 +668,8 @@ namespace HoneyCube.Editor.Views
             this.HideInspector();
         }
 
-        #endregion        
+        #endregion
+
+        #endregion
     }
 }

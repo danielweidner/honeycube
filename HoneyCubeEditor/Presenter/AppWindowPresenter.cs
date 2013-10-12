@@ -5,6 +5,11 @@ using HoneyCube.Editor.Events;
 using HoneyCube.Editor.Views;
 using HoneyCube.Editor.Input;
 using HoneyCube.Editor.Commands;
+using HoneyCube.Editor.Events.Scene;
+using HoneyCube.Editor.Services;
+using HoneyCube.Editor.Inspector;
+using System.ComponentModel;
+using System.Collections.Generic;
 
 #endregion
 
@@ -15,12 +20,14 @@ namespace HoneyCube.Editor.Presenter
     /// Most of the time it will simply delegate the commands to interested 
     /// submodules.
     /// </summary>
-    public class AppWindowPresenter : IAppWindowPresenter
+    public class AppWindowPresenter : IAppWindowPresenter, IEventHandler<SceneCreatedEvent>, IEventHandler<SceneRemovedEvent>, IEventHandler<SceneNameChangedEvent>
     {
         #region Fields
 
-        private IAppHub _hub;
+        private Dictionary<IScene, ISceneView> _scenes;
         private IAppWindow _view;
+
+        private IAppHub _hub;
         private ICommandMap _commands;
 
         #endregion
@@ -51,19 +58,46 @@ namespace HoneyCube.Editor.Presenter
         /// Public constructor. Creates a new ApplicationWindowPresenter which
         /// controls the overall behavior of the associated ApplicationWindowView.
         /// </summary>
+        /// <param name="view">The view to maintain.</param>
         /// <param name="hub">A reference to the application hub.</param>
         /// <param name="commands">A command map that associates string identifiers or key shortcuts to specific commands.</param>
-        /// <param name="view">The view to maintain.</param>
-        public AppWindowPresenter(IAppHub hub, ICommandMap commands, IAppWindow view)
+        public AppWindowPresenter(IAppWindow view, IAppHub hub, ICommandMap commands)
         {
-            _hub = hub;
-            _commands = commands;
-
             _view = view;
             _view.Presenter = this;
+            _scenes = new Dictionary<IScene, ISceneView>();
+
+            _hub = hub;
+            _commands = commands;
         }
 
         #endregion
+
+        /// <summary>
+        /// Tries to retrieve a scene view for the given scene name.
+        /// </summary>
+        /// <param name="name">Name of the scene.</param>
+        /// <returns>A reference to the associated scene view if available.</returns>
+        protected ISceneView TryGetView(string name)
+        {
+            foreach (KeyValuePair<IScene, ISceneView> pair in _scenes)
+                if (pair.Key.Name.Equals(name))
+                    return pair.Value;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Tries to retrieve a scene view for the given scene.
+        /// </summary>
+        /// <param name="scene">The scene to get a view for.</param>
+        /// <returns>A reference to the associated scene view if available.</returns>
+        protected ISceneView TryGetView(IScene scene)
+        {
+            ISceneView view = null;
+            _scenes.TryGetValue(scene, out view);
+            return view;
+        }
 
         #region IAppWindowPresenter
 
@@ -126,6 +160,57 @@ namespace HoneyCube.Editor.Presenter
             // Close the application if not canceled
             if (!args.Canceled)
                 View.Close();
+        }
+
+        #endregion
+
+        #region Event Handler
+
+        /// <summary>
+        /// Is raised when a new scene is added to the current project.
+        /// </summary>
+        /// <param name="args">Some event arguments.</param>
+        public void HandleApplicationEvent(SceneCreatedEvent args)
+        {
+            IScene scene = args.Scene;
+            ISceneView sceneView = TryGetView(args.Scene);
+
+            // Create and register a view if it does not already exist
+            if (sceneView == null)
+            {
+                sceneView = new SceneView(scene);
+                _scenes.Add(scene, sceneView);
+            }
+
+            _view.ShowScene(sceneView);
+        }
+
+        /// <summary>
+        /// Is raised when a scene changes its name.
+        /// </summary>
+        /// <param name="args">Some event arguments.</param>
+        public void HandleApplicationEvent(SceneNameChangedEvent args)
+        {
+            ISceneView sceneView = TryGetView(args.Scene);
+
+            if (sceneView != null)
+                _view.UpdateScene(sceneView);
+        }
+
+        /// <summary>
+        /// Is raised when a new scene is removed from the current project.
+        /// </summary>
+        /// <param name="args">Some event arguments.</param>
+        public void HandleApplicationEvent(SceneRemovedEvent args)
+        {
+            IScene scene = args.Scene;
+            ISceneView sceneView = TryGetView(scene);
+
+            if (sceneView != null)
+            {
+                _scenes.Remove(scene);
+                _view.HideScene(sceneView);
+            }
         }
 
         #endregion

@@ -11,12 +11,26 @@ using HoneyCube.Editor.Presenter;
 namespace HoneyCube.Editor.Views
 {
     /// <summary>
-    /// TODO
+    /// Describes a user interface respresentation of a game scene.
     /// </summary>
     public interface ISceneView : IView<ISceneViewPresenter>
     {
         /// <summary>
-        /// TODO
+        /// Returns the scene associated with the current view.
+        /// </summary>
+        IScene Scene
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Changes the label used to display the current scene view.
+        /// </summary>
+        /// <param name="text">Text to display.</param>
+        void UpdateLabel(string text);
+
+        /// <summary>
+        /// Closes the current scene view.
         /// </summary>
         void Close();
     }

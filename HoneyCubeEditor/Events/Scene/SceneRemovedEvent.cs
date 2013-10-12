@@ -10,17 +10,17 @@ using System.Text;
 namespace HoneyCube.Editor.Events.Scene
 {
     /// <summary>
-    /// Raised once a new scene is created.
+    /// Raised when a new scene is removed from the current project.
     /// </summary>
-    public class SceneCreatedEvent : SceneEvent
+    public class SceneRemovedEvent : SceneEvent
     {
-        #region Constructor
+       #region Constructor
 
         /// <summary>
-        /// Public constructor. Creates a new scene created event.
+        /// Public constructor. Creates a new scene removed event.
         /// </summary>
-        /// <param name="scene">Scene created by the user.</param>
-        public SceneCreatedEvent(IScene scene) 
+        /// <param name="scene">Scene removed by the user.</param>
+        public SceneRemovedEvent(IScene scene) 
             : base(scene)
         {
             // Empty

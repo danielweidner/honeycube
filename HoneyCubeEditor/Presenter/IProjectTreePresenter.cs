@@ -11,10 +11,14 @@ using HoneyCube.Editor.Views;
 namespace HoneyCube.Editor.Presenter
 {
     /// <summary>
-    /// TODO
+    /// Controls the behavior of the ProjectTree view.
     /// </summary>
     public interface IProjectTreePresenter : IPresenter<IProjectTree>
     {
-        // Empty
+        /// <summary>
+        /// Instructs the presenter to handle a node selection.
+        /// </summary>
+        /// <param name="scene">Scene selected.</param>
+        void HandleSceneSelection(IScene scene);
     }
 }

@@ -10,11 +10,11 @@ using System.Text;
 namespace HoneyCube.Editor.Events.Scene
 {
     /// <summary>
-    /// Raised once the currently active scene is closed by the user.
+    /// A generic base class for all scene events.
     /// </summary>
-    public class CurrentSceneClosedEvent
+    public class SceneEvent
     {
-        #region Field
+        #region Fields
 
         private IScene _scene;
 
@@ -23,7 +23,7 @@ namespace HoneyCube.Editor.Events.Scene
         #region Properties
 
         /// <summary>
-        /// The scene object that has been closed.
+        /// Returns the scene that has triggered the event.
         /// </summary>
         public IScene Scene
         {
@@ -35,10 +35,10 @@ namespace HoneyCube.Editor.Events.Scene
         #region Constructor
 
         /// <summary>
-        /// Public constructor. Creates a scene closed event.
+        /// Public constructor. Creates a new scene event.
         /// </summary>
-        /// <param name="scene">The scene that has been closed.</param>
-        public CurrentSceneClosedEvent(IScene scene)
+        /// <param name="scene">Scene triggering the event.</param>
+        public SceneEvent(IScene scene)
         {
             _scene = scene;
         }
