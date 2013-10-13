@@ -93,7 +93,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\DrawableComponent.cs" />
+    <Compile Include="Components\EntityComponent.cs" />
+    <Compile Include="Components\EntityComponentCollection.cs" />
+    <Compile Include="Components\IEntityComponent.cs" />
+    <Compile Include="Components\IEntityComponentCollection.cs" />
+    <Compile Include="Components\TransformComponent.cs" />
+    <Compile Include="Entity.cs" />
     <Compile Include="ICamera.cs" />
+    <Compile Include="IEntity.cs" />
     <Compile Include="IScene.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene.cs" />

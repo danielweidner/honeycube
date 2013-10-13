@@ -44,8 +44,8 @@ namespace HoneyCube.Editor.Views
             InitializeComponent();
 
             Text = title;
-            Heading.Text = heading;
-            Description.Text = description;
+            DialogHeading.Text = heading;
+            DialogDescription.Text = description;
         }
 
         #endregion
@@ -70,7 +70,7 @@ namespace HoneyCube.Editor.Views
         /// <param name="e">Some event arguments.</param>
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            InputBox.Text = string.Empty;
+            DialogInputBox.Text = string.Empty;
             base.OnFormClosed(e);
         }
 
@@ -82,7 +82,7 @@ namespace HoneyCube.Editor.Views
         /// <param name="e">Some event arguments.</param>
         private void OkButton_Click(object sender, EventArgs e)
         {
-            UserInput = InputBox.Text;
+            UserInput = DialogInputBox.Text;
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace HoneyCube.Editor.Views
         /// <param name="e">Some event arguments.</param>
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            InputBox.Text = string.Empty;
+            DialogInputBox.Text = string.Empty;
         }
 
         #endregion
