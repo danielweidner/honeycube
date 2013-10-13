@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using HoneyCube.Components;
+using Microsoft.Xna.Framework;
 
 
 #endregion
@@ -13,7 +14,7 @@ namespace HoneyCube
     /// Describes a scene within the game. A scene represents the root node 
     /// within the entity hierarchy.
     /// </summary>
-    public interface IScene
+    public interface IScene : IDrawable
     {
         /// <summary>
         /// A human readable name for the current scene (not necessarily unique).

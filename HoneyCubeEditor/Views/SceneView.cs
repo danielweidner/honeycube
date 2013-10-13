@@ -23,20 +23,9 @@ namespace HoneyCube.Editor.Views
     {
         #region Fields
 
-        /// <summary>
-        /// The scene displayed by the current view.
-        /// </summary>
-        private IScene _scene;
-
-        /// <summary>
-        /// A reference to the graphics device service maintaining the unique
-        /// graphics device instance.
-        /// </summary>
         private GraphicsDeviceService _graphicsDeviceService;
 
-        /// <summary>
-        /// The background color of the backbuffer (CornflowerBlue by default).
-        /// </summary>
+        private IScene _scene;
         private Xna.Color _backgroundColor = Xna.Color.CornflowerBlue;
 
         #endregion
@@ -91,21 +80,6 @@ namespace HoneyCube.Editor.Views
         #endregion
 
         #region Initialization
-
-        /// <summary>
-        /// Initializes the control. Retrieves a reference to the graphics device.
-        /// </summary>
-        protected override void OnCreateControl()
-        {
-            if (!DesignMode)
-            {
-                _graphicsDeviceService = GraphicsDeviceService.GetInstance(Handle, ClientSize.Width, ClientSize.Height);
-
-                Initialize();
-            }
-
-            base.OnCreateControl();
-        }
 
         /// <summary>
         /// Allows derived classes to run initialization routines when the 
@@ -177,6 +151,9 @@ namespace HoneyCube.Editor.Views
         protected virtual void Draw()
         {
             GraphicsDevice.Clear(_backgroundColor);
+
+            if (Scene != null && Scene.Visible)
+                Scene.Draw(new GameTime());
         }
 
         /// <summary>
@@ -301,6 +278,21 @@ namespace HoneyCube.Editor.Views
         #endregion
 
         #region EventHandler
+
+        /// <summary>
+        /// Initializes the control. Retrieves a reference to the graphics device.
+        /// </summary>
+        protected override void OnCreateControl()
+        {
+            if (!DesignMode)
+            {
+                _graphicsDeviceService = GraphicsDeviceService.GetInstance(Handle, ClientSize.Width, ClientSize.Height);
+                
+                Initialize();
+            }
+
+            base.OnCreateControl();
+        }
 
         /// <summary>
         /// Changes the color of the backbuffer when the background color of

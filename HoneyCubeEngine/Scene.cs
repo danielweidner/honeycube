@@ -57,6 +57,14 @@ namespace HoneyCube
         #region Properties
 
         /// <summary>
+        /// Indicates whether the scene is already initialized.
+        /// </summary>
+        public bool Initialized
+        {
+            get { return _initialized; }
+        }
+
+        /// <summary>
         /// A human readable name for the current scene (not necessarily unique).
         /// </summary>
         public string Name
